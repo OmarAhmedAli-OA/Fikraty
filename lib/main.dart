@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'core/theme/app_theme.dart';
+import 'core/theme/theme_cubit.dart';
+import 'features/splash/presentation/bloc/splash_bloc.dart';
+import 'features/splash/presentation/pages/splash_screen.dart';
 
 void main() {
-  runApp(const FikratyApp());
+  runApp(
+    BlocProvider(create: (context) => ThemeCubit(), child: const FikratyApp()),
+  );
 }
 
 class FikratyApp extends StatelessWidget {
@@ -9,18 +17,24 @@ class FikratyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fikraty',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1F3A6E),
-          brightness: Brightness.light,
-        ),
-        scaffoldBackgroundColor: const Color(0xFFFAFBFD),
-      ),
-      home: const FikratyHomePage(),
+    return BlocBuilder<ThemeCubit, ThemeMode>(
+      builder: (context, currentThemeMode) {
+        return MaterialApp(
+          title: 'Fikraty',
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: currentThemeMode,
+          initialRoute: '/',
+          routes: {
+            '/': (context) => BlocProvider(
+              create: (context) => SplashBloc(),
+              child: const SplashScreen(),
+            ),
+            '/home': (context) => const FikratyHomePage(),
+          },
+        );
+      },
     );
   }
 }
@@ -30,16 +44,30 @@ class FikratyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Fikraty',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: false,
         backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+            icon: Icon(
+              isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
+            ),
+            onPressed: () {
+              context.read<ThemeCubit>().toggleTheme();
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Padding(
@@ -51,7 +79,7 @@ class FikratyHomePage extends StatelessWidget {
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  color: colors.primary.withValues(alpha: 0.1),
+                  color: colors.primary.withAlpha(25),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: Icon(
@@ -64,17 +92,13 @@ class FikratyHomePage extends StatelessWidget {
               Text(
                 'Welcome to Fikraty!',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colors.primary,
-                ),
+                style: theme.textTheme.headlineLarge,
               ),
               const SizedBox(height: 12),
               Text(
                 'Discover ideas. Share your vision. Build your future.',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge
-                    ?.copyWith(color: colors.onSurfaceVariant, height: 1.6),
+                style: theme.textTheme.bodyMedium,
               ),
               const SizedBox(height: 28),
               FilledButton.icon(

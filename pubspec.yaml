@@ -11,16 +11,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  # Lottie animations
+  lottie: ^3.6.1
   # State management
   flutter_bloc: ^9.1.1
   bloc: ^9.0.1
   equatable: ^3.0.0
 
   # Firebase
-  firebase_core: ^4.1.1
-  firebase_auth: ^6.1.0
-  cloud_firestore: ^6.0.2
+  firebase_core: ^5.0.0
+  firebase_auth: ^7.0.0
+  cloud_firestore: ^7.0.0
 
   # Supabase
   supabase_flutter: ^2.10.3
@@ -34,7 +35,7 @@ dependencies:
   cupertino_icons: ^2.0.0
   google_fonts: ^9.0.0
   image_picker: ^1.0.7
-  popover: ^0.4.0
+  popover: ^0.5.1
   salomon_bottom_bar: ^3.3.2
   staggered_grid_view_flutter: ^0.0.4
   uuid: ^4.5.1
@@ -55,16 +56,26 @@ dev_dependencies:
   mocktail: ^1.0.4
   build_runner: ^2.4.8
   mocktail_image_network: ^1.0.2
+  flutter_native_splash: ^2.3.1
   flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/
     - assets/icons/
+    - assets/animations/
 
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/icons/splash_logo.png"
+  android: true
+  ios: true
+  web: true
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/icons/Logo.jpg"
+  image_path: "assets/icons/splash_logo.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/icons/splash_logo.png"
+
