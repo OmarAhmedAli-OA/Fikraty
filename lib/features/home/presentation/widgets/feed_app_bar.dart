@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/app_logo.dart';
+import '../../../auth/domain/entities/auth.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../auth/presentation/bloc/auth_event.dart';
 import '../pages/messages_page.dart';
 import '../pages/notifications_page.dart';
 
@@ -9,8 +14,39 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(60);
 
+  void _confirmSignOut(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Sign Out'),
+        content: const Text('Are you sure you want to sign out from Fikraty?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              context.read<AuthBloc>().add(const AuthSignOutRequested());
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.error,
+              foregroundColor: AppColors.white,
+            ),
+            child: const Text('Sign Out'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = context.select<AuthBloc, AuthUser?>((b) => b.state.user);
+    final isInvestor = user?.role == UserRole.investor;
+    final roleLabel = isInvestor ? 'Investor' : 'Entrepreneur';
+
     return Container(
       color: AppColors.white,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -18,27 +54,8 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
         bottom: false,
         child: Row(
           children: [
-            // Logo container
-            Container(
-              width: 38,
-              height: 38,
-              decoration: BoxDecoration(
-                color: AppColors.purpleGlow,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.purpleGlow.withValues(alpha: 0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.bolt_rounded,
-                color: AppColors.white,
-                size: 24,
-              ),
-            ),
+            // Brand Logo matching splash & auth
+            const AppLogo(size: 36),
             const SizedBox(width: 10),
             // Title
             const Text(
@@ -51,19 +68,19 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             const SizedBox(width: 8),
-            // "Entrepreneur" pill badge
+            // Dynamic Role Pill Badge
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: AppColors.purpleLight,
+                color: isInvestor ? const Color(0xFFE0E7FF) : AppColors.purpleLight,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Text(
-                'Entrepreneur',
+              child: Text(
+                roleLabel,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.primaryPurple,
+                  color: isInvestor ? const Color(0xFF4338CA) : AppColors.primaryPurple,
                 ),
               ),
             ),
@@ -84,7 +101,7 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                   icon: const Icon(
                     Icons.notifications_outlined,
                     color: AppColors.ink,
-                    size: 26,
+                    size: 24,
                   ),
                   tooltip: 'Notifications',
                 ),
@@ -115,9 +132,19 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
               icon: const Icon(
                 Icons.chat_bubble_outline_rounded,
                 color: AppColors.ink,
-                size: 23,
+                size: 22,
               ),
               tooltip: 'Messages',
+            ),
+            // Quick Sign Out action
+            IconButton(
+              onPressed: () => _confirmSignOut(context),
+              icon: const Icon(
+                Icons.logout_rounded,
+                color: AppColors.textMuted,
+                size: 22,
+              ),
+              tooltip: 'Sign Out',
             ),
           ],
         ),

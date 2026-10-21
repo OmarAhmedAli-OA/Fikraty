@@ -302,15 +302,20 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                           controller: textController,
                           autofocus: true,
                           textAlign: TextAlign.center,
+                          cursorColor: Colors.white,
                           style: TextStyle(
                             color: textColor,
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),
                           decoration: const InputDecoration(
+                            filled: false,
+                            fillColor: Colors.transparent,
                             hintText: 'Type text here...',
-                            hintStyle: TextStyle(color: Colors.white54),
+                            hintStyle: TextStyle(color: Colors.white70),
                             border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
                           ),
                         ),
                       ),
@@ -627,9 +632,20 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
     // Otherwise show the Live Camera Capture View!
     final hasMedia = _capturedMediaPath != null || _isCanvasMode;
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: hasMedia ? _buildEditorView() : _buildCameraCaptureView(),
+    return Theme(
+      data: Theme.of(context).copyWith(
+        inputDecorationTheme: const InputDecorationTheme(
+          filled: false,
+          fillColor: Colors.transparent,
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: hasMedia ? _buildEditorView() : _buildCameraCaptureView(),
+      ),
     );
   }
 
@@ -1079,20 +1095,25 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                 children: [
                   // Caption input
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.5),
+                      color: Colors.black.withValues(alpha: 0.65),
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: Colors.white24),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 1.2),
                     ),
                     child: TextField(
                       controller: _captionController,
                       style: const TextStyle(color: Colors.white, fontSize: 14),
+                      cursorColor: Colors.white,
                       decoration: const InputDecoration(
+                        filled: false,
+                        fillColor: Colors.transparent,
                         hintText: 'Add a caption to your story...',
                         hintStyle:
-                            TextStyle(color: Colors.white54, fontSize: 13.5),
+                            TextStyle(color: Colors.white70, fontSize: 13.5),
                         border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
                       ),
                     ),
                   ),

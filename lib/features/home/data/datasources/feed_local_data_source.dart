@@ -157,6 +157,27 @@ class FeedLocalDataSourceImpl implements FeedLocalDataSource {
 
     // Posts matching Figma screenshots 1, 3, 4
     _posts.addAll([
+      PostModel(
+        id: 9991,
+        authorUserId: 999,
+        authorName: 'You (Founder)',
+        authorRole: 'Founder @ Fikraty Startup',
+        authorAvatar:
+            'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+        isVerified: true,
+        postType: PostType.launch,
+        content:
+            'Excited to launch our journey on Fikraty! We are building the next-gen platform for tech startups in the MENA region. Stay tuned for our upcoming investor pitch deck! 🚀',
+        tags: const ['#Startup', '#Launch', '#Tech', '#MVP'],
+        media: const [],
+        likeCount: 18,
+        commentCount: 4,
+        shareCount: 2,
+        isLiked: false,
+        isBookmarked: false,
+        createdAt: DateTime.now().subtract(const Duration(hours: 3)),
+        comments: const [],
+      ),
       // Post 1: Sarah Al-Mansouri (Funding)
       PostModel(
         id: 1,
@@ -422,8 +443,10 @@ class FeedLocalDataSourceImpl implements FeedLocalDataSource {
     if (post.poll == null) throw Exception('No poll found on post');
 
     final poll = post.poll!;
-    if (poll.userVotedOptionId != null) {
-      // Already voted
+    final previousVotedId = poll.userVotedOptionId;
+
+    if (previousVotedId == pollOptionId) {
+      // Tapped the same option again: keep selection
       return post;
     }
 
@@ -431,11 +454,14 @@ class FeedLocalDataSourceImpl implements FeedLocalDataSource {
       if (opt.id == pollOptionId) {
         return opt.copyWith(voteCount: opt.voteCount + 1);
       }
+      if (previousVotedId != null && opt.id == previousVotedId) {
+        return opt.copyWith(voteCount: (opt.voteCount - 1).clamp(0, 999999));
+      }
       return opt;
     }).toList();
 
     final updatedPoll = poll.copyWith(
-      totalVotes: poll.totalVotes + 1,
+      totalVotes: previousVotedId != null ? poll.totalVotes : poll.totalVotes + 1,
       options: updatedOptions,
       userVotedOptionId: pollOptionId,
     );

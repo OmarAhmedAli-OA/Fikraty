@@ -13,10 +13,13 @@ class MessagesPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.ink),
-          onPressed: () => Navigator.pop(context),
-        ),
+        automaticallyImplyLeading: false,
+        leading: Navigator.canPop(context)
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back, color: AppColors.ink),
+                onPressed: () => Navigator.pop(context),
+              )
+            : null,
         title: const Text(
           'Messages',
           style: TextStyle(
@@ -139,7 +142,7 @@ class MessagesPage extends StatelessWidget {
                                     item.lastMessage.startsWith('Replied to story')
                                         ? FontWeight.w600
                                         : FontWeight.normal,
-                              ),
+                                ),
                             ),
                           ],
                         ),

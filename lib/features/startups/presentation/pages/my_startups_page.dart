@@ -1,3 +1,12 @@
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../home/domain/entities/post.dart';
+import '../../../home/presentation/bloc/feed_bloc.dart';
+import '../../../home/presentation/bloc/feed_event.dart';
+import '../../../home/presentation/bloc/feed_state.dart';
+import '../../../home/presentation/pages/post_detail_page.dart';
+import '../../../home/presentation/widgets/post_card.dart';
+import '../../../home/presentation/widgets/quick_create_box.dart';
+import '../widgets/share_startup_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,7 +78,7 @@ class _MyStartupsView extends StatelessWidget {
           ],
           body: TabBarView(
             children: [
-              _buildPostsPlaceholder(),
+              _buildPostsTab(context),
               _buildStartupTab(context),
               _buildAnalyticsPlaceholder(),
             ],
@@ -92,24 +101,20 @@ class _MyStartupsView extends StatelessWidget {
               width: double.infinity,
               color: AppColors.primary,
               padding: const EdgeInsets.only(top: 36, right: 16, left: 16),
-              alignment: Alignment.topRight,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  if (Navigator.canPop(context))
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: AppColors.white),
+                      onPressed: () => Navigator.pop(context),
+                      tooltip: 'Back',
+                    ),
+                  const Spacer(),
                   OutlinedButton.icon(
                     onPressed: () {
                       final state = context.read<StartupsBloc>().state;
                       final startup = state is StartupsLoadedState ? state.startup : null;
-                      final shareText = startup != null
-                          ? '${startup.name} on Fikraty: ${startup.tagline}'
-                          : 'Explore startup investment profiles on Fikraty!';
-                      Clipboard.setData(ClipboardData(text: shareText));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Profile details copied to clipboard!'),
-                          behavior: SnackBarBehavior.floating,
-                        ),
-                      );
+                      ShareStartupModal.show(context, startup);
                     },
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.white,
@@ -638,32 +643,118 @@ class _MyStartupsView extends StatelessWidget {
     );
   }
 
-  Widget _buildPostsPlaceholder() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.feed_outlined, size: 56, color: AppColors.textMuted),
-            const SizedBox(height: 16),
-            const Text(
-              'No Posts Yet',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.darkText,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Share startup milestones, launches, and founder stories with the community.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
-            ),
-          ],
-        ),
-      ),
+  Widget _buildPostsTab(BuildContext context) {
+    return BlocBuilder<FeedBloc, FeedState>(
+      builder: (context, feedState) {
+        final allPosts = feedState is FeedLoadedState ? feedState.posts : <Post>[];
+
+        // Filter: only show posts authored by the current user or their startup
+        final authState = context.watch<AuthBloc>().state;
+        final startupsState = context.watch<StartupsBloc>().state;
+        final currentUserName = authState.user?.profile.fullName.trim().toLowerCase();
+        final currentStartupName = (startupsState is StartupsLoadedState ? startupsState.startup?.name : null)?.trim().toLowerCase();
+
+        final posts = allPosts.where((post) {
+          final authorLower = post.authorName.trim().toLowerCase();
+          // Current user mock author ID
+          if (post.authorUserId == 999) return true;
+          // Standard placeholder name or role
+          if (authorLower.contains('you')) return true;
+          if (authorLower.contains('founder') && post.authorRole.toLowerCase().contains('fikraty')) return true;
+          // Match logged-in user profile name
+          if (currentUserName != null && currentUserName.isNotEmpty && authorLower == currentUserName) {
+            return true;
+          }
+          // Match current startup name
+          if (currentStartupName != null && currentStartupName.isNotEmpty && authorLower == currentStartupName) {
+            return true;
+          }
+          return false;
+        }).toList();
+
+        return RefreshIndicator(
+          color: AppColors.primary,
+          onRefresh: () async {
+            context.read<FeedBloc>().add(const LoadFeedEvent(isRefresh: true));
+          },
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            children: [
+              // Quick create box to post directly from startup profile
+              const QuickCreateBox(),
+              const SizedBox(height: 12),
+
+              if (posts.isEmpty) ...[
+                const SizedBox(height: 48),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.feed_outlined, size: 56, color: AppColors.textMuted),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'No Posts Yet',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.darkText,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Share startup milestones, launches, and founder stories with the community.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ] else ...[
+                ...posts.map((post) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => BlocProvider.value(
+                              value: context.read<FeedBloc>(),
+                              child: PostDetailPage(post: post),
+                            ),
+                          ),
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(16),
+                      child: PostCard(
+                        post: post,
+                        onLike: () {
+                          context.read<FeedBloc>().add(ToggleLikeEvent(post.id));
+                        },
+                        onBookmark: () {
+                          context.read<FeedBloc>().add(ToggleBookmarkEvent(post.id));
+                        },
+                        onVote: (optionId) {
+                          context.read<FeedBloc>().add(
+                                VotePollEvent(
+                                  postId: post.id,
+                                  pollOptionId: optionId,
+                                ),
+                              );
+                        },
+                      ),
+                    ),
+                  );
+                }),
+              ],
+              const SizedBox(height: 32),
+            ],
+          ),
+        );
+      },
     );
   }
 

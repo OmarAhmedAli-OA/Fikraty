@@ -808,54 +808,70 @@ class _StoryViewerPageState extends State<StoryViewerPage>
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.15),
+                                    color: Colors.black.withValues(alpha: 0.65),
                                     borderRadius: BorderRadius.circular(24),
                                     border: Border.all(
                                       color: _isTyping
                                           ? AppColors.primaryPurple
-                                          : Colors.white24,
-                                      width: 1.5,
+                                          : Colors.white.withValues(alpha: 0.3),
+                                      width: 1.2,
                                     ),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextField(
-                                          controller: _replyController,
-                                          focusNode: _replyFocusNode,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                          ),
-                                          decoration: InputDecoration(
-                                            hintText:
-                                                'Reply to ${currentStory.name}...',
-                                            hintStyle: const TextStyle(
-                                              color: Colors.white54,
-                                              fontSize: 13.5,
-                                            ),
-                                            border: InputBorder.none,
-                                            isDense: true,
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 12),
-                                          ),
-                                          onSubmitted: (_) => _sendReply(),
-                                        ),
+                                  child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                      inputDecorationTheme: const InputDecorationTheme(
+                                        filled: false,
+                                        fillColor: Colors.transparent,
+                                        border: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
                                       ),
-                                      if (_replyController.text.trim().isNotEmpty)
-                                        GestureDetector(
-                                          onTap: () => _sendReply(),
-                                          child: const Padding(
-                                            padding: EdgeInsets.only(left: 8),
-                                            child: Icon(
-                                              Icons.send_rounded,
-                                              color: AppColors.purpleGlow,
-                                              size: 20,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: TextField(
+                                            controller: _replyController,
+                                            focusNode: _replyFocusNode,
+                                            cursorColor: Colors.white,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
                                             ),
+                                            decoration: InputDecoration(
+                                              filled: false,
+                                              fillColor: Colors.transparent,
+                                              hintText:
+                                                  'Reply to ...',
+                                              hintStyle: const TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: 13.5,
+                                              ),
+                                              border: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              focusedBorder: InputBorder.none,
+                                              isDense: true,
+                                              contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 12),
+                                            ),
+                                            onSubmitted: (_) => _sendReply(),
                                           ),
                                         ),
-                                    ],
+                                        if (_replyController.text.trim().isNotEmpty)
+                                          GestureDetector(
+                                            onTap: () => _sendReply(),
+                                            child: const Padding(
+                                              padding: EdgeInsets.only(left: 8),
+                                              child: Icon(
+                                                Icons.send_rounded,
+                                                color: AppColors.purpleGlow,
+                                                size: 20,
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

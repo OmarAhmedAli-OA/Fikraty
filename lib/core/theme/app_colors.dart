@@ -69,10 +69,6 @@ abstract final class AppColors {
   static const Color badgeReviewBg = Color(0xFFEDE9FE);
   static const Color badgeReviewText = Color(0xFF6D28D9);
 
-  // Additional Neutral & Helpers
-  static const Color borderLight = Color(0xFFF1F2F6);
-  static const Color textSecondary = Color(0xFF6B7280); // Secondary Body Text
-  static const Color textMuted = Color(0xFF9CA3AF); // Muted / Placeholder Text
 
   // Social
   static const Color googleRed = Color(0xFFEA4335);

@@ -58,7 +58,11 @@ class PollWidget extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: InkWell(
-                onTap: hasVoted ? null : () => onVote(option.id),
+                onTap: () {
+                  if (poll.userVotedOptionId != option.id) {
+                    onVote(option.id);
+                  }
+                },
                 borderRadius: BorderRadius.circular(8),
                 child: Container(
                   height: 44,
@@ -149,15 +153,14 @@ class PollWidget extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              if (!hasVoted)
-                const Text(
-                  'Tap an option to vote',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.primaryPurple,
-                    fontWeight: FontWeight.w600,
-                  ),
+              Text(
+                hasVoted ? 'Tap option to change vote' : 'Tap an option to vote',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.primaryPurple,
+                  fontWeight: FontWeight.w600,
                 ),
+              ),
             ],
           ),
         ],

@@ -78,8 +78,60 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
+  UserRole? _activeFormRole;
+
+  void _resetAllFormFields() {
+    _formKey.currentState?.reset();
+    _fullNameController.clear();
+    _emailController.clear();
+    _phoneController.clear();
+    _locationController.clear();
+    _linkedInController.clear();
+    _passwordController.clear();
+    _professionalTitleController.clear();
+    _bioController.clear();
+
+    _selectedExpertise
+      ..clear()
+      ..addAll(['Product', 'Engineering']);
+
+    _selectedSectors
+      ..clear()
+      ..addAll(['FinTech', 'AI / ML']);
+
+    _selectedCountries
+      ..clear()
+      ..addAll(['Egypt', 'UAE', 'Saudi Arabia']);
+
+    _selectedStages
+      ..clear()
+      ..addAll(['Seed', 'Series A']);
+
+    _selectedTicketSize = r'$50K – $250K';
+    _selectedCurrency = Validators.defaultCurrencyOptions.first;
+    _selectedRiskPreference = 'Medium';
+
+    _idDocumentName = null;
+    _idDocumentSizeBytes = null;
+    _showPassword = false;
+    _localError = null;
+  }
+
+  void _onRoleSelected(UserRole role) {
+    if (_selectedRole != role) {
+      setState(() {
+        _selectedRole = role;
+        _resetAllFormFields();
+      });
+    }
+  }
+
   void _onContinueFromRole() {
     setState(() {
+      if (_activeFormRole != null && _activeFormRole != _selectedRole) {
+        _resetAllFormFields();
+      }
+      _activeFormRole = _selectedRole;
       _currentStep = _SignUpStep.details;
       _localError = null;
     });
@@ -460,7 +512,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final isSelected = _selectedRole == role;
 
     return InkWell(
-      onTap: () => setState(() => _selectedRole = role),
+      onTap: () => _onRoleSelected(role),
       borderRadius: BorderRadius.circular(20),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
@@ -1136,12 +1188,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
             color: isMet ? AppColors.success : AppColors.tertiaryText,
           ),
           const SizedBox(width: 6),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: isMet ? FontWeight.w600 : FontWeight.w400,
-              color: isMet ? AppColors.darkText : AppColors.tertiaryText,
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: isMet ? FontWeight.w600 : FontWeight.w400,
+                color: isMet ? AppColors.darkText : AppColors.tertiaryText,
+              ),
             ),
           ),
         ],

@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
@@ -138,10 +140,21 @@ class _CameraCapturePageState extends State<CameraCapturePage> {
 
     try {
       final XFile photo = await _controller!.takePicture();
+      String finalPath = photo.path;
+      try {
+        final appDir = await getApplicationDocumentsDirectory();
+        final mediaDir = Directory('${appDir.path}/fikraty_media');
+        if (!await mediaDir.exists()) {
+          await mediaDir.create(recursive: true);
+        }
+        final persistentPath = '${mediaDir.path}/IMG_${DateTime.now().millisecondsSinceEpoch}.jpg';
+        await File(photo.path).copy(persistentPath);
+        finalPath = persistentPath;
+      } catch (_) {}
       if (!mounted) return;
       Navigator.pop(
         context,
-        CameraCaptureResult(path: photo.path, isVideo: false),
+        CameraCaptureResult(path: finalPath, isVideo: false),
       );
     } catch (e) {
       if (!mounted) return;
@@ -161,11 +174,22 @@ class _CameraCapturePageState extends State<CameraCapturePage> {
       try {
         final XFile video = await _controller!.stopVideoRecording();
         final durationStr = _formatDuration(_recordSeconds);
+        String finalPath = video.path;
+        try {
+          final appDir = await getApplicationDocumentsDirectory();
+          final mediaDir = Directory('${appDir.path}/fikraty_media');
+          if (!await mediaDir.exists()) {
+            await mediaDir.create(recursive: true);
+          }
+          final persistentPath = '${mediaDir.path}/VID_${DateTime.now().millisecondsSinceEpoch}.mp4';
+          await File(video.path).copy(persistentPath);
+          finalPath = persistentPath;
+        } catch (_) {}
         if (!mounted) return;
         Navigator.pop(
           context,
           CameraCaptureResult(
-            path: video.path,
+            path: finalPath,
             isVideo: true,
             duration: durationStr,
           ),

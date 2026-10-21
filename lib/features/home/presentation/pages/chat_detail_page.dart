@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
+import 'package:video_player/video_player.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../data/services/chat_service.dart';
 import '../../data/services/sound_generator.dart';
@@ -81,6 +82,36 @@ class _ChatDetailPageState extends State<ChatDetailPage>
   }
 
   void _initAudioListeners() {
+    // Configure speakerphone audio context so voice notes play loud & clear through speakers
+    try {
+      AudioPlayer.global.setAudioContext(
+        AudioContext(
+          android: const AudioContextAndroid(
+            isSpeakerphoneOn: true,
+            stayAwake: true,
+            contentType: AndroidContentType.music,
+            usageType: AndroidUsageType.media,
+            audioFocus: AndroidAudioFocus.gain,
+          ),
+          iOS: AudioContextIOS(
+            category: AVAudioSessionCategory.playAndRecord,
+            options: const {
+              AVAudioSessionOptions.defaultToSpeaker,
+            },
+          ),
+        ),
+      );
+    } catch (_) {}
+
+    _audioPlayer.onDurationChanged.listen((duration) {
+      if (!mounted || _currentlyPlayingId == null) return;
+      if (duration.inMilliseconds > 0) {
+        setState(() {
+          _currentDurationMs = duration.inMilliseconds;
+        });
+      }
+    });
+
     _audioPlayer.onPlayerStateChanged.listen((state) {
       if (!mounted) return;
       if (state == PlayerState.completed || state == PlayerState.stopped) {
@@ -2104,140 +2135,231 @@ class _ChatDetailPageState extends State<ChatDetailPage>
     );
   }
 
-  Widget _buildVideoBubble(ChatMessage msg, bool isMe) {
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 270),
-      decoration: BoxDecoration(
-        color: isMe ? AppColors.primaryPurple : AppColors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: isMe ? null : Border.all(color: const Color(0xFFE2E8F0)),
+  // --- Video & Video Note Interactive Player Modals ---
+  void _playVideoModal(ChatMessage msg) {
+    showDialog(
+      context: context,
+      builder: (ctx) => InteractiveVideoPlayerDialog(
+        message: msg,
+        isVideoNote: false,
       ),
-      padding: const EdgeInsets.all(4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                SizedBox(
-                  height: 180,
-                  width: 260,
-                  child: _buildMediaImage(msg.mediaUrl ?? ''),
-                ),
-                Container(
-                  height: 180,
-                  width: 260,
-                  color: Colors.black.withValues(alpha: 0.3),
-                ),
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.6),
-                    shape: BoxShape.circle,
+    );
+  }
+
+  void _playVideoNoteModal(ChatMessage msg) {
+    showDialog(
+      context: context,
+      builder: (ctx) => InteractiveVideoPlayerDialog(
+        message: msg,
+        isVideoNote: true,
+      ),
+    );
+  }
+
+
+  Widget _buildVideoBubble(ChatMessage msg, bool isMe) {
+    return GestureDetector(
+      onTap: () => _playVideoModal(msg),
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 270),
+        decoration: BoxDecoration(
+          color: isMe ? AppColors.primaryPurple : AppColors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: isMe ? null : Border.all(color: const Color(0xFFE2E8F0)),
+        ),
+        padding: const EdgeInsets.all(4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    height: 180,
+                    width: 260,
+                    child: ChatVideoBubblePreview(
+                      videoUrl: msg.mediaUrl ?? '',
+                      isCircular: false,
+                      width: 260,
+                      height: 180,
+                      fallback: _buildMediaImage(msg.mediaUrl ?? ''),
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.play_arrow_rounded,
-                    color: Colors.white,
-                    size: 32,
+                  Container(
+                    height: 180,
+                    width: 260,
+                    color: Colors.black.withValues(alpha: 0.25),
                   ),
-                ),
-                Positioned(
-                  bottom: 8,
-                  right: 8,
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  Container(
+                    width: 52,
+                    height: 52,
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.6),
-                      borderRadius: BorderRadius.circular(6),
+                      color: Colors.black.withValues(alpha: 0.65),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white70, width: 2),
                     ),
-                    child: Text(
-                      msg.duration ?? '0:35',
-                      style:
-                          const TextStyle(color: Colors.white, fontSize: 11),
+                    child: const Icon(
+                      Icons.play_arrow_rounded,
+                      color: Colors.white,
+                      size: 34,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          if (msg.text.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                msg.text,
-                style: TextStyle(
-                  color: isMe ? Colors.white : AppColors.ink,
-                  fontSize: 13,
-                ),
+                  Positioned(
+                    bottom: 8,
+                    right: 8,
+                    child: Container(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.7),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.videocam_rounded, size: 12, color: Colors.white),
+                          const SizedBox(width: 4),
+                          Text(
+                            msg.duration ?? '0:35',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-        ],
+            if (msg.text.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  msg.text,
+                  style: TextStyle(
+                    color: isMe ? Colors.white : AppColors.ink,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildVideoNoteBubble(ChatMessage msg, bool isMe) {
-    return Container(
-      width: 170,
-      height: 170,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: isMe ? AppColors.primaryPurple : const Color(0xFF6366F1),
-          width: 3,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
+    return GestureDetector(
+      onTap: () => _playVideoNoteModal(msg),
+      child: Container(
+        width: 170,
+        height: 170,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: const LinearGradient(
+            colors: [Color(0xFF4F46E5), Color(0xFF7C3AED)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-        ],
-      ),
-      child: ClipOval(
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            _buildMediaImage(msg.mediaUrl ?? ''),
-            Container(
-              color: Colors.black.withValues(alpha: 0.25),
+          border: Border.all(
+            color: isMe ? const Color(0xFF818CF8) : const Color(0xFF6366F1),
+            width: 3.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF4F46E5).withValues(alpha: 0.35),
+              blurRadius: 14,
+              offset: const Offset(0, 4),
             ),
-            const Center(
-              child: Icon(
-                Icons.play_arrow_rounded,
-                color: Colors.white,
-                size: 44,
-              ),
-            ),
-            Positioned(
-              bottom: 12,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.65),
-                    borderRadius: BorderRadius.circular(10),
+          ],
+        ),
+        child: ClipOval(
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              ChatVideoBubblePreview(
+                videoUrl: msg.mediaUrl ?? '',
+                isCircular: true,
+                width: 170,
+                height: 170,
+                fallback: Container(
+                  decoration: const BoxDecoration(
+                    gradient: RadialGradient(
+                      colors: [Color(0xFF6366F1), Color(0xFF1E1B4B)],
+                      radius: 0.85,
+                    ),
                   ),
-                  child: Text(
-                    msg.duration ?? '0:05',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
+                  child: Center(
+                    child: Icon(
+                      Icons.videocam_rounded,
+                      size: 64,
+                      color: Colors.white.withValues(alpha: 0.3),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+              Container(
+                color: Colors.black.withValues(alpha: 0.2),
+              ),
+              Center(
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.95),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.25),
+                        blurRadius: 10,
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.play_arrow_rounded,
+                    color: Color(0xFF4F46E5),
+                    size: 32,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 12,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.75),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.circle, size: 8, color: Color(0xFFEF4444)),
+                        const SizedBox(width: 4),
+                        Text(
+                          msg.duration ?? '0:05',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -2422,36 +2544,63 @@ class _ChatDetailPageState extends State<ChatDetailPage>
       return Image.network(
         pathOrUrl,
         fit: BoxFit.cover,
-        errorBuilder: (_, _, _) => Container(
-          color: const Color(0xFF1E293B),
-          child: const Center(
-            child: Icon(Icons.videocam_rounded, color: Colors.white70, size: 40),
-          ),
-        ),
+        errorBuilder: (_, _, _) => _buildMediaFallback(),
       );
     } else {
-      if (!kIsWeb) {
+      if (!kIsWeb && pathOrUrl.isNotEmpty) {
         final f = File(pathOrUrl);
-        if (f.existsSync()) {
+        final lower = pathOrUrl.toLowerCase();
+        final isVideo = lower.endsWith('.mp4') || lower.endsWith('.mov') || lower.endsWith('.avi');
+        if (f.existsSync() && !isVideo) {
           return Image.file(
             f,
             fit: BoxFit.cover,
-            errorBuilder: (_, _, _) => Container(
-              color: const Color(0xFF1E293B),
-              child: const Center(
-                child: Icon(Icons.videocam_rounded, color: Colors.white70, size: 40),
-              ),
-            ),
+            errorBuilder: (_, _, _) => _buildMediaFallback(),
           );
         }
       }
-      return Container(
-        color: const Color(0xFF1E293B),
-        child: const Center(
-          child: Icon(Icons.videocam_rounded, color: Colors.white70, size: 40),
-        ),
-      );
+      return _buildMediaFallback();
     }
+  }
+
+  Widget _buildMediaFallback() {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF312E81), Color(0xFF1E1B4B), Color(0xFF0F172A)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.15),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.smart_display_rounded,
+                color: Colors.white,
+                size: 34,
+              ),
+            ),
+            const SizedBox(height: 6),
+            const Text(
+              'Video Attachment',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _showFullScreenImage(String url) {
@@ -2602,9 +2751,20 @@ class _VideoNoteRecorderModalState extends State<VideoNoteRecorderModal> {
       final m = _seconds ~/ 60;
       final s = _seconds % 60;
       final durationStr = '$m:${s.toString().padLeft(2, '0')}';
+      String finalPath = file.path;
+      try {
+        final appDir = await getApplicationDocumentsDirectory();
+        final mediaDir = Directory('${appDir.path}/fikraty_media');
+        if (!await mediaDir.exists()) {
+          await mediaDir.create(recursive: true);
+        }
+        final persistentPath = '${mediaDir.path}/VNOTE_${DateTime.now().millisecondsSinceEpoch}.mp4';
+        await File(file.path).copy(persistentPath);
+        finalPath = persistentPath;
+      } catch (_) {}
       if (!mounted) return;
       Navigator.pop(context);
-      widget.onRecorded(file.path, durationStr);
+      widget.onRecorded(finalPath, durationStr);
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -2811,5 +2971,634 @@ class _VideoNoteRecorderModalState extends State<VideoNoteRecorderModal> {
     }
 
     return CameraPreview(_controller!);
+  }
+}
+
+class ChatVideoBubblePreview extends StatefulWidget {
+  final String videoUrl;
+  final bool isCircular;
+  final double width;
+  final double height;
+  final Widget fallback;
+
+  const ChatVideoBubblePreview({
+    super.key,
+    required this.videoUrl,
+    required this.isCircular,
+    required this.width,
+    required this.height,
+    required this.fallback,
+  });
+
+  @override
+  State<ChatVideoBubblePreview> createState() => _ChatVideoBubblePreviewState();
+}
+
+class _ChatVideoBubblePreviewState extends State<ChatVideoBubblePreview> {
+  VideoPlayerController? _controller;
+  bool _isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initPreview();
+  }
+
+  @override
+  void didUpdateWidget(covariant ChatVideoBubblePreview oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.videoUrl != widget.videoUrl) {
+      _controller?.dispose();
+      _controller = null;
+      _isInitialized = false;
+      _initPreview();
+    }
+  }
+
+  Future<void> _initPreview() async {
+    final path = widget.videoUrl.trim();
+    if (path.isEmpty) return;
+
+    try {
+      if (path.startsWith('http://') ||
+          path.startsWith('https://') ||
+          path.startsWith('blob:')) {
+        _controller = VideoPlayerController.networkUrl(Uri.parse(path));
+      } else {
+        File? fileToUse;
+        final file = File(path);
+        if (await file.exists()) {
+          fileToUse = file;
+        } else {
+          final baseName = path.split('/').last.split(r'\').last;
+          try {
+            final appDir = await getApplicationDocumentsDirectory();
+            final candidate1 = File('${appDir.path}/fikraty_media/$baseName');
+            final candidate2 = File('${appDir.path}/chat_videos/$baseName');
+            if (await candidate1.exists()) {
+              fileToUse = candidate1;
+            } else if (await candidate2.exists()) {
+              fileToUse = candidate2;
+            }
+          } catch (_) {}
+        }
+        if (fileToUse != null) {
+          _controller = VideoPlayerController.file(fileToUse);
+        } else {
+          return;
+        }
+      }
+
+      await _controller!.initialize();
+      await _controller!.setVolume(0.0);
+      await _controller!.pause();
+      if (mounted) {
+        setState(() {
+          _isInitialized = true;
+        });
+      }
+    } catch (_) {
+      // Gracefully fallback if preview fails to decode
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isInitialized && _controller != null) {
+      final videoContent = SizedBox(
+        width: widget.width,
+        height: widget.height,
+        child: FittedBox(
+          fit: BoxFit.cover,
+          clipBehavior: Clip.hardEdge,
+          child: SizedBox(
+            width: _controller!.value.size.width > 0
+                ? _controller!.value.size.width
+                : widget.width,
+            height: _controller!.value.size.height > 0
+                ? _controller!.value.size.height
+                : widget.height,
+            child: VideoPlayer(_controller!),
+          ),
+        ),
+      );
+
+      if (widget.isCircular) {
+        return ClipOval(child: videoContent);
+      }
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: videoContent,
+      );
+    }
+
+    return widget.fallback;
+  }
+}
+
+class InteractiveVideoPlayerDialog extends StatefulWidget {
+  final ChatMessage message;
+  final bool isVideoNote;
+
+  const InteractiveVideoPlayerDialog({
+    super.key,
+    required this.message,
+    required this.isVideoNote,
+  });
+
+  @override
+  State<InteractiveVideoPlayerDialog> createState() =>
+      _InteractiveVideoPlayerDialogState();
+}
+
+class _InteractiveVideoPlayerDialogState
+    extends State<InteractiveVideoPlayerDialog> {
+  VideoPlayerController? _controller;
+  bool _isInitialized = false;
+  bool _isPlaying = false;
+  bool _isMuted = false;
+  Duration _position = Duration.zero;
+  Duration _duration = Duration.zero;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _initVideo();
+  }
+
+  Future<void> _initVideo() async {
+    final path = widget.message.mediaUrl?.trim() ?? '';
+    if (path.isEmpty) {
+      setState(() {
+        _errorMessage = 'No video media found';
+      });
+      return;
+    }
+
+    try {
+      if (path.startsWith('http://') ||
+          path.startsWith('https://') ||
+          path.startsWith('blob:')) {
+        _controller = VideoPlayerController.networkUrl(Uri.parse(path));
+      } else {
+        File? fileToUse;
+        final file = File(path);
+        if (await file.exists()) {
+          fileToUse = file;
+        } else {
+          final baseName = path.split('/').last.split(r'\').last;
+          try {
+            final appDir = await getApplicationDocumentsDirectory();
+            final candidate1 = File('${appDir.path}/fikraty_media/$baseName');
+            final candidate2 = File('${appDir.path}/chat_videos/$baseName');
+            if (await candidate1.exists()) {
+              fileToUse = candidate1;
+            } else if (await candidate2.exists()) {
+              fileToUse = candidate2;
+            }
+          } catch (_) {}
+        }
+        if (fileToUse != null) {
+          _controller = VideoPlayerController.file(fileToUse);
+        } else {
+          final baseName = path.split('/').last.split(r'\').last;
+          setState(() {
+            _errorMessage = 'Recorded Video Clip (${widget.message.duration ?? "0:03"})\nFile saved: $baseName';
+          });
+          return;
+        }
+      }
+
+      await _controller!.initialize();
+      _controller!.addListener(_onPlayerUpdate);
+      await _controller!.play();
+      if (mounted) {
+        setState(() {
+          _isInitialized = true;
+          _isPlaying = true;
+          _duration = _controller!.value.duration;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        String msg = 'Could not load video player';
+        if (e is PlatformException && (e.code == 'channel-error' || e.message?.contains('connection on channel') == true)) {
+          msg = 'Video recorded & saved!\n\nTo activate native hardware video rendering, please restart the app with a full rebuild (flutter run).';
+        }
+        setState(() {
+          _errorMessage = msg;
+        });
+      }
+    }
+  }
+
+  void _onPlayerUpdate() {
+    if (!mounted || _controller == null) return;
+    final value = _controller!.value;
+    setState(() {
+      _position = value.position;
+      _duration = value.duration;
+      _isPlaying = value.isPlaying;
+    });
+  }
+
+  Future<void> _togglePlayPause() async {
+    if (_controller == null || !_isInitialized) return;
+    if (_controller!.value.isPlaying) {
+      await _controller!.pause();
+    } else {
+      if (_controller!.value.position >= _controller!.value.duration) {
+        await _controller!.seekTo(Duration.zero);
+      }
+      await _controller!.play();
+    }
+  }
+
+  Future<void> _replay() async {
+    if (_controller == null || !_isInitialized) return;
+    await _controller!.seekTo(Duration.zero);
+    await _controller!.play();
+  }
+
+  Future<void> _toggleMute() async {
+    if (_controller == null || !_isInitialized) return;
+    setState(() {
+      _isMuted = !_isMuted;
+    });
+    await _controller!.setVolume(_isMuted ? 0.0 : 1.0);
+  }
+
+  @override
+  void dispose() {
+    _controller?.removeListener(_onPlayerUpdate);
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  String _formatDuration(Duration d) {
+    final m = d.inMinutes;
+    final s = d.inSeconds % 60;
+    return '$m:${s.toString().padLeft(2, "0")}';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      child: widget.isVideoNote ? _buildVideoNoteView() : _buildStandardVideoView(),
+    );
+  }
+
+  Widget _buildVideoNoteView() {
+    final progress = _duration.inMilliseconds > 0
+        ? (_position.inMilliseconds / _duration.inMilliseconds).clamp(0.0, 1.0)
+        : 0.0;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            // Circular progress indicator track around video note
+            SizedBox(
+              width: 270,
+              height: 270,
+              child: CircularProgressIndicator(
+                value: progress,
+                strokeWidth: 4,
+                valueColor:
+                    const AlwaysStoppedAnimation<Color>(Color(0xFF818CF8)),
+                backgroundColor: const Color(0xFF312E81),
+              ),
+            ),
+            // The circular video
+            GestureDetector(
+              onTap: _togglePlayPause,
+              child: Container(
+                width: 250,
+                height: 250,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFF0F172A),
+                  border: Border.all(color: const Color(0xFF6366F1), width: 3),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF4F46E5).withValues(alpha: 0.45),
+                      blurRadius: 24,
+                    ),
+                  ],
+                ),
+                child: ClipOval(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      if (_isInitialized && _controller != null)
+                        FittedBox(
+                          fit: BoxFit.cover,
+                          clipBehavior: Clip.hardEdge,
+                          child: SizedBox(
+                            width: _controller!.value.size.width,
+                            height: _controller!.value.size.height,
+                            child: VideoPlayer(_controller!),
+                          ),
+                        )
+                      else if (_errorMessage != null)
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Text(
+                              _errorMessage!,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  color: Colors.white70, fontSize: 12),
+                            ),
+                          ),
+                        )
+                      else
+                        const Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Color(0xFF818CF8)),
+                          ),
+                        ),
+                      if (!_isPlaying && _isInitialized)
+                        Center(
+                          child: Container(
+                            width: 56,
+                            height: 56,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.6),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.play_arrow_rounded,
+                              color: Colors.white,
+                              size: 38,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        // Time badge
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+          decoration: BoxDecoration(
+            color: Colors.black.withValues(alpha: 0.75),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFF334155)),
+          ),
+          child: Text(
+            '${_formatDuration(_position)} / ${_formatDuration(_duration)}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 18),
+        // Controls: Replay, Play/Pause, Mute, Close
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton.filled(
+              onPressed: _replay,
+              style: IconButton.styleFrom(
+                backgroundColor: const Color(0xFF1E293B),
+                foregroundColor: Colors.white,
+              ),
+              icon: const Icon(Icons.replay_rounded),
+              tooltip: 'Replay',
+            ),
+            const SizedBox(width: 12),
+            IconButton.filled(
+              onPressed: _togglePlayPause,
+              style: IconButton.styleFrom(
+                backgroundColor: const Color(0xFF4F46E5),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.all(14),
+              ),
+              icon: Icon(
+                _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                size: 28,
+              ),
+              tooltip: _isPlaying ? 'Pause' : 'Play',
+            ),
+            const SizedBox(width: 12),
+            IconButton.filled(
+              onPressed: _toggleMute,
+              style: IconButton.styleFrom(
+                backgroundColor: const Color(0xFF1E293B),
+                foregroundColor: Colors.white,
+              ),
+              icon: Icon(
+                _isMuted ? Icons.volume_off_rounded : Icons.volume_up_rounded,
+              ),
+              tooltip: _isMuted ? 'Unmute' : 'Mute',
+            ),
+            const SizedBox(width: 12),
+            IconButton.filled(
+              onPressed: () => Navigator.pop(context),
+              style: IconButton.styleFrom(
+                backgroundColor: const Color(0xFF334155),
+                foregroundColor: Colors.white,
+              ),
+              icon: const Icon(Icons.close_rounded),
+              tooltip: 'Close',
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStandardVideoView() {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF0F172A),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFF334155)),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.videocam_rounded,
+                      color: Color(0xFF818CF8), size: 22),
+                  const SizedBox(width: 8),
+                  Text(
+                    widget.message.text.isNotEmpty
+                        ? widget.message.text
+                        : 'Video Player',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              IconButton(
+                icon: const Icon(Icons.close_rounded, color: Colors.white70),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          // Video viewport
+          Container(
+            height: 260,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: const Color(0xFF1E293B)),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14),
+              child: Stack(
+                alignment: Alignment.center,
+                fit: StackFit.expand,
+                children: [
+                  if (_isInitialized && _controller != null)
+                    Center(
+                      child: AspectRatio(
+                        aspectRatio: _controller!.value.aspectRatio > 0
+                            ? _controller!.value.aspectRatio
+                            : (16 / 9),
+                        child: VideoPlayer(_controller!),
+                      ),
+                    )
+                  else if (_errorMessage != null)
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                          _errorMessage!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: Colors.white70, fontSize: 13),
+                        ),
+                      ),
+                    )
+                  else
+                    const Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Color(0xFF818CF8)),
+                      ),
+                    ),
+                  if (!_isPlaying && _isInitialized)
+                    Center(
+                      child: GestureDetector(
+                        onTap: _togglePlayPause,
+                        child: Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.65),
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white70, width: 2),
+                          ),
+                          child: const Icon(
+                            Icons.play_arrow_rounded,
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          // Scrubber slider
+          if (_isInitialized)
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                thumbShape:
+                    const RoundSliderThumbShape(enabledThumbRadius: 6),
+                trackHeight: 3,
+                activeTrackColor: const Color(0xFF818CF8),
+                inactiveTrackColor: const Color(0xFF334155),
+                thumbColor: const Color(0xFF818CF8),
+              ),
+              child: Slider(
+                value: _position.inMilliseconds
+                    .clamp(0, _duration.inMilliseconds)
+                    .toDouble(),
+                max: _duration.inMilliseconds.toDouble() > 0
+                    ? _duration.inMilliseconds.toDouble()
+                    : 1.0,
+                onChanged: (val) {
+                  _controller?.seekTo(Duration(milliseconds: val.toInt()));
+                },
+              ),
+            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${_formatDuration(_position)} / ${_formatDuration(_duration)}',
+                style: const TextStyle(color: Colors.white70, fontSize: 12),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.replay_rounded,
+                        color: Colors.white70, size: 22),
+                    onPressed: _replay,
+                    tooltip: 'Replay',
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      _isPlaying
+                          ? Icons.pause_circle_filled_rounded
+                          : Icons.play_circle_filled_rounded,
+                      color: const Color(0xFF818CF8),
+                      size: 32,
+                    ),
+                    onPressed: _togglePlayPause,
+                    tooltip: _isPlaying ? 'Pause' : 'Play',
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      _isMuted
+                          ? Icons.volume_off_rounded
+                          : Icons.volume_up_rounded,
+                      color: Colors.white70,
+                      size: 22,
+                    ),
+                    onPressed: _toggleMute,
+                    tooltip: _isMuted ? 'Unmute' : 'Mute',
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
