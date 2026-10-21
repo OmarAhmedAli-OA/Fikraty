@@ -1,30 +1,25 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 import 'package:fikraty/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const FikratyApp());
+  testWidgets('Fikraty app loads HomeScreen with brand title and feed',
+      (WidgetTester tester) async {
+    await mockNetworkImages(() async {
+      await tester.pumpWidget(const FikratyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      // Verify brand title and role badge in AppBar
+      expect(find.text('Fikraty'), findsOneWidget);
+      expect(find.text('Entrepreneur'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      // Total mock delays: 150ms + 150ms + 300ms = 600ms
+      await tester.pump(const Duration(milliseconds: 800));
+      await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      // Verify trending tags bar loaded
+      expect(find.text('Trending'), findsOneWidget);
+      expect(find.text('#FinTech'), findsOneWidget);
+      expect(find.text('Sarah Al-Mansouri'), findsOneWidget);
+    });
   });
 }

@@ -26,6 +26,12 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Fikraty needs access to your camera to take photos and record video notes.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Fikraty needs access to your microphone to record voice notes and video messages.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Fikraty needs access to your photo library to share photos and videos in chat.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
