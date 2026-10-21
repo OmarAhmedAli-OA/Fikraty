@@ -64,6 +64,9 @@ flutter:
 
   assets:
     - assets/icons/
+    - assets/icons/app_mark.png
+    - assets/icons/splash_logo.png
+    - assets/icons/app_icon.png
     - assets/animations/
 
 flutter_native_splash:

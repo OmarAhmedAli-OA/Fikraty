@@ -1,1 +1,1 @@
-// TODO: Implement auth_model model.
+export 'auth_model.dart';
