@@ -1,14 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'core/router/app_router.dart';
+import 'core/theme/app_theme.dart';
+import 'core/services/dependency_injection.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/auth/presentation/bloc/auth_event.dart';
+import 'features/auth/presentation/bloc/auth_state.dart';
+import 'features/auth/presentation/pages/forgot_password_page.dart';
+import 'features/auth/presentation/pages/onboarding_page.dart';
+import 'features/auth/presentation/pages/reset_password_page.dart';
+import 'features/auth/presentation/pages/sign_in_page.dart';
+import 'features/auth/presentation/pages/sign_up_page.dart';
 import 'features/home/data/datasources/feed_local_data_source.dart';
 import 'features/home/data/repositories/feed_repository_impl.dart';
 import 'features/home/presentation/bloc/feed_bloc.dart';
 import 'features/home/presentation/bloc/feed_event.dart';
 import 'features/home/presentation/pages/home_page.dart';
+import 'features/splash/presentation/bloc/splash_bloc.dart';
+import 'features/splash/presentation/pages/splash_screen.dart';
 
 void main() {
-  runApp(const FikratyApp());
+  configureDependencies();
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>()),
+        BlocProvider<FeedBloc>(
+          create: (_) => FeedBloc(
+            feedRepository: FeedRepositoryImpl(
+              localDataSource: FeedLocalDataSourceImpl(),
+            ),
+          )..add(const LoadFeedEvent()),
+        ),
+      ],
+      child: const FikratyApp(),
+    ),
+  );
 }
 
 class FikratyApp extends StatelessWidget {
@@ -16,26 +44,27 @@ class FikratyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FeedBloc(
-        feedRepository: FeedRepositoryImpl(
-          localDataSource: FeedLocalDataSourceImpl(),
+    return MaterialApp(
+      title: 'Fikraty',
+      debugShowCheckedModeBanner: false,
+      theme: lightTheme,
+      themeMode: ThemeMode.light,
+      initialRoute: AppRoutes.splash,
+      routes: {
+        AppRoutes.splash: (_) => BlocProvider(
+          create: (_) => SplashBloc(),
+          child: const SplashScreen(),
         ),
-      )..add(const LoadFeedEvent()),
-      child: MaterialApp(
-        title: 'Fikraty',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          useMaterial3: true,
-          fontFamily: 'Inter',
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF4F46E5),
-            brightness: Brightness.light,
-          ),
-          scaffoldBackgroundColor: const Color(0xFFF8FAFC),
-        ),
-        home: const HomeScreen(),
-      ),
+        AppRoutes.onboarding: (_) => const OnboardingPage(),
+        AppRoutes.signIn: (_) => const SignInScreen(),
+        AppRoutes.signUp: (_) => const SignUpScreen(),
+        AppRoutes.forgotPassword: (_) => const ForgotPasswordPage(),
+        AppRoutes.resetPassword: (_) => const ResetPasswordPage(),
+        AppRoutes.home: (_) => const HomeScreen(),
+        // Keep legacy route names working while other features are integrated.
+        '/login': (_) => const SignInScreen(),
+        '/register': (_) => const SignUpScreen(),
+      },
     );
   }
 }
