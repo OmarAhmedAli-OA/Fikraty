@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../verification/presentation/pages/submit_verification_page.dart';
+import '../../../startups/presentation/pages/submit_verification_page.dart';
 import '../../data/repositories/startups_repository_impl.dart';
 import '../../domain/entities/startups.dart';
 import '../bloc/startups_bloc.dart';
@@ -36,7 +36,7 @@ class _MyStartupsView extends StatelessWidget {
       length: 3,
       initialIndex: 1, // Default to 'Startup' tab
       child: Scaffold(
-        backgroundColor: const Color(0xFFF8F9FD),
+        backgroundColor: AppColors.background,
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverToBoxAdapter(
@@ -46,9 +46,9 @@ class _MyStartupsView extends StatelessWidget {
               pinned: true,
               delegate: _TabBarDelegate(
                 TabBar(
-                  labelColor: const Color(0xFF6C5CE7),
-                  unselectedLabelColor: Colors.grey.shade600,
-                  indicatorColor: const Color(0xFF6C5CE7),
+                  labelColor: AppColors.primary,
+                  unselectedLabelColor: AppColors.textSecondary,
+                  indicatorColor: AppColors.primary,
                   indicatorWeight: 3,
                   labelStyle: const TextStyle(
                     fontWeight: FontWeight.bold,
@@ -90,7 +90,7 @@ class _MyStartupsView extends StatelessWidget {
             Container(
               height: 110,
               width: double.infinity,
-              color: const Color(0xFF7052FF),
+              color: AppColors.primary,
               padding: const EdgeInsets.only(top: 36, right: 16, left: 16),
               alignment: Alignment.topRight,
               child: Row(
@@ -112,8 +112,8 @@ class _MyStartupsView extends StatelessWidget {
                       );
                     },
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      side: const BorderSide(color: Colors.white),
+                      foregroundColor: AppColors.white,
+                      side: const BorderSide(color: AppColors.white),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -133,8 +133,8 @@ class _MyStartupsView extends StatelessWidget {
                       _navigateToWizard(context, startup);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: const Color(0xFF7052FF),
+                      backgroundColor: AppColors.white,
+                      foregroundColor: AppColors.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -160,12 +160,12 @@ class _MyStartupsView extends StatelessWidget {
                 width: 78,
                 height: 78,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.white,
                   borderRadius: BorderRadius.circular(22),
-                  border: Border.all(color: Colors.white, width: 3),
+                  border: Border.all(color: AppColors.white, width: 3),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
+                      color: AppColors.black.withValues(alpha: 0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -178,7 +178,7 @@ class _MyStartupsView extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey.shade800,
+                      color: AppColors.textSecondary,
                     ),
                   ),
                 ),
@@ -195,22 +195,24 @@ class _MyStartupsView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              Wrap(
+                spacing: 8,
+                runSpacing: 4,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   const Text(
                     'Youssef ali rafat',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF1E1E2D),
+                      color: AppColors.darkText,
                     ),
                   ),
-                  const SizedBox(width: 10),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFEDE9FE),
+                      color: AppColors.primaryTint,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Text(
@@ -218,7 +220,7 @@ class _MyStartupsView extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF6D28D9),
+                        color: AppColors.badgeReviewText,
                       ),
                     ),
                   ),
@@ -230,41 +232,42 @@ class _MyStartupsView extends StatelessWidget {
                 'Founder & Tech Entrepreneur',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey.shade700,
+                  color: AppColors.textSecondary,
                 ),
               ),
 
               const SizedBox(height: 8),
-              Row(
+              Wrap(
+                spacing: 4,
+                runSpacing: 4,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Icon(
                     Icons.location_on_outlined,
                     size: 15,
-                    color: Colors.grey.shade600,
+                    color: AppColors.textSecondary,
                   ),
-                  const SizedBox(width: 4),
                   Text(
                     'Qalyubia',
                     style: TextStyle(
                       fontSize: 13,
-                      color: Colors.grey.shade600,
+                      color: AppColors.textSecondary,
                     ),
                   ),
                   Text(
                     '  •  ',
-                    style: TextStyle(color: Colors.grey.shade400),
+                    style: TextStyle(color: AppColors.textMuted),
                   ),
                   Icon(
                     Icons.language_rounded,
                     size: 15,
-                    color: Colors.grey.shade600,
+                    color: AppColors.textSecondary,
                   ),
-                  const SizedBox(width: 4),
                   Text(
                     'https://fikraty.app',
                     style: TextStyle(
                       fontSize: 13,
-                      color: Colors.grey.shade600,
+                      color: AppColors.textSecondary,
                     ),
                   ),
                 ],
@@ -275,7 +278,7 @@ class _MyStartupsView extends StatelessWidget {
                 'Passionate founder building next-gen tech solutions to connect startups with smart capital.',
                 style: TextStyle(
                   fontSize: 13,
-                  color: Colors.grey.shade800,
+                  color: AppColors.textSecondary,
                   height: 1.4,
                 ),
               ),
@@ -283,25 +286,27 @@ class _MyStartupsView extends StatelessWidget {
               const SizedBox(height: 12),
 
               // Badges
-              Row(
+              Wrap(
+                spacing: 8,
+                runSpacing: 6,
                 children: [
-                  _buildTagChip('Top Pitcher', const Color(0xFFFEF3C7),
-                      const Color(0xFFD97706)),
-                  const SizedBox(width: 8),
-                  _buildTagChip('Fast Growing', const Color(0xFFCCFBF1),
-                      const Color(0xFF0F766E)),
+                  _buildTagChip('Top Pitcher', AppColors.badgePitcherBg,
+                      AppColors.badgePitcherText),
+                  _buildTagChip('Fast Growing', AppColors.badgeGrowingBg,
+                      AppColors.badgeGrowingText),
                 ],
               ),
 
               const SizedBox(height: 16),
 
-              // Stats Row
-              Row(
+              // Stats Row (Responsive wrap preventing overflow on smaller screens)
+              Wrap(
+                spacing: 14,
+                runSpacing: 8,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   _buildStatItem('1.2K', 'Followers'),
-                  const SizedBox(width: 24),
                   _buildStatItem('348', 'Following'),
-                  const SizedBox(width: 24),
                   _buildStatItem('49', 'Investors interested'),
                 ],
               ),
@@ -313,15 +318,15 @@ class _MyStartupsView extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.white,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.grey.shade300),
+                  border: Border.all(color: AppColors.border),
                 ),
                 child: Text(
                   'Product',
                   style: TextStyle(
                     fontSize: 13,
-                    color: Colors.grey.shade800,
+                    color: AppColors.textSecondary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -355,21 +360,22 @@ class _MyStartupsView extends StatelessWidget {
 
   Widget _buildStatItem(String count, String label) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           count,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 15,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF1E1E2D),
+            color: AppColors.darkText,
           ),
         ),
-        const SizedBox(width: 6),
+        const SizedBox(width: 5),
         Text(
           label,
           style: TextStyle(
-            fontSize: 13,
-            color: Colors.grey.shade600,
+            fontSize: 12.5,
+            color: AppColors.textSecondary,
           ),
         ),
       ],
@@ -385,7 +391,7 @@ class _MyStartupsView extends StatelessWidget {
             SnackBar(
               content: Row(
                 children: [
-                  const Icon(Icons.check_circle_rounded, color: Colors.white, size: 20),
+                  const Icon(Icons.check_circle_rounded, color: AppColors.white, size: 20),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
@@ -395,7 +401,7 @@ class _MyStartupsView extends StatelessWidget {
                   ),
                 ],
               ),
-              backgroundColor: const Color(0xFF10B981),
+              backgroundColor: AppColors.success,
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
@@ -405,7 +411,7 @@ class _MyStartupsView extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message),
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.error,
               behavior: SnackBarBehavior.floating,
             ),
           );
@@ -414,7 +420,7 @@ class _MyStartupsView extends StatelessWidget {
       builder: (context, state) {
         if (state is StartupsLoadingState) {
           return const Center(
-            child: CircularProgressIndicator(color: Color(0xFF6C5CE7)),
+            child: CircularProgressIndicator(color: AppColors.primary),
           );
         }
 
@@ -432,7 +438,7 @@ class _MyStartupsView extends StatelessWidget {
         }
 
         return const Center(
-          child: CircularProgressIndicator(color: Color(0xFF6C5CE7)),
+          child: CircularProgressIndicator(color: AppColors.primary),
         );
       },
     );
@@ -441,7 +447,7 @@ class _MyStartupsView extends StatelessWidget {
   /// Filled Startup Dashboard
   Widget _buildStartupDashboard(BuildContext context, StartupEntity startup) {
     return RefreshIndicator(
-      color: const Color(0xFF6C5CE7),
+      color: AppColors.primary,
       onRefresh: () async {
         context.read<StartupsBloc>().add(const LoadMyStartupEvent());
       },
@@ -475,14 +481,14 @@ class _MyStartupsView extends StatelessWidget {
               title: 'The Problem',
               content: startup.problem,
               icon: Icons.lightbulb_outline_rounded,
-              iconColor: Colors.amber.shade800,
+              iconColor: AppColors.warning,
             ),
             const SizedBox(height: 10),
             _buildInfoCard(
               title: 'The Innovative Solution',
               content: startup.solution,
               icon: Icons.check_circle_outline_rounded,
-              iconColor: Colors.teal,
+              iconColor: AppColors.secondary,
             ),
             const SizedBox(height: 10),
             _buildInfoCard(
@@ -522,7 +528,7 @@ class _MyStartupsView extends StatelessWidget {
                     children: [
                       const Text(
                         'No team members added yet.',
-                        style: TextStyle(color: Colors.grey, fontSize: 13),
+                        style: TextStyle(color: AppColors.textMuted, fontSize: 13),
                       ),
                       const SizedBox(height: 8),
                       OutlinedButton.icon(
@@ -530,8 +536,8 @@ class _MyStartupsView extends StatelessWidget {
                         icon: const Icon(Icons.person_add_rounded, size: 16),
                         label: const Text('Add Team Members Now'),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: const Color(0xFF6C5CE7),
-                          side: const BorderSide(color: Color(0xFF6C5CE7)),
+                          foregroundColor: AppColors.primary,
+                          side: const BorderSide(color: AppColors.primary),
                         ),
                       ),
                     ],
@@ -639,21 +645,21 @@ class _MyStartupsView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.feed_outlined, size: 56, color: Colors.grey.shade400),
+            Icon(Icons.feed_outlined, size: 56, color: AppColors.textMuted),
             const SizedBox(height: 16),
             const Text(
               'No Posts Yet',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF1E1E2D),
+                color: AppColors.darkText,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Share startup milestones, launches, and founder stories with the community.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+              style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
             ),
           ],
         ),
@@ -668,21 +674,21 @@ class _MyStartupsView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.insights_rounded, size: 56, color: Colors.grey.shade400),
+            Icon(Icons.insights_rounded, size: 56, color: AppColors.textMuted),
             const SizedBox(height: 16),
             const Text(
               'Profile Analytics',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF1E1E2D),
+                color: AppColors.darkText,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Track page visits, investor engagement, and deck downloads once your startup is active.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+              style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
             ),
           ],
         ),
@@ -708,10 +714,10 @@ class _MyStartupsView extends StatelessWidget {
         color: AppColors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-            color: const Color(0xFF6C5CE7).withValues(alpha: 0.2)),
+            color: AppColors.primary.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF6C5CE7).withValues(alpha: 0.05),
+            color: AppColors.primary.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -728,12 +734,12 @@ class _MyStartupsView extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFEDE9FE),
+                      color: AppColors.primaryTint,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(
                       Icons.monetization_on_rounded,
-                      color: Color(0xFF6C5CE7),
+                      color: AppColors.primary,
                       size: 20,
                     ),
                   ),
@@ -753,7 +759,7 @@ class _MyStartupsView extends StatelessWidget {
                         startup.fundingRound,
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Color(0xFF6C5CE7),
+                          color: AppColors.primary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -765,22 +771,22 @@ class _MyStartupsView extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE6FFFA),
+                  color: AppColors.secondarySoft,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: const Color(0xFF38B2AC)),
+                  border: Border.all(color: AppColors.secondary),
                 ),
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.trending_up_rounded,
-                        size: 14, color: Color(0xFF38B2AC)),
+                        size: 14, color: AppColors.secondary),
                     SizedBox(width: 4),
                     Text(
                       'Actively Raising',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF38B2AC),
+                        color: AppColors.secondary,
                       ),
                     ),
                   ],
@@ -800,7 +806,7 @@ class _MyStartupsView extends StatelessWidget {
                   children: [
                     Text(
                       'Target Goal',
-                      style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                      style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -808,7 +814,7 @@ class _MyStartupsView extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF1E1E2D),
+                        color: AppColors.darkText,
                       ),
                     ),
                   ],
@@ -820,7 +826,7 @@ class _MyStartupsView extends StatelessWidget {
                   children: [
                     Text(
                       'Valuation Cap',
-                      style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                      style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -828,7 +834,7 @@ class _MyStartupsView extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF6C5CE7),
+                        color: AppColors.primary,
                       ),
                     ),
                   ],
@@ -840,7 +846,7 @@ class _MyStartupsView extends StatelessWidget {
                   children: [
                     Text(
                       'Min Ticket',
-                      style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                      style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -848,7 +854,7 @@ class _MyStartupsView extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF1E1E2D),
+                        color: AppColors.darkText,
                       ),
                     ),
                   ],
@@ -866,7 +872,7 @@ class _MyStartupsView extends StatelessWidget {
                   children: [
                     Text(
                       'Monthly Rev',
-                      style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                      style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -874,7 +880,7 @@ class _MyStartupsView extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF10B981),
+                        color: AppColors.success,
                       ),
                     ),
                   ],
@@ -886,7 +892,7 @@ class _MyStartupsView extends StatelessWidget {
                   children: [
                     Text(
                       'Growth Rate',
-                      style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                      style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -894,7 +900,7 @@ class _MyStartupsView extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF10B981),
+                        color: AppColors.success,
                       ),
                     ),
                   ],
@@ -906,7 +912,7 @@ class _MyStartupsView extends StatelessWidget {
                   children: [
                     Text(
                       'Stage',
-                      style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                      style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -929,12 +935,12 @@ class _MyStartupsView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: const Color(0xFFF1F2F6),
+                color: AppColors.borderLight,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.people_alt_rounded, size: 16, color: Color(0xFF6C5CE7)),
+                  const Icon(Icons.people_alt_rounded, size: 16, color: AppColors.primary),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -955,12 +961,12 @@ class _MyStartupsView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: const Color(0xFFEDE9FE).withValues(alpha: 0.5),
+                color: AppColors.primaryTint.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.pie_chart_rounded, size: 16, color: Color(0xFF6D28D9)),
+                  const Icon(Icons.pie_chart_rounded, size: 16, color: AppColors.badgeReviewText),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -968,7 +974,7 @@ class _MyStartupsView extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFF5B21B6),
+                        color: AppColors.badgeReviewText,
                       ),
                     ),
                   ),
@@ -1016,7 +1022,7 @@ class _MyStartupsView extends StatelessWidget {
             content.isNotEmpty ? content : 'No details specified yet.',
             style: TextStyle(
               fontSize: 13,
-              color: Colors.grey.shade800,
+              color: AppColors.textSecondary,
               height: 1.5,
             ),
           ),
@@ -1049,7 +1055,7 @@ class _MyStartupsView extends StatelessWidget {
                     title,
                     style: const TextStyle(
                       fontSize: 12,
-                      color: Colors.grey,
+                      color: AppColors.textMuted,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -1079,7 +1085,7 @@ class _MyStartupsView extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -1108,11 +1114,11 @@ class _MyStartupsView extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF6C5CE7).withValues(alpha: 0.1),
+                            color: AppColors.primary.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Icon(Icons.people_alt_rounded,
-                              color: Color(0xFF6C5CE7), size: 22),
+                              color: AppColors.primary, size: 22),
                         ),
                         const SizedBox(width: 10),
                         Column(
@@ -1130,7 +1136,7 @@ class _MyStartupsView extends StatelessWidget {
                               '${currentMembers.length} member(s) listed',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Colors.grey.shade600,
+                                color: AppColors.textSecondary,
                               ),
                             ),
                           ],
@@ -1146,7 +1152,7 @@ class _MyStartupsView extends StatelessWidget {
                 const SizedBox(height: 10),
                 Text(
                   'Add, edit roles, or update co-founders and team members without re-editing the rest of your startup profile.',
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
                 ),
                 const SizedBox(height: 14),
                 const Divider(height: 1),
@@ -1162,7 +1168,7 @@ class _MyStartupsView extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(Icons.group_off_rounded,
-                                    size: 48, color: Colors.grey.shade400),
+                                    size: 48, color: AppColors.textMuted),
                                 const SizedBox(height: 12),
                                 const Text(
                                   'No Team Members Added',
@@ -1178,7 +1184,7 @@ class _MyStartupsView extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.grey.shade600,
+                                    color: AppColors.textSecondary,
                                   ),
                                 ),
                               ],
@@ -1234,8 +1240,8 @@ class _MyStartupsView extends StatelessWidget {
                           );
                         },
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: const Color(0xFF6C5CE7),
-                          side: const BorderSide(color: Color(0xFF6C5CE7)),
+                          foregroundColor: AppColors.primary,
+                          side: const BorderSide(color: AppColors.primary),
                           padding: const EdgeInsets.symmetric(vertical: 13),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -1262,7 +1268,7 @@ class _MyStartupsView extends StatelessWidget {
                               content: const Row(
                                 children: [
                                   Icon(Icons.check_circle_rounded,
-                                      color: Colors.white, size: 20),
+                                      color: AppColors.white, size: 20),
                                   SizedBox(width: 10),
                                   Text(
                                     'Team updated successfully!',
@@ -1271,7 +1277,7 @@ class _MyStartupsView extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              backgroundColor: const Color(0xFF10B981),
+                              backgroundColor: AppColors.success,
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -1280,8 +1286,8 @@ class _MyStartupsView extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF6C5CE7),
-                          foregroundColor: Colors.white,
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: AppColors.white,
                           padding: const EdgeInsets.symmetric(vertical: 13),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -1326,7 +1332,7 @@ class _MyStartupsView extends StatelessWidget {
             content: Row(
               children: [
                 const Icon(Icons.check_circle_rounded,
-                    color: Colors.white, size: 20),
+                    color: AppColors.white, size: 20),
                 const SizedBox(width: 10),
                 Text(
                   'Member "${updated.fullName}" updated successfully!',
@@ -1334,7 +1340,7 @@ class _MyStartupsView extends StatelessWidget {
                 ),
               ],
             ),
-            backgroundColor: const Color(0xFF10B981),
+            backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -1364,8 +1370,8 @@ class _MyStartupsView extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
-              foregroundColor: Colors.white,
+              backgroundColor: AppColors.error,
+              foregroundColor: AppColors.white,
             ),
             onPressed: () {
               Navigator.pop(dialogCtx);
@@ -1377,7 +1383,7 @@ class _MyStartupsView extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Member "${member.fullName}" removed.'),
-                  backgroundColor: Colors.redAccent,
+                  backgroundColor: AppColors.error,
                   behavior: SnackBarBehavior.floating,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -1407,7 +1413,7 @@ class _MyStartupsView extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -1498,7 +1504,7 @@ class _MyStartupsView extends StatelessWidget {
                       Navigator.pop(ctx);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF6C5CE7),
+                      backgroundColor: AppColors.primary,
                       foregroundColor: AppColors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
@@ -1523,7 +1529,7 @@ class _MyStartupsView extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -1538,11 +1544,11 @@ class _MyStartupsView extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.red.withValues(alpha: 0.1),
+                    color: AppColors.error.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(Icons.picture_as_pdf_rounded,
-                      color: Colors.red, size: 24),
+                      color: AppColors.error, size: 24),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -1561,7 +1567,7 @@ class _MyStartupsView extends StatelessWidget {
                         'Verified Investor Presentation',
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey.shade600,
+                          color: AppColors.textSecondary,
                         ),
                       ),
                     ],
@@ -1577,7 +1583,7 @@ class _MyStartupsView extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: const Color(0xFFF8F9FD),
+                color: AppColors.background,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(color: AppColors.tint),
               ),
@@ -1588,7 +1594,7 @@ class _MyStartupsView extends StatelessWidget {
                     children: [
                       const Text(
                         'Startup Company:',
-                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                        style: TextStyle(fontSize: 13, color: AppColors.textMuted),
                       ),
                       Text(
                         startup.name,
@@ -1606,14 +1612,14 @@ class _MyStartupsView extends StatelessWidget {
                     children: [
                       const Text(
                         'Round & Target:',
-                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                        style: TextStyle(fontSize: 13, color: AppColors.textMuted),
                       ),
                       Text(
                         '${startup.fundingRound} - ${startup.targetRaise}',
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF6C5CE7),
+                          color: AppColors.primary,
                         ),
                       ),
                     ],
@@ -1624,14 +1630,14 @@ class _MyStartupsView extends StatelessWidget {
                     children: [
                       const Text(
                         'Valuation Cap:',
-                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                        style: TextStyle(fontSize: 13, color: AppColors.textMuted),
                       ),
                       Text(
                         startup.valuationCap,
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF10B981),
+                          color: AppColors.success,
                         ),
                       ),
                     ],
@@ -1643,7 +1649,7 @@ class _MyStartupsView extends StatelessWidget {
                       children: [
                         const Text(
                           'Use of Funds: ',
-                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                          style: TextStyle(fontSize: 13, color: AppColors.textMuted),
                         ),
                         Expanded(
                           child: Text(
@@ -1695,8 +1701,8 @@ class _MyStartupsView extends StatelessWidget {
                   child: ElevatedButton.icon(
                     onPressed: () => Navigator.pop(ctx),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF6C5CE7),
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.white,
                       padding: const EdgeInsets.symmetric(vertical: 13),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -1757,7 +1763,7 @@ class _TabBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: Colors.white,
+      color: AppColors.white,
       child: tabBar,
     );
   }

@@ -8,7 +8,7 @@ import '../../../startups/presentation/bloc/startups_event.dart';
 
 class SubmitVerificationPage extends StatefulWidget {
   const SubmitVerificationPage({super.key, required this.startup});
-
+  
   final StartupEntity startup;
 
   @override
@@ -55,7 +55,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Document attached: ${file.name}'),
-              backgroundColor: Colors.green,
+              backgroundColor: AppColors.success,
               behavior: SnackBarBehavior.floating,
             ),
           );
@@ -66,7 +66,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Could not attach document: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -77,7 +77,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
   void _showDocumentSourceModal() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -91,7 +91,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color: AppColors.border,
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -107,7 +107,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
               const SizedBox(height: 6),
               Text(
                 'Attach an official copy or photo of your legal credential',
-                style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
               ),
               const SizedBox(height: 20),
               ListTile(
@@ -149,12 +149,12 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
                   leading: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.red.shade50,
+                      color: AppColors.errorLight,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.delete_outline_rounded, color: Colors.red),
+                    child: const Icon(Icons.delete_outline_rounded, color: AppColors.error),
                   ),
-                  title: const Text('Remove Attached Document', style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600)),
+                  title: const Text('Remove Attached Document', style: TextStyle(color: AppColors.error, fontWeight: FontWeight.w600)),
                   onTap: () {
                     Navigator.pop(ctx);
                     setState(() {
@@ -178,7 +178,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please upload or attach your official legal document'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -206,12 +206,12 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
               width: 70,
               height: 70,
               decoration: BoxDecoration(
-                color: Colors.green.shade50,
+                color: AppColors.successLight,
                 shape: BoxShape.circle,
               ),
               child: const Icon(
                 Icons.check_circle_rounded,
-                color: Colors.green,
+                color: AppColors.success,
                 size: 45,
               ),
             ),
@@ -229,7 +229,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
             Text(
               'The Fikraty compliance team will review your submitted legal credentials and update verification status within 24 to 48 business hours.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+              style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
             ),
             const SizedBox(height: 24),
             SizedBox(
@@ -241,7 +241,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.navy,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppColors.white,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -385,7 +385,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
                     color: AppColors.white,
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: _fileAttached ? const Color(0xFF10B981) : Colors.grey.shade300,
+                      color: _fileAttached ? AppColors.success : AppColors.border,
                       width: _fileAttached ? 2 : 1.5,
                     ),
                   ),
@@ -396,7 +396,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
                             ? Icons.verified_rounded
                             : Icons.cloud_upload_outlined,
                         size: 44,
-                        color: _fileAttached ? const Color(0xFF10B981) : Colors.grey,
+                        color: _fileAttached ? AppColors.success : AppColors.textMuted,
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -407,7 +407,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
-                          color: _fileAttached ? AppColors.navy : Colors.grey.shade700,
+                          color: _fileAttached ? AppColors.navy : AppColors.textSecondary,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -417,7 +417,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
                             : 'Accepted formats: Camera photo, Gallery scan, Image file',
                         style: TextStyle(
                           fontSize: 11,
-                          color: _fileAttached ? const Color(0xFF10B981) : Colors.grey,
+                          color: _fileAttached ? AppColors.success : AppColors.textMuted,
                           fontWeight: _fileAttached ? FontWeight.w600 : FontWeight.normal,
                         ),
                       ),
@@ -443,7 +443,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
                                   _attachedFileName = null;
                                 });
                               },
-                              icon: const Icon(Icons.delete_outline_rounded, color: Colors.red),
+                              icon: const Icon(Icons.delete_outline_rounded, color: AppColors.error),
                               tooltip: 'Remove document',
                             ),
                           ],
@@ -479,7 +479,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
                     onPressed: _submit,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.navy,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppColors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),

@@ -402,13 +402,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
               alignment: WrapAlignment.center,
               children: [
                 _buildPipelinePill('Interest'),
-                const Icon(Icons.arrow_forward_rounded, size: 14, color: Colors.white70),
+                Icon(Icons.arrow_forward_rounded, size: 14, color: AppColors.white70),
                 _buildPipelinePill('Meeting'),
-                const Icon(Icons.arrow_forward_rounded, size: 14, color: Colors.white70),
+                Icon(Icons.arrow_forward_rounded, size: 14, color: AppColors.white70),
                 _buildPipelinePill('DD'),
-                const Icon(Icons.arrow_forward_rounded, size: 14, color: Colors.white70),
+                Icon(Icons.arrow_forward_rounded, size: 14, color: AppColors.white70),
                 _buildPipelinePill('Term Sheet'),
-                const Icon(Icons.arrow_forward_rounded, size: 14, color: Colors.white70),
+                Icon(Icons.arrow_forward_rounded, size: 14, color: AppColors.white70),
                 _buildPipelinePill('Closed', isHighlight: true),
               ],
             ),
@@ -450,7 +450,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           const Text(
             'Founder',
             style: TextStyle(
-              color: Colors.white70,
+              color: AppColors.white70,
               fontSize: 10,
             ),
           ),

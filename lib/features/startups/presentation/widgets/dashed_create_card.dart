@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/theme/app_colors.dart';
 
 class DashedCreateCard extends StatelessWidget {
   final VoidCallback onTap;
@@ -19,7 +20,7 @@ class DashedCreateCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: CustomPaint(
         painter: _DashedRectPainter(
-          color: const Color(0xFF9D95FF),
+          color: AppColors.primaryLight,
           strokeWidth: 1.5,
           dash: 6,
           gap: 4,
@@ -29,7 +30,7 @@ class DashedCreateCard extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 20),
           decoration: BoxDecoration(
-            color: const Color(0xFFFAF9FF),
+            color: AppColors.background,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -38,12 +39,12 @@ class DashedCreateCard extends StatelessWidget {
               Container(
                 width: 64,
                 height: 64,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF6C5CE7),
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Color(0x336C5CE7),
+                      color: AppColors.primary.withValues(alpha: 0.2),
                       blurRadius: 14,
                       offset: Offset(0, 6),
                     ),
@@ -51,7 +52,7 @@ class DashedCreateCard extends StatelessWidget {
                 ),
                 child: const Icon(
                   Icons.add_rounded,
-                  color: Colors.white,
+                  color: AppColors.white,
                   size: 34,
                 ),
               ),
@@ -62,7 +63,7 @@ class DashedCreateCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF1E1E2D),
+                  color: AppColors.darkText,
                 ),
               ),
               const SizedBox(height: 8),
@@ -71,7 +72,7 @@ class DashedCreateCard extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 13,
-                  color: Colors.grey.shade600,
+                  color: AppColors.textSecondary,
                   height: 1.4,
                 ),
               ),

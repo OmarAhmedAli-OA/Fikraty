@@ -19,14 +19,14 @@ class StartupHeaderCard extends StatelessWidget {
   Color _getVerificationColor(String status) {
     switch (status) {
       case 'approved':
-        return Colors.green;
+        return AppColors.success;
       case 'pending':
       case 'under_review':
-        return Colors.orange;
+        return AppColors.warning;
       case 'rejected':
-        return Colors.red;
+        return AppColors.error;
       default:
-        return Colors.grey;
+        return AppColors.textMuted;
     }
   }
 
@@ -68,7 +68,7 @@ class StartupHeaderCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: AppColors.black.withValues(alpha: 0.05),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -143,7 +143,7 @@ class StartupHeaderCard extends StatelessWidget {
                       startup.tagline,
                       style: TextStyle(
                         fontSize: 13,
-                        color: Colors.grey.shade700,
+                        color: AppColors.textSecondary,
                         height: 1.4,
                       ),
                     ),

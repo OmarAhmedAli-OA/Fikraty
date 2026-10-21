@@ -446,7 +446,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 10,
-                color: Colors.grey.shade600,
+                color: AppColors.textSecondary,
               ),
             ),
           ],
@@ -463,7 +463,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -486,7 +486,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                   height: 4,
                   margin: const EdgeInsets.only(bottom: 14),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
+                    color: AppColors.border,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -511,7 +511,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                         'Square format recommended (Min 400×400px)',
                         style: TextStyle(
                           fontSize: 11.5,
-                          color: Colors.grey.shade600,
+                          color: AppColors.textSecondary,
                         ),
                       ),
                     ],
@@ -532,7 +532,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                       icon: Icons.photo_library_rounded,
                       title: 'Gallery',
                       subtitle: 'Photos app',
-                      color: const Color(0xFF6C5CE7),
+                      color: AppColors.primary,
                       onTap: () {
                         Navigator.pop(ctx);
                         _pickImage(true, ImageSource.gallery);
@@ -545,7 +545,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                       icon: Icons.folder_open_rounded,
                       title: 'Files',
                       subtitle: 'Device storage',
-                      color: const Color(0xFF00B894),
+                      color: AppColors.secondary,
                       onTap: () {
                         Navigator.pop(ctx);
                         _pickImage(true, ImageSource.gallery);
@@ -558,7 +558,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                       icon: Icons.camera_alt_rounded,
                       title: 'Camera',
                       subtitle: 'Take photo',
-                      color: const Color(0xFF0984E3),
+                      color: AppColors.linkedInBlue,
                       onTap: () {
                         Navigator.pop(ctx);
                         _pickImage(true, ImageSource.camera);
@@ -605,8 +605,8 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
                                 color: isSelected
-                                    ? const Color(0xFF6C5CE7)
-                                    : Colors.grey.shade300,
+                                    ? AppColors.primary
+                                    : AppColors.border,
                                 width: isSelected ? 2.5 : 1,
                               ),
                               image: DecorationImage(
@@ -617,11 +617,11 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                             child: isSelected
                                 ? Container(
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF6C5CE7).withValues(alpha: 0.45),
+                                      color: AppColors.primary.withValues(alpha: 0.45),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: const Center(
-                                      child: Icon(Icons.check_rounded, color: Colors.white, size: 22),
+                                      child: Icon(Icons.check_rounded, color: AppColors.white, size: 22),
                                     ),
                                   )
                                 : null,
@@ -632,7 +632,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                              color: isSelected ? const Color(0xFF6C5CE7) : Colors.grey.shade700,
+                              color: isSelected ? AppColors.primary : AppColors.textSecondary,
                             ),
                           ),
                         ],
@@ -652,7 +652,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                 decoration: InputDecoration(
                   labelText: 'Or enter direct image web URL',
                   hintText: 'https://example.com/logo.png',
-                  prefixIcon: const Icon(Icons.link_rounded, color: Color(0xFF6C5CE7)),
+                  prefixIcon: const Icon(Icons.link_rounded, color: AppColors.primary),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -668,8 +668,8 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                   Navigator.pop(ctx);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF6C5CE7),
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.white,
                   padding: const EdgeInsets.symmetric(vertical: 13),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -687,10 +687,10 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                     setState(() => _logoUrl = null);
                     Navigator.pop(ctx);
                   },
-                  icon: const Icon(Icons.delete_outline_rounded, color: Colors.red, size: 18),
+                  icon: const Icon(Icons.delete_outline_rounded, color: AppColors.error, size: 18),
                   label: const Text(
                     'Remove Current Logo',
-                    style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+                    style: TextStyle(color: AppColors.error, fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
@@ -711,7 +711,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -734,7 +734,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                   height: 4,
                   margin: const EdgeInsets.only(bottom: 14),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
+                    color: AppColors.border,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -759,7 +759,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                         'Panoramic format recommended (Min 1200×400px)',
                         style: TextStyle(
                           fontSize: 11.5,
-                          color: Colors.grey.shade600,
+                          color: AppColors.textSecondary,
                         ),
                       ),
                     ],
@@ -780,7 +780,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                       icon: Icons.photo_library_rounded,
                       title: 'Gallery',
                       subtitle: 'Photos app',
-                      color: const Color(0xFF6C5CE7),
+                      color: AppColors.primary,
                       onTap: () {
                         Navigator.pop(ctx);
                         _pickImage(false, ImageSource.gallery);
@@ -793,7 +793,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                       icon: Icons.folder_open_rounded,
                       title: 'Files',
                       subtitle: 'Device storage',
-                      color: const Color(0xFF00B894),
+                      color: AppColors.secondary,
                       onTap: () {
                         Navigator.pop(ctx);
                         _pickImage(false, ImageSource.gallery);
@@ -806,7 +806,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                       icon: Icons.camera_alt_rounded,
                       title: 'Camera',
                       subtitle: 'Take photo',
-                      color: const Color(0xFF0984E3),
+                      color: AppColors.linkedInBlue,
                       onTap: () {
                         Navigator.pop(ctx);
                         _pickImage(false, ImageSource.camera);
@@ -854,8 +854,8 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: isSelected
-                                    ? const Color(0xFF6C5CE7)
-                                    : Colors.grey.shade300,
+                                    ? AppColors.primary
+                                    : AppColors.border,
                                 width: isSelected ? 2.5 : 1,
                               ),
                               image: DecorationImage(
@@ -866,11 +866,11 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                             child: isSelected
                                 ? Container(
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF6C5CE7).withValues(alpha: 0.45),
+                                      color: AppColors.primary.withValues(alpha: 0.45),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: const Center(
-                                      child: Icon(Icons.check_rounded, color: Colors.white, size: 24),
+                                      child: Icon(Icons.check_rounded, color: AppColors.white, size: 24),
                                     ),
                                   )
                                 : null,
@@ -881,7 +881,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                              color: isSelected ? const Color(0xFF6C5CE7) : Colors.grey.shade700,
+                              color: isSelected ? AppColors.primary : AppColors.textSecondary,
                             ),
                           ),
                         ],
@@ -901,7 +901,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                 decoration: InputDecoration(
                   labelText: 'Or enter direct banner web URL',
                   hintText: 'https://example.com/banner.jpg',
-                  prefixIcon: const Icon(Icons.link_rounded, color: Color(0xFF6C5CE7)),
+                  prefixIcon: const Icon(Icons.link_rounded, color: AppColors.primary),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -917,8 +917,8 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                   Navigator.pop(ctx);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF6C5CE7),
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.white,
                   padding: const EdgeInsets.symmetric(vertical: 13),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -936,10 +936,10 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                     setState(() => _coverImageUrl = null);
                     Navigator.pop(ctx);
                   },
-                  icon: const Icon(Icons.delete_outline_rounded, color: Colors.red, size: 18),
+                  icon: const Icon(Icons.delete_outline_rounded, color: AppColors.error, size: 18),
                   label: const Text(
                     'Remove Cover Banner',
-                    style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+                    style: TextStyle(color: AppColors.error, fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
@@ -959,7 +959,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -1082,7 +1082,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -1172,7 +1172,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                       Navigator.pop(ctx);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF6C5CE7),
+                      backgroundColor: AppColors.primary,
                       foregroundColor: AppColors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
@@ -1275,16 +1275,16 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
           CircleAvatar(
             radius: 15,
             backgroundColor: isCompleted
-                ? Colors.green
+                ? AppColors.success
                 : (isActive ? AppColors.navy : AppColors.tint),
             child: isCompleted
-                ? const Icon(Icons.check, size: 15, color: Colors.white)
+                ? const Icon(Icons.check, size: 15, color: AppColors.white)
                 : Text(
                     '${stepIndex + 1}',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: isActive ? Colors.white : Colors.grey,
+                      color: isActive ? AppColors.white : AppColors.textMuted,
                     ),
                   ),
           ),
@@ -1297,7 +1297,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                color: isActive ? AppColors.navy : Colors.grey.shade700,
+                color: isActive ? AppColors.navy : AppColors.textSecondary,
               ),
             ),
           ),
@@ -1311,7 +1311,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
       width: 14,
       height: 2,
       margin: const EdgeInsets.only(bottom: 20),
-      color: isCompleted ? Colors.green : AppColors.tint,
+      color: isCompleted ? AppColors.success : AppColors.tint,
     );
   }
 
@@ -1346,7 +1346,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
           const SizedBox(height: 6),
           Text(
             'Add company branding, sector, location, and key identity info.',
-            style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+            style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
           ),
           const SizedBox(height: 18),
 
@@ -1371,13 +1371,13 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                         gradient: _coverImageUrl != null
                             ? null
                             : const LinearGradient(
-                                colors: [Color(0xFF6C5CE7), Color(0xFFA29BFE)],
+                                colors: [AppColors.primary, AppColors.primaryLight],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.08),
+                            color: AppColors.black.withValues(alpha: 0.08),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -1398,12 +1398,12 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                                   Container(
                                     padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withValues(alpha: 0.22),
+                                      color: AppColors.white.withValues(alpha: 0.22),
                                       shape: BoxShape.circle,
                                     ),
                                     child: const Icon(
                                       Icons.add_photo_alternate_rounded,
-                                      color: Colors.white,
+                                      color: AppColors.white,
                                       size: 26,
                                     ),
                                   ),
@@ -1411,7 +1411,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                                   const Text(
                                     'Add Startup Cover Banner',
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: AppColors.white,
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,
                                       letterSpacing: 0.3,
@@ -1421,7 +1421,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                                   Text(
                                     'Tap to choose: Gallery • Files • Presets • Camera',
                                     style: TextStyle(
-                                      color: Colors.white.withValues(alpha: 0.85),
+                                      color: AppColors.white.withValues(alpha: 0.85),
                                       fontSize: 10.5,
                                     ),
                                   ),
@@ -1437,7 +1437,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                   right: 12,
                   top: 12,
                   child: Material(
-                    color: Colors.transparent,
+                    color: AppColors.transparent,
                     child: InkWell(
                       onTap: _showCoverPicker,
                       borderRadius: BorderRadius.circular(20),
@@ -1447,10 +1447,10 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.65),
+                          color: AppColors.black.withValues(alpha: 0.65),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.3),
+                            color: AppColors.white.withValues(alpha: 0.3),
                             width: 1,
                           ),
                         ),
@@ -1458,12 +1458,12 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             const Icon(Icons.camera_alt_rounded,
-                                color: Colors.white, size: 14),
+                                color: AppColors.white, size: 14),
                             const SizedBox(width: 5),
                             Text(
                               _coverImageUrl != null ? 'Change Cover' : 'Add Cover',
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: AppColors.white,
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -1496,12 +1496,12 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                               width: 80,
                               height: 80,
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: AppColors.white,
                                 borderRadius: BorderRadius.circular(22),
-                                border: Border.all(color: Colors.white, width: 3.5),
+                                border: Border.all(color: AppColors.white, width: 3.5),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.16),
+                                    color: AppColors.black.withValues(alpha: 0.16),
                                     blurRadius: 10,
                                     offset: const Offset(0, 4),
                                   ),
@@ -1519,7 +1519,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                                       child: Icon(
                                         Icons.business_center_rounded,
                                         size: 38,
-                                        color: Color(0xFF6C5CE7),
+                                        color: AppColors.primary,
                                       ),
                                     ),
                             ),
@@ -1531,7 +1531,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                           right: 0,
                           bottom: 0,
                           child: Material(
-                            color: const Color(0xFF6C5CE7),
+                            color: AppColors.primary,
                             shape: const CircleBorder(),
                             elevation: 4,
                             child: InkWell(
@@ -1542,13 +1542,13 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                                 height: 36,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  border: Border.all(color: Colors.white, width: 2.5),
+                                  border: Border.all(color: AppColors.white, width: 2.5),
                                 ),
                                 child: const Center(
                                   child: Icon(
                                     Icons.edit_rounded,
                                     size: 17,
-                                    color: Colors.white,
+                                    color: AppColors.white,
                                   ),
                                 ),
                               ),
@@ -1769,7 +1769,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                     SizedBox(height: 4),
                     Text(
                       'Standards 2 & 3: Deal Terms, Valuation & Traction',
-                      style: TextStyle(fontSize: 12, color: Color(0xFF6C5CE7), fontWeight: FontWeight.w600),
+                      style: TextStyle(fontSize: 12, color: AppColors.primary, fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
@@ -1778,17 +1778,17 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEDE9FE),
+                  color: AppColors.primaryTint,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.verified_outlined, size: 14, color: Color(0xFF6D28D9)),
+                    Icon(Icons.verified_outlined, size: 14, color: AppColors.badgeReviewText),
                     SizedBox(width: 4),
                     Text(
                       'Global Standard',
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF6D28D9)),
+                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.badgeReviewText),
                     ),
                   ],
                 ),
@@ -1801,12 +1801,12 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.white,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.grey.shade200),
+              border: Border.all(color: AppColors.border),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.02),
+                  color: AppColors.black.withValues(alpha: 0.02),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -1817,14 +1817,14 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
               children: [
                 const Row(
                   children: [
-                    Icon(Icons.lightbulb_outline_rounded, color: Color(0xFFF59E0B), size: 20),
+                    Icon(Icons.lightbulb_outline_rounded, color: AppColors.warning, size: 20),
                     SizedBox(width: 8),
                     Text(
                       'The Pitch Narrative & Model',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF1E1E2D),
+                        color: AppColors.darkText,
                       ),
                     ),
                   ],
@@ -1904,12 +1904,12 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.white,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFF6C5CE7).withValues(alpha: 0.25)),
+              border: Border.all(color: AppColors.primary.withValues(alpha: 0.25)),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF6C5CE7).withValues(alpha: 0.04),
+                  color: AppColors.primary.withValues(alpha: 0.04),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -1920,14 +1920,14 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
               children: [
                 const Row(
                   children: [
-                    Icon(Icons.account_balance_rounded, color: Color(0xFF6C5CE7), size: 20),
+                    Icon(Icons.account_balance_rounded, color: AppColors.primary, size: 20),
                     SizedBox(width: 8),
                     Text(
                       'Fundraising Ask & Deal Terms',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF1E1E2D),
+                        color: AppColors.darkText,
                       ),
                     ),
                   ],
@@ -1935,7 +1935,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                 const SizedBox(height: 6),
                 Text(
                   'Specify your round target, valuation ceiling, and minimum ticket',
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
                 ),
                 const SizedBox(height: 16),
 
@@ -2050,12 +2050,12 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.white,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFF10B981).withValues(alpha: 0.3)),
+              border: Border.all(color: AppColors.success.withValues(alpha: 0.3)),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF10B981).withValues(alpha: 0.03),
+                  color: AppColors.success.withValues(alpha: 0.03),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -2066,14 +2066,14 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
               children: [
                 const Row(
                   children: [
-                    Icon(Icons.trending_up_rounded, color: Color(0xFF10B981), size: 22),
+                    Icon(Icons.trending_up_rounded, color: AppColors.success, size: 22),
                     SizedBox(width: 8),
                     Text(
                       'Traction & Key Growth Metrics',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF1E1E2D),
+                        color: AppColors.darkText,
                       ),
                     ),
                   ],
@@ -2081,7 +2081,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                 const SizedBox(height: 6),
                 Text(
                   'Verified quantitative proof that customers want your solution',
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
                 ),
                 const SizedBox(height: 16),
 
@@ -2098,7 +2098,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                           hintText: '12000',
                           prefixText: r'$ ',
                           suffixText: ' /mo',
-                          prefixIcon: Icon(Icons.paid_outlined, color: Color(0xFF10B981)),
+                          prefixIcon: Icon(Icons.paid_outlined, color: AppColors.success),
                           border: OutlineInputBorder(),
                           helperText: 'Numbers only',
                         ),
@@ -2117,7 +2117,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                           labelText: 'MoM Growth Rate *',
                           hintText: '18',
                           suffixText: ' % MoM',
-                          prefixIcon: Icon(Icons.auto_graph_rounded, color: Color(0xFF10B981)),
+                          prefixIcon: Icon(Icons.auto_graph_rounded, color: AppColors.success),
                           border: OutlineInputBorder(),
                           helperText: 'Numbers only',
                         ),
@@ -2136,7 +2136,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                   decoration: const InputDecoration(
                     labelText: 'Active Users / Clients Traction *',
                     hintText: 'e.g. 15,000+ Monthly Active Users or 32 Paid Enterprise Clients',
-                    prefixIcon: Icon(Icons.people_alt_outlined, color: Color(0xFF10B981)),
+                    prefixIcon: Icon(Icons.people_alt_outlined, color: AppColors.success),
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -2167,7 +2167,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
           const SizedBox(height: 8),
           Text(
             'Investors bet on teams and verified traction. Add key co-founders and demo materials.',
-            style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+            style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
           ),
           const SizedBox(height: 20),
 
@@ -2218,7 +2218,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                 child: Text(
                   'No team members added yet. Add co-founders to increase your credibility with investors.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey, fontSize: 13),
+                  style: TextStyle(color: AppColors.textMuted, fontSize: 13),
                 ),
               ),
             )
@@ -2285,7 +2285,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                       SizedBox(height: 2),
                       Text(
                         'pitch_deck_v1.pdf (Attached & Ready)',
-                        style: TextStyle(color: Colors.grey, fontSize: 12),
+                        style: TextStyle(color: AppColors.textMuted, fontSize: 12),
                       ),
                     ],
                   ),
@@ -2346,7 +2346,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                 onPressed: _onNextStep,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isLastStep
-                      ? (isEditing ? AppColors.blue : Colors.green)
+                      ? (isEditing ? AppColors.blue : AppColors.success)
                       : AppColors.navy,
                   foregroundColor: AppColors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),

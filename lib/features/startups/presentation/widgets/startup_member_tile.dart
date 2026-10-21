@@ -84,7 +84,7 @@ class StartupMemberTile extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
-                    color: Colors.grey.shade700,
+                    color: AppColors.textSecondary,
                   ),
                 ),
                 if (member.bio != null && member.bio!.isNotEmpty) ...[
@@ -93,7 +93,7 @@ class StartupMemberTile extends StatelessWidget {
                     member.bio!,
                     style: TextStyle(
                       fontSize: 11,
-                      color: Colors.grey.shade600,
+                      color: AppColors.textSecondary,
                     ),
                   ),
                 ],
@@ -107,7 +107,7 @@ class StartupMemberTile extends StatelessWidget {
                 if (onEditPressed != null)
                   IconButton(
                     icon: const Icon(Icons.edit_outlined,
-                        color: Color(0xFF6C5CE7), size: 20),
+                        color: AppColors.primary, size: 20),
                     tooltip: 'Edit Member',
                     visualDensity: VisualDensity.compact,
                     onPressed: onEditPressed,
@@ -115,7 +115,7 @@ class StartupMemberTile extends StatelessWidget {
                 if (onDeletePressed != null)
                   IconButton(
                     icon: const Icon(Icons.delete_outline_rounded,
-                        color: Colors.redAccent, size: 20),
+                        color: AppColors.error, size: 20),
                     tooltip: 'Remove Member',
                     visualDensity: VisualDensity.compact,
                     onPressed: onDeletePressed,
