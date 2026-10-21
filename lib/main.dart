@@ -17,6 +17,7 @@ import 'features/home/presentation/bloc/feed_event.dart';
 import 'features/home/presentation/pages/home_page.dart';
 import 'features/home/presentation/pages/messages_page.dart';
 import 'features/home/presentation/pages/notifications_page.dart';
+import 'features/profile/presentation/pages/profile_page.dart';
 import 'features/splash/presentation/bloc/splash_bloc.dart';
 import 'features/splash/presentation/pages/splash_screen.dart';
 import 'features/startups/presentation/pages/my_startups_page.dart';
@@ -63,6 +64,7 @@ class FikratyApp extends StatelessWidget {
         AppRoutes.forgotPassword: (_) => const ForgotPasswordPage(),
         AppRoutes.resetPassword: (_) => const ResetPasswordPage(),
         AppRoutes.home: (_) => const HomeScreen(),
+        AppRoutes.profile: (_) => const ProfilePage(),
         AppRoutes.myStartups: (_) => const MyStartupsPage(),
         AppRoutes.startupWizard: (_) => const StartupWizardPage(),
         AppRoutes.notifications: (_) => const NotificationsPage(),

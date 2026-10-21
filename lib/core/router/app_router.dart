@@ -8,6 +8,7 @@ abstract final class AppRoutes {
   static const forgotPassword = '/forgot-password';
   static const resetPassword = '/reset-password';
   static const home = '/home';
+  static const profile = '/profile';
   static const myStartups = '/my-startups';
   static const startupWizard = '/startup-wizard';
   static const notifications = '/notifications';

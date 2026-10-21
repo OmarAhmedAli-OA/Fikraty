@@ -385,9 +385,13 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
     );
 
     final isEditing = widget.initialStartup != null;
-    context
-        .read<StartupsBloc>()
-        .add(SaveStartupEvent(startupToSave, isEditing: isEditing));
+    try {
+      context
+          .read<StartupsBloc>()
+          .add(SaveStartupEvent(startupToSave, isEditing: isEditing));
+    } catch (e) {
+      debugPrint('StartupsBloc error or not in context: ');
+    }
     Navigator.pop(context, startupToSave);
   }
 

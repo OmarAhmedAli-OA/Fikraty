@@ -91,4 +91,12 @@ abstract final class AppColors {
   static const Color lightSurface = background;
   static const Color ink = darkText;
   static const Color accent = primaryLight;
+  static const Color primaryDark = Color(0xFF3F35B5);
+  static const Color accentPurple = Color(0xFF8B5CF6);
+  static const Color cardSurface = surface;
+  static const Color cardBorder = border;
+  static const Color grayBackground = background;
+  static const Color textPrimary = darkText;
+  static const Color textBody = Color(0xFF3A3A50);
+  static const Color successDark = Color(0xFF00A979);
 }
