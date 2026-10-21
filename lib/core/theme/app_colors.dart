@@ -24,9 +24,7 @@ abstract final class AppColors {
   static const Color chipText = Color(0xFF404060);
 
   // States & Badges
-  static const Color selectionTint = Color(
-    0xFFEEF0FF,
-  ); // Light Purple Active Tint
+  static const Color selectionTint = Color(0xFFEEF0FF); // Light Purple Active Tint
   static const Color error = Color(0xFFEF4444); // Red Error
   static const Color warning = Color(0xFFF59E0B); // Amber Warning
   static const Color success = Color(0xFF00C48C); // Green Success
