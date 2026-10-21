@@ -427,19 +427,23 @@ abstract final class Validators {
   // =========================================================================
   // 5. FOUNDER / ENTREPRENEUR VALIDATION
   // =========================================================================
-  /// Validates professional title: required, 2-80 characters.
-  static String? professionalTitle(String? value) {
+  /// Validates professional title: optional by default, 2-80 characters when provided.
+  static String? professionalTitle(String? value, {bool isRequired = false}) {
     final trimmed = value?.trim() ?? '';
-    if (trimmed.isEmpty) return 'Current professional title is required.';
+    if (trimmed.isEmpty) {
+      return isRequired ? 'Current professional title is required.' : null;
+    }
     if (trimmed.length < 2) return 'Professional title must be at least 2 characters.';
     if (trimmed.length > 80) return 'Professional title cannot exceed 80 characters.';
     return null;
   }
 
-  /// Validates founder personal bio: required, 15-240 characters.
-  static String? bio(String? value) {
+  /// Validates founder personal bio: optional by default, 15-240 characters when provided.
+  static String? bio(String? value, {bool isRequired = false}) {
     final trimmed = value?.trim() ?? '';
-    if (trimmed.isEmpty) return 'Personal bio is required.';
+    if (trimmed.isEmpty) {
+      return isRequired ? 'Personal bio is required.' : null;
+    }
     if (trimmed.length < 15) return 'Bio must be at least 15 characters.';
     if (trimmed.length > 240) return 'Bio cannot exceed 240 characters.';
     return null;
@@ -484,12 +488,14 @@ abstract final class Validators {
   }
 
   /// Validates areas of expertise against predefined supported tags or valid custom tags.
+  /// Optional by default (`isRequired = false`), allowing normal users to register without selecting expertise.
   static String? founderExpertise(
     Iterable<String>? selected, [
     List<String> allowedOptions = defaultExpertiseOptions,
+    bool isRequired = false,
   ]) {
     if (selected == null || selected.isEmpty) {
-      return 'Please select at least one area of expertise.';
+      return isRequired ? 'Please select at least one area of expertise.' : null;
     }
     for (final tag in selected) {
       if (!allowedOptions.contains(tag)) {

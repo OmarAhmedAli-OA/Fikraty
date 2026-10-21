@@ -117,6 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final expertiseError = Validators.founderExpertise(
         _selectedExpertise,
         _expertiseOptions,
+        false,
       );
       if (expertiseError != null) {
         setState(() => _localError = expertiseError);
@@ -190,9 +191,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final profile = UserProfileData(
       fullName: _fullNameController.text.trim(),
       professionalTitle: _selectedRole == UserRole.entrepreneur
-          ? _professionalTitleController.text.trim()
+          ? (_professionalTitleController.text.trim().isEmpty
+              ? null
+              : _professionalTitleController.text.trim())
           : 'Investor',
-      bio: _selectedRole == UserRole.entrepreneur ? _bioController.text.trim() : null,
+      bio: _selectedRole == UserRole.entrepreneur
+          ? (_bioController.text.trim().isEmpty ? null : _bioController.text.trim())
+          : null,
       location: _locationController.text.trim(),
       cityCode: _locationController.text.trim(),
       linkedinUrl: _linkedInController.text.trim(),
@@ -682,7 +687,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isEntrepreneur ? 'PROFESSIONAL BACKGROUND' : 'INVESTMENT THESIS',
+                  isEntrepreneur ? 'PROFESSIONAL BACKGROUND (OPTIONAL)' : 'INVESTMENT THESIS',
                   style: TextStyle(
                     fontSize: 11.5,
                     fontWeight: FontWeight.w800,
@@ -693,7 +698,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 4),
                 Text(
                   isEntrepreneur
-                      ? 'No startup information is requested during signup.'
+                      ? 'Optional background details. You can join Fikraty without professional experience.'
                       : 'Only the essentials used to personalize your deal flow.',
                   style: const TextStyle(fontSize: 11.5, color: AppColors.tertiaryText),
                 ),
@@ -703,16 +708,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
           // Role-specific sections
           if (isEntrepreneur) ...[
-            _buildFieldLabel('CURRENT PROFESSIONAL TITLE'),
+            _buildFieldLabel('CURRENT PROFESSIONAL TITLE (OPTIONAL)'),
             _buildTextField(
               controller: _professionalTitleController,
-              hint: 'Product Lead, Engineer, Founder',
+              hint: 'Product Lead, Engineer, Founder (Optional)',
               colors: colors,
-              validator: Validators.professionalTitle,
+              validator: (v) => Validators.professionalTitle(v, isRequired: false),
             ),
             const SizedBox(height: 16),
 
-            _buildFieldLabel('AREAS OF EXPERTISE (SELECT AT LEAST 1)'),
+            _buildFieldLabel('AREAS OF EXPERTISE (OPTIONAL)'),
             _buildChipGroup(
               options: _expertiseOptions,
               selected: _selectedExpertise,
@@ -746,15 +751,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             const SizedBox(height: 16),
 
-            _buildFieldLabel('SHORT PERSONAL BIO (15 - 240 CHARS)'),
+            _buildFieldLabel('SHORT PERSONAL BIO (OPTIONAL, 15 - 240 CHARS)'),
             TextFormField(
               controller: _bioController,
               maxLines: 3,
               maxLength: 240,
-              validator: Validators.bio,
+              validator: (v) => Validators.bio(v, isRequired: false),
               style: const TextStyle(fontSize: 14, color: AppColors.darkText),
               decoration: _inputDecoration(
-                hint: 'Share your professional background and startup interests.',
+                hint: 'Share your professional background and startup interests (Optional).',
                 colors: colors,
               ),
             ),
