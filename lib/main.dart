@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'core/theme/app_theme.dart';
+import 'features/startups/presentation/pages/my_startups_page.dart';
 
 void main() {
   runApp(const FikratyApp());
@@ -12,15 +14,8 @@ class FikratyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Fikraty',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1F3A6E),
-          brightness: Brightness.light,
-        ),
-        scaffoldBackgroundColor: const Color(0xFFFAFBFD),
-      ),
-      home: const FikratyHomePage(),
+      theme: lightTheme,
+      home: const MyStartupsPage(),
     );
   }
 }
