@@ -5,13 +5,16 @@ import 'core/router/app_router.dart';
 import 'core/services/dependency_injection.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
-import 'features/auth/presentation/bloc/auth_event.dart';
-import 'features/auth/presentation/bloc/auth_state.dart';
 import 'features/auth/presentation/pages/forgot_password_page.dart';
 import 'features/auth/presentation/pages/onboarding_page.dart';
 import 'features/auth/presentation/pages/reset_password_page.dart';
 import 'features/auth/presentation/pages/sign_in_page.dart';
 import 'features/auth/presentation/pages/sign_up_page.dart';
+import 'features/home/data/datasources/feed_local_data_source.dart';
+import 'features/home/data/repositories/feed_repository_impl.dart';
+import 'features/home/presentation/bloc/feed_bloc.dart';
+import 'features/home/presentation/bloc/feed_event.dart';
+import 'features/home/presentation/pages/home_page.dart';
 import 'features/splash/presentation/bloc/splash_bloc.dart';
 import 'features/splash/presentation/pages/splash_screen.dart';
 import 'features/startups/presentation/pages/my_startups_page.dart';
@@ -22,6 +25,13 @@ void main() {
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>()),
+        BlocProvider<FeedBloc>(
+          create: (_) => FeedBloc(
+            feedRepository: FeedRepositoryImpl(
+              localDataSource: FeedLocalDataSourceImpl(),
+            ),
+          )..add(const LoadFeedEvent()),
+        ),
       ],
       child: const FikratyApp(),
     ),
@@ -50,7 +60,6 @@ class FikratyApp extends StatelessWidget {
         AppRoutes.forgotPassword: (_) => const ForgotPasswordPage(),
         AppRoutes.resetPassword: (_) => const ResetPasswordPage(),
         AppRoutes.home: (_) => const FikratyHomePage(),
-        '/startups': (_) => const MyStartupsPage(),
         // Keep legacy route names working while other features are integrated.
         '/login': (_) => const SignInScreen(),
         '/register': (_) => const SignUpScreen(),
@@ -128,13 +137,11 @@ class FikratyHomePage extends StatelessWidget {
                 ],
                 const SizedBox(height: 28),
                 FilledButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const MyStartupsPage()),
-                    );
-                  },
+                  onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Home screen integration is the next phase.')),
+                  ),
                   icon: const Icon(Icons.rocket_launch_rounded),
-                  label: const Text('Go to My Startups'),
+                  label: const Text('Get Started'),
                 ),
               ],
             ),
