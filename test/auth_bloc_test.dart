@@ -116,4 +116,27 @@ void main() {
     expect(user.investor?.preferredStages.single.code, 'MVP');
     expect(user.investor?.providesSmartMoney, isTrue);
   });
+
+  test('registers an entrepreneur without professional background (normal user flow)', () async {
+    final registration = RegistrationData(
+      email: 'normal.user@gmail.com',
+      password: 'Secure-demo-password-123',
+      role: UserRole.entrepreneur,
+      phone: '01599887766',
+      profile: const UserProfileData(
+        fullName: 'Omar Ali',
+        professionalTitle: null,
+        bio: null,
+        expertise: [],
+        location: 'Cairo, Egypt',
+      ),
+    );
+
+    final user = await dataSource.signUp(registration);
+    expect(user.role, UserRole.entrepreneur);
+    expect(user.profile.fullName, 'Omar Ali');
+    expect(user.profile.professionalTitle, isNull);
+    expect(user.profile.bio, isNull);
+    expect(user.profile.expertise, isEmpty);
+  });
 }

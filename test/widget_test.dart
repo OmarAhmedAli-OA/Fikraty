@@ -269,16 +269,23 @@ void main() {
   // 5. FOUNDER / ENTREPRENEUR VALIDATION
   // =========================================================================
   group('Founder Validators', () {
-    test('professionalTitle requires 2-80 characters', () {
+    test('professionalTitle is optional by default and enforces 2-80 characters when provided', () {
+      expect(Validators.professionalTitle(''), isNull);
+      expect(Validators.professionalTitle(null), isNull);
+      expect(Validators.professionalTitle('   '), isNull);
       expect(Validators.professionalTitle('Founder & CEO'), isNull);
       expect(Validators.professionalTitle('CTO'), isNull);
-      expect(Validators.professionalTitle(''), equals('Current professional title is required.'));
+      expect(Validators.professionalTitle('', isRequired: true), equals('Current professional title is required.'));
       expect(Validators.professionalTitle('A'), equals('Professional title must be at least 2 characters.'));
       final longTitle = List<String>.filled(81, 'a').join();
       expect(Validators.professionalTitle(longTitle), equals('Professional title cannot exceed 80 characters.'));
     });
 
-    test('bio requires 15-240 characters', () {
+    test('bio is optional by default and enforces 15-240 characters when provided', () {
+      expect(Validators.bio(''), isNull);
+      expect(Validators.bio(null), isNull);
+      expect(Validators.bio('   '), isNull);
+      expect(Validators.bio('', isRequired: true), equals('Personal bio is required.'));
       expect(Validators.bio('Experienced startup founder focusing on FinTech and AI innovations.'), isNull);
       expect(Validators.bio('123456789012345'), isNull); // 15 chars boundary
       expect(Validators.bio('Short bio'), equals('Bio must be at least 15 characters.'));
@@ -286,11 +293,15 @@ void main() {
       expect(Validators.bio(longBio), equals('Bio cannot exceed 240 characters.'));
     });
 
-    test('founderExpertise validates predefined and valid custom options', () {
+    test('founderExpertise is optional by default and validates predefined and custom options when provided', () {
+      expect(Validators.founderExpertise([]), isNull);
+      expect(Validators.founderExpertise(null), isNull);
+      expect(
+        Validators.founderExpertise([], Validators.defaultExpertiseOptions, true),
+        equals('Please select at least one area of expertise.'),
+      );
       expect(Validators.founderExpertise(['Product', 'Engineering']), isNull);
       expect(Validators.founderExpertise(['Product', 'AI Research']), isNull); // Valid custom tag
-      expect(Validators.founderExpertise([]), equals('Please select at least one area of expertise.'));
-      expect(Validators.founderExpertise(null), equals('Please select at least one area of expertise.'));
       expect(
         Validators.founderExpertise(['Legal<script>']),
         equals('Expertise tag contains invalid characters (letters, numbers, and hyphens only).'),
