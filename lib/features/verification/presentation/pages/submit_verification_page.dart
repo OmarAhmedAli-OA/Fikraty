@@ -19,7 +19,6 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
   final _formKey = GlobalKey<FormState>();
   final _regNumberController = TextEditingController();
   final _notesController = TextEditingController();
-  final _customDocTypeController = TextEditingController();
 
   String _selectedDocType = 'Commercial Register (Official)';
   bool _fileAttached = false;
@@ -28,19 +27,12 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
   final List<String> _docTypes = [
     'Commercial Register (Official)',
     'Tax Identification Card',
-    'Operating / Trade License',
-    'Articles of Incorporation / Association',
-    'Chamber of Commerce Certificate',
-    'Patent / Intellectual Property Certificate',
-    'National ID / Passport of Authorized Founder',
-    'Other (Specify Custom Document)',
   ];
 
   @override
   void dispose() {
     _regNumberController.dispose();
     _notesController.dispose();
-    _customDocTypeController.dispose();
     super.dispose();
   }
 
@@ -193,16 +185,10 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
       return;
     }
 
-    final finalDocType = _selectedDocType == 'Other (Specify Custom Document)'
-        ? (_customDocTypeController.text.trim().isNotEmpty
-            ? _customDocTypeController.text.trim()
-            : 'Custom Legal Document')
-        : _selectedDocType;
-
     context.read<StartupsBloc>().add(
           SubmitVerificationEvent(
             startupId: widget.startup.id,
-            documentType: finalDocType,
+            documentType: _selectedDocType,
             registrationNumber: _regNumberController.text.trim(),
             note: _notesController.text.trim(),
           ),
@@ -352,6 +338,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
               // Document Type Dropdown
               DropdownButtonFormField<String>(
                 initialValue: _selectedDocType,
+                isExpanded: true,
                 decoration: const InputDecoration(
                   labelText: 'Document Type *',
                   border: OutlineInputBorder(),
@@ -359,29 +346,16 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
                       Icon(Icons.description_rounded, color: AppColors.navy),
                 ),
                 items: _docTypes
-                    .map((d) => DropdownMenuItem(value: d, child: Text(d)))
+                    .map((d) => DropdownMenuItem(
+                          value: d,
+                          child: Text(
+                            d,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ))
                     .toList(),
                 onChanged: (v) => setState(() => _selectedDocType = v!),
               ),
-
-              // Dynamic Custom Document Field if "Other" is chosen
-              if (_selectedDocType == 'Other (Specify Custom Document)') ...[
-                const SizedBox(height: 12),
-                TextFormField(
-                  controller: _customDocTypeController,
-                  decoration: const InputDecoration(
-                    labelText: 'Specify Document Type / Verification Info *',
-                    hintText: 'e.g. Freezone License, Municipal Permit, Shareholder Agreement...',
-                    prefixIcon: Icon(Icons.edit_note_rounded, color: AppColors.navy),
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (v) => (_selectedDocType ==
-                              'Other (Specify Custom Document)' &&
-                          (v == null || v.trim().isEmpty))
-                      ? 'Please specify your document type'
-                      : null,
-                ),
-              ],
 
               const SizedBox(height: 16),
 
@@ -497,21 +471,24 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
               const SizedBox(height: 30),
 
               // Submit Button
-              SizedBox(
-                height: 52,
-                child: ElevatedButton.icon(
-                  onPressed: _submit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.navy,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+              SafeArea(
+                top: false,
+                child: SizedBox(
+                  height: 52,
+                  child: ElevatedButton.icon(
+                    onPressed: _submit,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.navy,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                     ),
-                  ),
-                  icon: const Icon(Icons.send_rounded),
-                  label: const Text(
-                    'Submit Verification Request',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    icon: const Icon(Icons.send_rounded),
+                    label: const Text(
+                      'Submit Verification Request',
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),

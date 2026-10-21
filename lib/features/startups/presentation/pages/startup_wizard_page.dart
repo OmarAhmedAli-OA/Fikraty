@@ -59,6 +59,31 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
 
   final _step1FormKey = GlobalKey<FormState>();
   final _step2FormKey = GlobalKey<FormState>();
+  final _step3FormKey = GlobalKey<FormState>();
+
+  String? _validateUrl(String? value, String fieldName, {bool isRequired = false}) {
+    final trimmed = value?.trim() ?? '';
+    if (trimmed.isEmpty) {
+      if (isRequired) return '$fieldName is required';
+      return null;
+    }
+
+    final urlRegex = RegExp(
+      r'^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$',
+      caseSensitive: false,
+    );
+    if (!urlRegex.hasMatch(trimmed)) {
+      return 'Please enter a valid link (e.g. https://example.com)';
+    }
+
+    if (trimmed.contains('://') &&
+        !trimmed.toLowerCase().startsWith('http://') &&
+        !trimmed.toLowerCase().startsWith('https://')) {
+      return 'Link must start with http:// or https://';
+    }
+
+    return null;
+  }
 
   final List<String> _industryOptions = [
     'FinTech',
@@ -283,6 +308,8 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
       if (!_step1FormKey.currentState!.validate()) return;
     } else if (_currentStep == 1) {
       if (!_step2FormKey.currentState!.validate()) return;
+    } else if (_currentStep == 2) {
+      if (!_step3FormKey.currentState!.validate()) return;
     }
 
     if (_currentStep < 2) {
@@ -1208,7 +1235,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
   Widget _buildStepProgress() {
     return Container(
       color: AppColors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       child: Row(
         children: [
           _buildStepIndicator(
@@ -1246,30 +1273,32 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
       child: Column(
         children: [
           CircleAvatar(
-            radius: 16,
+            radius: 15,
             backgroundColor: isCompleted
                 ? Colors.green
                 : (isActive ? AppColors.navy : AppColors.tint),
             child: isCompleted
-                ? const Icon(Icons.check, size: 16, color: Colors.white)
+                ? const Icon(Icons.check, size: 15, color: Colors.white)
                 : Text(
                     '${stepIndex + 1}',
                     style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: isActive ? Colors.white : Colors.grey,
                     ),
                   ),
           ),
-          const SizedBox(height: 6),
-          Text(
-            title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-              color: isActive ? AppColors.navy : Colors.grey,
+          const SizedBox(height: 5),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              title,
+              maxLines: 1,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                color: isActive ? AppColors.navy : Colors.grey.shade700,
+              ),
             ),
           ),
         ],
@@ -1279,7 +1308,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
 
   Widget _buildStepConnector({required bool isCompleted}) {
     return Container(
-      width: 25,
+      width: 14,
       height: 2,
       margin: const EdgeInsets.only(bottom: 20),
       color: isCompleted ? Colors.green : AppColors.tint,
@@ -1573,6 +1602,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
               Expanded(
                 child: DropdownButtonFormField<int>(
                   initialValue: _foundedYear,
+                  isExpanded: true,
                   decoration: const InputDecoration(
                     labelText: 'Founded Year *',
                     prefixIcon: Icon(Icons.calendar_today_rounded,
@@ -1591,6 +1621,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
               Expanded(
                 child: DropdownButtonFormField<String>(
                   initialValue: _selectedStage,
+                  isExpanded: true,
                   decoration: const InputDecoration(
                     labelText: 'Growth Stage *',
                     prefixIcon:
@@ -1599,7 +1630,13 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                   ),
                   items: _stageOptions
                       .map((stg) =>
-                          DropdownMenuItem(value: stg, child: Text(stg)))
+                          DropdownMenuItem(
+                            value: stg,
+                            child: Text(
+                              stg,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ))
                       .toList(),
                   onChanged: (v) => setState(() => _selectedStage = v!),
                 ),
@@ -1611,13 +1648,20 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
           // Industry Dropdown
           DropdownButtonFormField<String>(
             initialValue: _selectedIndustry,
+            isExpanded: true,
             decoration: const InputDecoration(
               labelText: 'Industry Sector *',
               prefixIcon: Icon(Icons.category_rounded, color: AppColors.navy),
               border: OutlineInputBorder(),
             ),
             items: _industryOptions
-                .map((ind) => DropdownMenuItem(value: ind, child: Text(ind)))
+                .map((ind) => DropdownMenuItem(
+                      value: ind,
+                      child: Text(
+                        ind,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ))
                 .toList(),
             onChanged: (v) => setState(() => _selectedIndustry = v!),
           ),
@@ -1692,6 +1736,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
               prefixIcon: Icon(Icons.language_rounded, color: AppColors.navy),
               border: OutlineInputBorder(),
             ),
+            validator: (v) => _validateUrl(v, 'Official Website URL'),
           ),
         ],
       ),
@@ -1709,24 +1754,27 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Step 2: The Pitch & Investment Deal',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.navy,
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Step 2: The Pitch & Investment Deal',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.navy,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Standards 2 & 3: Deal Terms, Valuation & Traction',
-                    style: TextStyle(fontSize: 12, color: Color(0xFF6C5CE7), fontWeight: FontWeight.w600),
-                  ),
-                ],
+                    SizedBox(height: 4),
+                    Text(
+                      'Standards 2 & 3: Deal Terms, Valuation & Traction',
+                      style: TextStyle(fontSize: 12, color: Color(0xFF6C5CE7), fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
@@ -1916,13 +1964,20 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                     Expanded(
                       child: DropdownButtonFormField<String>(
                         initialValue: _selectedFundingRound,
+                        isExpanded: true,
                         decoration: const InputDecoration(
                           labelText: 'Funding Round *',
                           prefixIcon: Icon(Icons.stars_rounded, color: AppColors.navy),
                           border: OutlineInputBorder(),
                         ),
                         items: _fundingRoundOptions
-                            .map((r) => DropdownMenuItem(value: r, child: Text(r)))
+                            .map((r) => DropdownMenuItem(
+                                  value: r,
+                                  child: Text(
+                                    r,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ))
                             .toList(),
                         onChanged: (v) => setState(() => _selectedFundingRound = v!),
                       ),
@@ -2096,150 +2151,159 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
 
   // STEP 3: Team, Demo & Pitch Deck
   Widget _buildStep3TeamAndMedia() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Text(
-          'Step 3: Team, Demo & Pitch Deck',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: AppColors.navy,
+    return Form(
+      key: _step3FormKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Step 3: Team, Demo & Pitch Deck',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: AppColors.navy,
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Investors bet on teams and verified traction. Add key co-founders and demo materials.',
-          style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
-        ),
-        const SizedBox(height: 20),
-
-        // Team Members List
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Co-Founders & Core Team (${_members.length})',
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: AppColors.ink,
-              ),
-            ),
-            ElevatedButton.icon(
-              onPressed: _showAddMemberDialog,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.navy,
-                foregroundColor: AppColors.white,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              icon: const Icon(Icons.add, size: 16),
-              label: const Text('Add Member'),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-
-        if (_members.isEmpty)
-          Container(
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.tint),
-            ),
-            child: const Center(
-              child: Text(
-                'No team members added yet. Add co-founders to increase your credibility with investors.',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey, fontSize: 13),
-              ),
-            ),
-          )
-        else
-          ..._members.asMap().entries.map((entry) {
-            final idx = entry.key;
-            final m = entry.value;
-            return StartupMemberTile(
-              member: m,
-              onEditPressed: () => _showEditMemberDialog(idx, m),
-              onDeletePressed: () {
-                setState(() => _members.removeAt(idx));
-              },
-            );
-          }),
-
-        const SizedBox(height: 22),
-
-        // Demo URL
-        TextFormField(
-          controller: _demoUrlController,
-          keyboardType: TextInputType.url,
-          decoration: const InputDecoration(
-            labelText: 'Product Demo URL (Loom, YouTube, Figma prototype)',
-            hintText: 'https://...',
-            prefixIcon:
-                Icon(Icons.play_circle_outline_rounded, color: AppColors.navy),
-            border: OutlineInputBorder(),
+          const SizedBox(height: 8),
+          Text(
+            'Investors bet on teams and verified traction. Add key co-founders and demo materials.',
+            style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
           ),
-        ),
-        const SizedBox(height: 18),
+          const SizedBox(height: 20),
 
-        // Pitch Deck Container
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppColors.blue.withValues(alpha: 0.3)),
-          ),
-          child: Row(
+          // Team Members List
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: AppColors.tint,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(Icons.picture_as_pdf_rounded,
-                    color: AppColors.navy),
-              ),
-              const SizedBox(width: 14),
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Pitch Deck (PDF)',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 14),
-                    ),
-                    SizedBox(height: 2),
-                    Text(
-                      'pitch_deck_v1.pdf (Attached & Ready)',
-                      style: TextStyle(color: Colors.grey, fontSize: 12),
-                    ),
-                  ],
+              Expanded(
+                child: Text(
+                  'Co-Founders & Core Team (${_members.length})',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.ink,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Pitch deck document updated!')),
-                  );
-                },
-                child: const Text('Change'),
+              const SizedBox(width: 8),
+              ElevatedButton.icon(
+                onPressed: _showAddMemberDialog,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.navy,
+                  foregroundColor: AppColors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                icon: const Icon(Icons.add, size: 16),
+                label: const Text('Add Member'),
               ),
             ],
           ),
-        ),
-      ],
+          const SizedBox(height: 12),
+
+          if (_members.isEmpty)
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.tint),
+              ),
+              child: const Center(
+                child: Text(
+                  'No team members added yet. Add co-founders to increase your credibility with investors.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey, fontSize: 13),
+                ),
+              ),
+            )
+          else
+            ..._members.asMap().entries.map((entry) {
+              final idx = entry.key;
+              final m = entry.value;
+              return StartupMemberTile(
+                member: m,
+                onEditPressed: () => _showEditMemberDialog(idx, m),
+                onDeletePressed: () {
+                  setState(() => _members.removeAt(idx));
+                },
+              );
+            }),
+
+          const SizedBox(height: 22),
+
+          // Demo URL
+          TextFormField(
+            controller: _demoUrlController,
+            keyboardType: TextInputType.url,
+            decoration: const InputDecoration(
+              labelText: 'Product Demo URL (Loom, YouTube, Figma prototype)',
+              hintText: 'https://...',
+              prefixIcon:
+                  Icon(Icons.play_circle_outline_rounded, color: AppColors.navy),
+              border: OutlineInputBorder(),
+            ),
+            validator: (v) => _validateUrl(v, 'Product Demo URL'),
+          ),
+          const SizedBox(height: 18),
+
+          // Pitch Deck Container
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: AppColors.blue.withValues(alpha: 0.3)),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: AppColors.tint,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.picture_as_pdf_rounded,
+                      color: AppColors.navy),
+                ),
+                const SizedBox(width: 14),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Pitch Deck (PDF)',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        'pitch_deck_v1.pdf (Attached & Ready)',
+                        style: TextStyle(color: Colors.grey, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Pitch deck document updated!')),
+                    );
+                  },
+                  child: const Text('Change'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -2247,61 +2311,67 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
     final isLastStep = _currentStep == 2;
     final isEditing = widget.initialStartup != null;
 
-    return Container(
-      color: AppColors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-      child: Row(
-        children: [
-          if (_currentStep > 0)
+    return SafeArea(
+      top: false,
+      child: Container(
+        color: AppColors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            if (_currentStep > 0)
+              Expanded(
+                flex: 1,
+                child: OutlinedButton(
+                  onPressed: _onPreviousStep,
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    side: const BorderSide(color: AppColors.navy),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    'Back',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.navy,
+                    ),
+                  ),
+                ),
+              ),
+            if (_currentStep > 0) const SizedBox(width: 10),
             Expanded(
-              flex: 1,
-              child: OutlinedButton(
-                onPressed: _onPreviousStep,
-                style: OutlinedButton.styleFrom(
+              flex: 2,
+              child: ElevatedButton(
+                onPressed: _onNextStep,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isLastStep
+                      ? (isEditing ? AppColors.blue : Colors.green)
+                      : AppColors.navy,
+                  foregroundColor: AppColors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
-                  side: const BorderSide(color: AppColors.navy),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
-                  'Back',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.navy,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    isLastStep
+                        ? (isEditing
+                            ? 'Update Startup Profile'
+                            : 'Complete & Launch Startup')
+                        : 'Next: ${(_currentStep == 0) ? "The Pitch & Deal" : "Team & Media"} ->',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
                   ),
                 ),
               ),
             ),
-          if (_currentStep > 0) const SizedBox(width: 12),
-          Expanded(
-            flex: 2,
-            child: ElevatedButton(
-              onPressed: _onNextStep,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isLastStep
-                    ? (isEditing ? AppColors.blue : Colors.green)
-                    : AppColors.navy,
-                foregroundColor: AppColors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: Text(
-                isLastStep
-                    ? (isEditing
-                        ? 'Update Startup Profile'
-                        : 'Complete & Launch Startup Profile')
-                    : 'Next: ${(_currentStep == 0) ? "The Pitch & Deal" : "Team & Media"} ->',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
