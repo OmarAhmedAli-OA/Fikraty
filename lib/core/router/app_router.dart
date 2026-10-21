@@ -1,5 +1,6 @@
 /// Central route names used by the app. Keep feature pages out of core widgets;
 /// this file only owns navigation identifiers.
+
 abstract final class AppRoutes {
   static const splash = '/';
   static const onboarding = '/onboarding';
