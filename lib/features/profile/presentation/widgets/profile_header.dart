@@ -3,6 +3,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/constants/countries.dart';
 import '../../domain/entities/user_profile.dart';
 import 'country_picker_bottom_sheet.dart';
+import '../../../startups/presentation/widgets/custom_startup_image.dart';
 
 class ProfileHeader extends StatelessWidget {
   final UserProfile profile;
@@ -45,6 +46,13 @@ class ProfileHeader extends StatelessWidget {
                   end: Alignment.bottomRight,
                 ),
               ),
+              child: profile.coverUrl.isNotEmpty
+                  ? CustomStartupImage(
+                      imagePath: profile.coverUrl,
+                      fit: BoxFit.cover,
+                      placeholder: const SizedBox.shrink(),
+                    )
+                  : null,
             ),
             // Avatar
             Positioned(
@@ -69,10 +77,10 @@ class ProfileHeader extends StatelessWidget {
                     ),
                     clipBehavior: Clip.antiAlias,
                     child: profile.photoUrl.isNotEmpty
-                        ? Image.network(
-                            profile.photoUrl,
+                        ? CustomStartupImage(
+                            imagePath: profile.photoUrl,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, _, _) => Center(
+                            placeholder: Center(
                               child: Text(
                                 initials,
                                 style: const TextStyle(

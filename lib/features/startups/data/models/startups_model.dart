@@ -73,6 +73,7 @@ class StartupModel extends StartupEntity {
     super.useOfFunds = '45% Product & Tech, 35% Marketing, 20% Operations',
     super.activeUsers = '15,000+',
     super.monthlyRevenue = r'$12,000/mo',
+    super.pitchDeckUrl,
   });
 
   factory StartupModel.fromJson(Map<String, dynamic> json) {
@@ -147,6 +148,7 @@ class StartupModel extends StartupEntity {
       'use_of_funds': useOfFunds,
       'active_users': activeUsers,
       'monthly_revenue': monthlyRevenue,
+      'pitch_deck_url': pitchDeckUrl,
       'members': members
           .map((m) => StartupMemberModel.fromEntity(m).toJson())
           .toList(),
@@ -186,6 +188,7 @@ class StartupModel extends StartupEntity {
       useOfFunds: entity.useOfFunds,
       activeUsers: entity.activeUsers,
       monthlyRevenue: entity.monthlyRevenue,
+      pitchDeckUrl: entity.pitchDeckUrl,
     );
   }
 }

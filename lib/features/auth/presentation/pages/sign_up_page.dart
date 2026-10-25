@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
@@ -51,9 +53,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String _selectedRiskPreference = 'Medium';
   late final List<String> _riskPreferenceOptions = List.of(Validators.defaultRiskPreferenceOptions);
 
-  // Government ID upload simulator (optional during registration)
+  // Government ID upload (optional during registration)
   String? _idDocumentName;
   int? _idDocumentSizeBytes;
+  String? _idDocumentPath;
   bool _showPassword = false;
   String? _localError;
 
@@ -113,6 +116,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     _idDocumentName = null;
     _idDocumentSizeBytes = null;
+    _idDocumentPath = null;
     _showPassword = false;
     _localError = null;
   }
@@ -146,6 +150,180 @@ class _SignUpScreenState extends State<SignUpScreen> {
     } else {
       Navigator.of(context).pushReplacementNamed(AppRoutes.onboarding);
     }
+  }
+
+  Future<void> _pickIdDocument() async {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppColors.border,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Upload Government ID',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.darkText,
+                ),
+              ),
+              const SizedBox(height: 6),
+              const Text(
+                'Select your ID card, passport or national identity document',
+                style: TextStyle(fontSize: 12, color: AppColors.mutedText),
+              ),
+              const SizedBox(height: 20),
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppColors.selectionTint,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.file_present_rounded, color: AppColors.primaryPurple),
+                ),
+                title: const Text('Choose File from Device (PDF, DOC, Images)', style: TextStyle(fontWeight: FontWeight.w600)),
+                subtitle: const Text('Select a PDF document or scan from device storage'),
+                onTap: () async {
+                  Navigator.pop(ctx);
+                  try {
+                    final files = await FilePicker.pickFiles(
+                      type: FileType.custom,
+                      allowedExtensions: ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'],
+                    );
+                    if (files.isNotEmpty) {
+                      final f = files.first;
+                      final sizeBytes = await f.length() ?? 0;
+                      setState(() {
+                        _idDocumentName = f.name;
+                        _idDocumentSizeBytes = sizeBytes;
+                        _idDocumentPath = f.path;
+                        _localError = null;
+                      });
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('ID Document attached: ${f.name}'),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Could not open file picker: $e')),
+                      );
+                    }
+                  }
+                },
+              ),
+              const Divider(height: 10),
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppColors.selectionTint,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.photo_library_rounded, color: AppColors.primaryPurple),
+                ),
+                title: const Text('Select from Gallery', style: TextStyle(fontWeight: FontWeight.w600)),
+                subtitle: const Text('Choose photo from image gallery'),
+                onTap: () async {
+                  Navigator.pop(ctx);
+                  try {
+                    final picker = ImagePicker();
+                    final file = await picker.pickImage(source: ImageSource.gallery);
+                    if (file != null) {
+                      final sizeBytes = await file.length();
+                      setState(() {
+                        _idDocumentName = file.name;
+                        _idDocumentSizeBytes = sizeBytes;
+                        _idDocumentPath = file.path;
+                        _localError = null;
+                      });
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('ID Photo attached: ${file.name}'),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Could not open gallery: $e')),
+                      );
+                    }
+                  }
+                },
+              ),
+              const Divider(height: 10),
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppColors.selectionTint,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.camera_alt_rounded, color: AppColors.primaryPurple),
+                ),
+                title: const Text('Capture with Camera', style: TextStyle(fontWeight: FontWeight.w600)),
+                subtitle: const Text('Take a clear picture of your ID'),
+                onTap: () async {
+                  Navigator.pop(ctx);
+                  try {
+                    final picker = ImagePicker();
+                    final file = await picker.pickImage(source: ImageSource.camera);
+                    if (file != null) {
+                      final sizeBytes = await file.length();
+                      setState(() {
+                        _idDocumentName = file.name;
+                        _idDocumentSizeBytes = sizeBytes;
+                        _idDocumentPath = file.path;
+                        _localError = null;
+                      });
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('ID Photo captured: ${file.name}'),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Could not open camera: $e')),
+                      );
+                    }
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _submitRegistration() {
@@ -255,6 +433,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       linkedinUrl: _linkedInController.text.trim(),
       expertise: _selectedRole == UserRole.entrepreneur ? _selectedExpertise.toList() : const [],
       idDocumentName: _idDocumentName,
+      idDocumentUrl: _idDocumentPath,
     );
 
     InvestorRegistrationData? investorData;
@@ -1020,9 +1199,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       const SizedBox(height: 2),
-                      const Text(
-                        'JPG, PNG or PDF (Max 5MB)',
-                        style: TextStyle(fontSize: 11, color: AppColors.tertiaryText),
+                      Text(
+                        _idDocumentSizeBytes != null
+                            ? (_idDocumentSizeBytes! > 1024 * 1024
+                                ? '${(_idDocumentSizeBytes! / (1024 * 1024)).toStringAsFixed(1)} MB'
+                                : '${(_idDocumentSizeBytes! / 1024).toStringAsFixed(0)} KB')
+                            : 'JPG, PNG or PDF (Max 5MB)',
+                        style: const TextStyle(fontSize: 11, color: AppColors.tertiaryText),
                       ),
                     ],
                   ),
@@ -1040,19 +1223,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ],
                 OutlinedButton(
-                  onPressed: () {
-                    setState(() {
-                      _idDocumentName = 'national_id_${DateTime.now().millisecondsSinceEpoch % 1000}.jpg';
-                      _idDocumentSizeBytes = 1024 * 1024; // 1 MB
-                      _localError = null;
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Selected ID document: $_idDocumentName (1 MB)'),
-                        duration: const Duration(seconds: 1),
-                      ),
-                    );
-                  },
+                  onPressed: _pickIdDocument,
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: colors.primary),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

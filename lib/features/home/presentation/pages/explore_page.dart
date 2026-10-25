@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../profile/domain/entities/user_profile.dart' as up;
+import '../../../profile/presentation/bloc/profile_bloc.dart';
+import '../../../profile/presentation/bloc/profile_state.dart';
+import '../../../startups/data/datasources/startups_remote_data_source.dart';
+import '../../../startups/data/models/startups_model.dart';
+import '../../../startups/domain/entities/startups.dart';
+import '../../../startups/presentation/pages/my_startups_page.dart';
 import '../../../startups/presentation/pages/startup_wizard_page.dart';
 
 class ExploreScreen extends StatefulWidget {
@@ -14,6 +23,79 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
   String _selectedCategory = 'All';
   final TextEditingController _searchController = TextEditingController();
+  bool _hasStartup = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkStartupStatus();
+  }
+
+  Future<void> _checkStartupStatus() async {
+    // 1. Check local datasource
+    try {
+      final startup = await StartupsLocalDataSourceImpl().getMyStartup();
+      if (startup != null && startup.name.trim().isNotEmpty) {
+        if (mounted) setState(() => _hasStartup = true);
+        return;
+      }
+    } catch (_) {}
+
+    if (!mounted) return;
+
+    // 2. Check AuthBloc
+    try {
+      final authUser = context.read<AuthBloc>().state.user;
+      if (authUser != null) {
+        if (authUser.startup != null &&
+            authUser.startup!.name.trim().isNotEmpty) {
+          if (mounted) setState(() => _hasStartup = true);
+          return;
+        }
+      }
+    } catch (_) {}
+
+    if (!mounted) return;
+
+    // 3. Check ProfileBloc
+    try {
+      final profileState = context.read<ProfileBloc>().state;
+      if (profileState is ProfileLoadedState) {
+        if (profileState.profile.role == up.UserRole.entrepreneur &&
+            profileState.profile.companyName.trim().isNotEmpty) {
+          if (StartupsLocalDataSourceImpl().currentStartup == null) {
+            StartupsLocalDataSourceImpl().currentStartup = StartupModel(
+              id: profileState.profile.id,
+              ownerUserId: profileState.profile.id,
+              name: profileState.profile.companyName,
+              tagline: profileState.profile.title,
+              description: profileState.profile.bio,
+              problem: 'Problem statement for ${profileState.profile.companyName}',
+              solution: 'Innovative solution provided by ${profileState.profile.companyName}',
+              businessModel: 'B2B SaaS subscription',
+              targetMarket: 'MENA Region',
+              industryName: profileState.profile.industry.isNotEmpty
+                  ? profileState.profile.industry
+                  : 'FinTech',
+              stageName: profileState.profile.companyStage.isNotEmpty
+                  ? profileState.profile.companyStage
+                  : 'Seed',
+              cityName: profileState.profile.location.isNotEmpty
+                  ? profileState.profile.location
+                  : 'Cairo, Egypt',
+              logoUrl: profileState.profile.photoUrl,
+              coverImageUrl: profileState.profile.coverUrl,
+              websiteUrl: profileState.profile.website,
+            );
+          }
+          if (mounted) setState(() => _hasStartup = true);
+          return;
+        }
+      }
+    } catch (_) {}
+
+    if (mounted) setState(() => _hasStartup = false);
+  }
 
   final List<String> _categories = [
     'All',
@@ -197,46 +279,67 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    'Create your startup profile, get verified, and match with active investors.',
-                    style: TextStyle(color: Color(0xFFE0E7FF), fontSize: 13),
+                  Text(
+                    _hasStartup
+                        ? 'Manage your startup profile, view deal metrics, and update your pitch.'
+                        : 'Create your startup profile, get verified, and match with active investors.',
+                    style: const TextStyle(color: Color(0xFFE0E7FF), fontSize: 13),
                   ),
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const StartupWizardPage(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.white,
-                          foregroundColor: const Color(0xFF4F46E5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                        ),
-                        icon: const Icon(Icons.add_rounded, size: 18),
-                        label: const Text('New Startup Wizard', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                      const SizedBox(width: 8),
-                      if (widget.onSelectStartupsTab != null)
-                        OutlinedButton(
-                          onPressed: widget.onSelectStartupsTab,
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.white,
-                            side: const BorderSide(color: AppColors.white),
+                      if (_hasStartup)
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const MyStartupsPage(),
+                              ),
+                            ).then((_) => _checkStartupStatus());
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.white,
+                            foregroundColor: const Color(0xFF4F46E5),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+                            elevation: 0,
                           ),
-                          child: const Text('My Startups'),
+                          icon: const Icon(Icons.rocket_launch_rounded, size: 18),
+                          label: const Text(
+                            'My Startup',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      else
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            final result = await Navigator.push<StartupEntity>(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const StartupWizardPage(),
+                              ),
+                            );
+                            if (result != null) {
+                              await _checkStartupStatus();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.white,
+                            foregroundColor: const Color(0xFF4F46E5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+                            elevation: 0,
+                          ),
+                          icon: const Icon(Icons.add_rounded, size: 18),
+                          label: const Text(
+                            'New Startup Wizard',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
                     ],
                   ),

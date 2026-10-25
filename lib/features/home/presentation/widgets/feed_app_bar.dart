@@ -49,38 +49,42 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return Container(
       color: AppColors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: SafeArea(
         bottom: false,
         child: Row(
           children: [
             // Brand Logo matching splash & auth
-            const AppLogo(size: 36),
-            const SizedBox(width: 10),
+            const AppLogo(size: 32),
+            const SizedBox(width: 8),
             // Title
             const Text(
               'Fikraty',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 20,
                 fontWeight: FontWeight.w800,
                 color: AppColors.ink,
                 letterSpacing: -0.5,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 6),
             // Dynamic Role Pill Badge
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: isInvestor ? const Color(0xFFE0E7FF) : AppColors.purpleLight,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                roleLabel,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: isInvestor ? const Color(0xFF4338CA) : AppColors.primaryPurple,
+            Flexible(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
+                decoration: BoxDecoration(
+                  color: isInvestor ? const Color(0xFFE0E7FF) : AppColors.purpleLight,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  roleLabel,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: isInvestor ? const Color(0xFF4338CA) : AppColors.primaryPurple,
+                  ),
                 ),
               ),
             ),
@@ -98,19 +102,21 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                     );
                   },
+                  padding: const EdgeInsets.all(6),
+                  constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
                   icon: const Icon(
                     Icons.notifications_outlined,
                     color: AppColors.ink,
-                    size: 24,
+                    size: 22,
                   ),
                   tooltip: 'Notifications',
                 ),
                 Positioned(
-                  right: 10,
-                  top: 10,
+                  right: 6,
+                  top: 6,
                   child: Container(
-                    width: 8,
-                    height: 8,
+                    width: 7,
+                    height: 7,
                     decoration: const BoxDecoration(
                       color: Color(0xFFF43F5E), // Pink/Red badge
                       shape: BoxShape.circle,
@@ -129,20 +135,24 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 );
               },
+              padding: const EdgeInsets.all(6),
+              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
               icon: const Icon(
                 Icons.chat_bubble_outline_rounded,
                 color: AppColors.ink,
-                size: 22,
+                size: 21,
               ),
               tooltip: 'Messages',
             ),
             // Quick Sign Out action
             IconButton(
               onPressed: () => _confirmSignOut(context),
+              padding: const EdgeInsets.all(6),
+              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
               icon: const Icon(
                 Icons.logout_rounded,
                 color: AppColors.textMuted,
-                size: 22,
+                size: 21,
               ),
               tooltip: 'Sign Out',
             ),

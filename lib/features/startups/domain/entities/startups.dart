@@ -68,6 +68,7 @@ class StartupEntity extends Equatable {
     this.useOfFunds = '45% Product & Tech, 35% Marketing, 20% Operations',
     this.activeUsers = '15,000+',
     this.monthlyRevenue = r'$12,000/mo',
+    this.pitchDeckUrl,
   });
 
   final String id;
@@ -102,6 +103,7 @@ class StartupEntity extends Equatable {
   final String useOfFunds;
   final String activeUsers;
   final String monthlyRevenue;
+  final String? pitchDeckUrl;
 
   StartupEntity copyWith({
     String? id,
@@ -135,6 +137,7 @@ class StartupEntity extends Equatable {
     String? useOfFunds,
     String? activeUsers,
     String? monthlyRevenue,
+    String? pitchDeckUrl,
   }) {
     return StartupEntity(
       id: id ?? this.id,
@@ -168,6 +171,7 @@ class StartupEntity extends Equatable {
       useOfFunds: useOfFunds ?? this.useOfFunds,
       activeUsers: activeUsers ?? this.activeUsers,
       monthlyRevenue: monthlyRevenue ?? this.monthlyRevenue,
+      pitchDeckUrl: pitchDeckUrl ?? this.pitchDeckUrl,
     );
   }
 
@@ -204,5 +208,6 @@ class StartupEntity extends Equatable {
     useOfFunds,
     activeUsers,
     monthlyRevenue,
+    pitchDeckUrl,
   ];
 }

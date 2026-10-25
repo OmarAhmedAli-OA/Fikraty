@@ -8,6 +8,7 @@ import '../bloc/feed_bloc.dart';
 import 'poll_widget.dart';
 import 'share_post_modal.dart';
 import '../pages/post_detail_page.dart';
+import '../../../startups/presentation/widgets/custom_startup_image.dart';
 
 class PostCard extends StatelessWidget {
   final Post post;
@@ -66,12 +67,12 @@ class PostCard extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             ClipOval(
-              child: Image.network(
-                post.authorAvatar,
+              child: CustomStartupImage(
+                imagePath: post.authorAvatar,
                 width: 44,
                 height: 44,
                 fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => const CircleAvatar(
+                placeholder: const CircleAvatar(
                   radius: 22,
                   backgroundColor: AppColors.purpleLight,
                   child: Icon(Icons.person, color: AppColors.primaryPurple),

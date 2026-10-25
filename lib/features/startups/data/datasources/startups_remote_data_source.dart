@@ -19,22 +19,22 @@ class StartupsLocalDataSourceImpl implements StartupsDataSource {
 
   StartupsLocalDataSourceImpl._internal() {
     // Initially null so founder sees the "Create your startup profile" flow
-    _currentStartup = null;
+    currentStartup = null;
   }
 
-  StartupModel? _currentStartup;
+  StartupModel? currentStartup;
 
   @override
   Future<StartupModel?> getMyStartup() async {
     await Future<void>.delayed(const Duration(milliseconds: 300));
-    return _currentStartup;
+    return currentStartup;
   }
 
   @override
   Future<StartupModel> saveStartup(StartupModel startup) async {
     await Future<void>.delayed(const Duration(milliseconds: 400));
-    _currentStartup = startup;
-    return _currentStartup!;
+    currentStartup = startup;
+    return currentStartup!;
   }
 
   @override
@@ -45,9 +45,9 @@ class StartupsLocalDataSourceImpl implements StartupsDataSource {
     String? note,
   }) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    if (_currentStartup != null && _currentStartup!.id == startupId) {
-      _currentStartup = StartupModel.fromEntity(
-        _currentStartup!.copyWith(
+    if (currentStartup != null && currentStartup!.id == startupId) {
+      currentStartup = StartupModel.fromEntity(
+        currentStartup!.copyWith(
           verificationStatus: 'pending',
           profileCompletion: 95,
         ),

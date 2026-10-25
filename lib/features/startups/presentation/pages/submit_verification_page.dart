@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../startups/domain/entities/startups.dart';
@@ -36,6 +37,52 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
     super.dispose();
   }
 
+  Future<void> _pickDocumentFromFilePicker() async {
+    try {
+      final result = await FilePicker.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'],
+      );
+
+      if (result.isNotEmpty) {
+        final platformFile = result.first;
+        final name = platformFile.name;
+        final sizeBytes = await platformFile.length() ?? 0;
+        String sizeStr;
+        if (sizeBytes > 1024 * 1024) {
+          sizeStr = '${(sizeBytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+        } else {
+          sizeStr = '${(sizeBytes / 1024).toStringAsFixed(0)} KB';
+        }
+
+        setState(() {
+          _fileAttached = true;
+          _attachedFileName = '$name ($sizeStr)';
+        });
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Document attached from device: $name ($sizeStr)'),
+              backgroundColor: AppColors.success,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Could not open file picker: $e'),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
   Future<void> _pickDocument(ImageSource source) async {
     try {
       final picker = ImagePicker();
@@ -47,14 +94,22 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
       );
 
       if (file != null) {
+        final bytes = await file.length();
+        String sizeStr;
+        if (bytes > 1024 * 1024) {
+          sizeStr = '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+        } else {
+          sizeStr = '${(bytes / 1024).toStringAsFixed(0)} KB';
+        }
+
         setState(() {
           _fileAttached = true;
-          _attachedFileName = file.name;
+          _attachedFileName = '${file.name} ($sizeStr)';
         });
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Document attached: ${file.name}'),
+              content: Text('Document attached: ${file.name} ($sizeStr)'),
               backgroundColor: AppColors.success,
               behavior: SnackBarBehavior.floating,
             ),
@@ -97,7 +152,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Upload Legal Document',
+                'Upload Legal Document / ID',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -106,10 +161,44 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
               ),
               const SizedBox(height: 6),
               Text(
-                'Attach an official copy or photo of your legal credential',
+                'Attach an official document or ID from your device',
                 style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
               ),
               const SizedBox(height: 20),
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppColors.tint,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.file_present_rounded, color: AppColors.navy),
+                ),
+                title: const Text('Choose File from Device (PDF, DOC, Scans)', style: TextStyle(fontWeight: FontWeight.w600)),
+                subtitle: const Text('Pick PDF, DOC, DOCX or scans from your phone/computer storage'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _pickDocumentFromFilePicker();
+                },
+              ),
+              const Divider(height: 10),
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppColors.tint,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.photo_library_rounded, color: AppColors.blue),
+                ),
+                title: const Text('Select from Gallery', style: TextStyle(fontWeight: FontWeight.w600)),
+                subtitle: const Text('Upload a photo from your device image gallery'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _pickDocument(ImageSource.gallery);
+                },
+              ),
+              const Divider(height: 10),
               ListTile(
                 leading: Container(
                   padding: const EdgeInsets.all(10),
@@ -124,23 +213,6 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
                 onTap: () {
                   Navigator.pop(ctx);
                   _pickDocument(ImageSource.camera);
-                },
-              ),
-              const Divider(height: 10),
-              ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppColors.tint,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(Icons.photo_library_rounded, color: AppColors.blue),
-                ),
-                title: const Text('Select from Gallery / Device Files', style: TextStyle(fontWeight: FontWeight.w600)),
-                subtitle: const Text('Upload a scanned document from your device'),
-                onTap: () {
-                  Navigator.pop(ctx);
-                  _pickDocument(ImageSource.gallery);
                 },
               ),
               if (_fileAttached) ...[
@@ -414,7 +486,7 @@ class _SubmitVerificationPageState extends State<SubmitVerificationPage> {
                       Text(
                         _fileAttached
                             ? 'File ready for verification review'
-                            : 'Accepted formats: Camera photo, Gallery scan, Image file',
+                            : 'Accepted formats: Device file (PDF, DOC, DOCX), Camera photo, Gallery scan',
                         style: TextStyle(
                           fontSize: 11,
                           color: _fileAttached ? AppColors.success : AppColors.textMuted,

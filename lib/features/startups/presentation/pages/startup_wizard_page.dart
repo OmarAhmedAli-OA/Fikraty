@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/startups.dart';
 import '../bloc/startups_bloc.dart';
@@ -56,6 +57,9 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
   // Step 3: Team & Media
   late final TextEditingController _demoUrlController;
   late List<StartupMemberEntity> _members;
+  String? _pitchDeckPath;
+  String? _pitchDeckName;
+  String? _pitchDeckSize;
 
   final _step1FormKey = GlobalKey<FormState>();
   final _step2FormKey = GlobalKey<FormState>();
@@ -63,7 +67,11 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
 
   String? _validateUrl(String? value, String fieldName, {bool isRequired = false}) {
     final trimmed = value?.trim() ?? '';
-    if (trimmed.isEmpty) {
+    if (trimmed.isEmpty ||
+        trimmed == 'https://' ||
+        trimmed == 'http://' ||
+        trimmed == 'https:' ||
+        trimmed == 'http:') {
       if (isRequired) return '$fieldName is required';
       return null;
     }
@@ -73,12 +81,14 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
       caseSensitive: false,
     );
     if (!urlRegex.hasMatch(trimmed)) {
+      if (!isRequired) return null;
       return 'Please enter a valid link (e.g. https://example.com)';
     }
 
     if (trimmed.contains('://') &&
         !trimmed.toLowerCase().startsWith('http://') &&
         !trimmed.toLowerCase().startsWith('https://')) {
+      if (!isRequired) return null;
       return 'Link must start with http:// or https://';
     }
 
@@ -185,9 +195,28 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
     final init = widget.initialStartup;
     _nameController = TextEditingController(text: init?.name ?? '');
     _taglineController = TextEditingController(text: init?.tagline ?? '');
-    _websiteController = TextEditingController(text: init?.websiteUrl ?? '');
-    _demoUrlController = TextEditingController(text: init?.demoUrl ?? '');
+    final initialWebsite = init?.websiteUrl;
+    final cleanWebsite = (initialWebsite == null ||
+            initialWebsite.trim() == 'https://' ||
+            initialWebsite.trim() == 'http://')
+        ? ''
+        : initialWebsite.trim();
+    _websiteController = TextEditingController(text: cleanWebsite);
+
+    final initialDemo = init?.demoUrl;
+    final cleanDemo = (initialDemo == null ||
+            initialDemo.trim() == 'https://' ||
+            initialDemo.trim() == 'http://')
+        ? ''
+        : initialDemo.trim();
+    _demoUrlController = TextEditingController(text: cleanDemo);
     _customIndustryController = TextEditingController();
+    if (init != null && init.pitchDeckUrl != null && init.pitchDeckUrl!.isNotEmpty) {
+      _pitchDeckPath = init.pitchDeckUrl;
+      final parts = init.pitchDeckUrl!.split(RegExp(r'[\\/]'));
+      _pitchDeckName = parts.isNotEmpty ? parts.last : 'pitch_deck.pdf';
+      _pitchDeckSize = 'Ready';
+    }
     _cityController =
         TextEditingController(text: init?.cityName ?? 'Cairo, Egypt');
 
@@ -372,16 +401,21 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
       monthlyRevenue: _monthlyRevenueController.text.trim().isNotEmpty
           ? '${_formatCurrency(_monthlyRevenueController.text.trim(), r'$12,000')}/mo'
           : r'$12,000/mo',
-      websiteUrl: _websiteController.text.trim().isNotEmpty
+      websiteUrl: (_websiteController.text.trim().isNotEmpty &&
+              _websiteController.text.trim() != 'https://' &&
+              _websiteController.text.trim() != 'http://')
           ? _websiteController.text.trim()
           : null,
-      demoUrl: _demoUrlController.text.trim().isNotEmpty
+      demoUrl: (_demoUrlController.text.trim().isNotEmpty &&
+              _demoUrlController.text.trim() != 'https://' &&
+              _demoUrlController.text.trim() != 'http://')
           ? _demoUrlController.text.trim()
           : null,
       verificationStatus: existing?.verificationStatus ?? 'unverified',
       isPublished: true,
       profileCompletion: _calculateCompletion(),
       members: _members,
+      pitchDeckUrl: _pitchDeckPath ?? existing?.pitchDeckUrl,
     );
 
     final isEditing = widget.initialStartup != null;
@@ -393,6 +427,53 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
       debugPrint('StartupsBloc error or not in context: ');
     }
     Navigator.pop(context, startupToSave);
+  }
+
+  Future<void> _pickPitchDeckDocument() async {
+    try {
+      final result = await FilePicker.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'ppt', 'pptx', 'doc', 'docx'],
+      );
+
+      if (result.isNotEmpty) {
+        final platformFile = result.first;
+        final name = platformFile.name;
+        final sizeBytes = await platformFile.length() ?? 0;
+        String sizeStr;
+        if (sizeBytes > 1024 * 1024) {
+          sizeStr = '${(sizeBytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+        } else {
+          sizeStr = '${(sizeBytes / 1024).toStringAsFixed(0)} KB';
+        }
+
+        setState(() {
+          _pitchDeckName = name;
+          _pitchDeckPath = platformFile.path ?? name;
+          _pitchDeckSize = sizeStr;
+        });
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Pitch deck document attached: $name ($sizeStr)'),
+              backgroundColor: AppColors.success,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Could not open file picker: $e'),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
   }
 
   int _calculateCompletion() {
@@ -1740,7 +1821,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
               prefixIcon: Icon(Icons.language_rounded, color: AppColors.navy),
               border: OutlineInputBorder(),
             ),
-            validator: (v) => _validateUrl(v, 'Official Website URL'),
+            validator: (v) => _validateUrl(v, 'Official Website URL', isRequired: false),
           ),
         ],
       ),
@@ -2252,7 +2333,7 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                   Icon(Icons.play_circle_outline_rounded, color: AppColors.navy),
               border: OutlineInputBorder(),
             ),
-            validator: (v) => _validateUrl(v, 'Product Demo URL'),
+            validator: (v) => _validateUrl(v, 'Product Demo URL', isRequired: false),
           ),
           const SizedBox(height: 18),
 
@@ -2262,7 +2343,12 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
             decoration: BoxDecoration(
               color: AppColors.white,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppColors.blue.withValues(alpha: 0.3)),
+              border: Border.all(
+                color: _pitchDeckName != null
+                    ? AppColors.success.withValues(alpha: 0.6)
+                    : AppColors.blue.withValues(alpha: 0.3),
+                width: _pitchDeckName != null ? 1.5 : 1.0,
+              ),
             ),
             child: Row(
               children: [
@@ -2270,39 +2356,93 @@ class _StartupWizardPageState extends State<StartupWizardPage> {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: AppColors.tint,
+                    color: _pitchDeckName != null
+                        ? AppColors.successLight
+                        : AppColors.tint,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Icon(Icons.picture_as_pdf_rounded,
-                      color: AppColors.navy),
+                  child: Icon(
+                    _pitchDeckName != null
+                        ? Icons.picture_as_pdf_rounded
+                        : Icons.upload_file_rounded,
+                    color: _pitchDeckName != null
+                        ? AppColors.success
+                        : AppColors.navy,
+                  ),
                 ),
                 const SizedBox(width: 14),
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Pitch Deck (PDF)',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
+                        _pitchDeckName != null
+                            ? 'Pitch Deck (Attached)'
+                            : 'Pitch Deck & Documentation',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: AppColors.ink,
+                        ),
                       ),
-                      SizedBox(height: 2),
+                      const SizedBox(height: 2),
                       Text(
-                        'pitch_deck_v1.pdf (Attached & Ready)',
-                        style: TextStyle(color: AppColors.textMuted, fontSize: 12),
+                        _pitchDeckName != null
+                            ? '$_pitchDeckName${_pitchDeckSize != null ? ' · $_pitchDeckSize' : ''}'
+                            : 'Upload presentation from device (PDF, PPT, DOC)',
+                        style: TextStyle(
+                          color: _pitchDeckName != null
+                              ? AppColors.success
+                              : AppColors.textMuted,
+                          fontSize: 12,
+                          fontWeight: _pitchDeckName != null
+                              ? FontWeight.w600
+                              : FontWeight.normal,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Pitch deck document updated!')),
-                    );
-                  },
-                  child: const Text('Change'),
-                ),
+                if (_pitchDeckName == null)
+                  ElevatedButton.icon(
+                    onPressed: _pickPitchDeckDocument,
+                    icon: const Icon(Icons.upload_rounded, size: 16),
+                    label: const Text('Upload'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.navy,
+                      foregroundColor: AppColors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                else ...[
+                  TextButton(
+                    onPressed: _pickPitchDeckDocument,
+                    child: const Text('Change'),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close_rounded,
+                        size: 20, color: AppColors.error),
+                    tooltip: 'Remove pitch deck',
+                    onPressed: () {
+                      setState(() {
+                        _pitchDeckName = null;
+                        _pitchDeckPath = null;
+                        _pitchDeckSize = null;
+                      });
+                    },
+                  ),
+                ],
               ],
             ),
           ),

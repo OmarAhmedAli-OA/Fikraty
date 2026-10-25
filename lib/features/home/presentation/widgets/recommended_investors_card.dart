@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../investors/presentation/pages/investor_detail_page.dart';
 import '../../domain/entities/post.dart';
 
 class RecommendedInvestorsCard extends StatelessWidget {
@@ -50,7 +51,19 @@ class RecommendedInvestorsCard extends StatelessWidget {
               ),
               itemBuilder: (context, index) {
                 final investor = investors[index];
-                return Row(
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => InvestorDetailScreen(investor: investor),
+                      ),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(12),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Row(
                   children: [
                     ClipOval(
                       child: Image.network(
@@ -111,10 +124,10 @@ class RecommendedInvestorsCard extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Viewing profile of ${investor.name}'),
-                            duration: const Duration(seconds: 2),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => InvestorDetailScreen(investor: investor),
                           ),
                         );
                       },
@@ -139,6 +152,8 @@ class RecommendedInvestorsCard extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+                  ),
                 );
               },
             ),

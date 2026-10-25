@@ -230,10 +230,10 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                           ),
                           clipBehavior: Clip.antiAlias,
                           child: profile.photoUrl.isNotEmpty
-                              ? Image.network(
-                                  profile.photoUrl,
+                              ? CustomStartupImage(
+                                  imagePath: profile.photoUrl,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (_, _, _) => const Icon(
+                                  placeholder: const Icon(
                                     Icons.person,
                                     color: AppColors.primary,
                                   ),
@@ -3104,11 +3104,13 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
       cityName: (st?.cityCode?.isNotEmpty == true)
           ? st!.cityCode!
           : (profile.location.isNotEmpty ? profile.location : 'Cairo, Egypt'),
-      websiteUrl: (st?.websiteUrl?.isNotEmpty == true)
-          ? st!.websiteUrl!
+      websiteUrl: (st?.websiteUrl?.isNotEmpty == true && st!.websiteUrl != 'https://')
+          ? st.websiteUrl!
           : (profile.website.isNotEmpty
-              ? 'https://'
-              : 'https://novamed.ai'),
+              ? (profile.website.startsWith('http')
+                  ? profile.website
+                  : 'https://${profile.website}')
+              : ''),
       demoUrl: st?.demoUrl ?? '',
       foundedYear: st?.foundedYear ?? 2024,
       logoUrl: profile.photoUrl.isNotEmpty
