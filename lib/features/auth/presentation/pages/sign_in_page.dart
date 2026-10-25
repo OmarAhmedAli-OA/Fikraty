@@ -40,12 +40,6 @@ class _SignInScreenState extends State<SignInScreen> {
     ));
   }
 
-  void _quickFill(String email, String password) {
-    _emailController.text = email;
-    _passwordController.text = password;
-    setState(() => _localError = null);
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -118,115 +112,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           color: AppColors.mutedText,
                         ),
                       ),
-                      const SizedBox(height: 26),
-
-                      // Social Sign In Row
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: () => _quickFill('sarah@startup.com', 'password123'),
-                              style: OutlinedButton.styleFrom(
-                                backgroundColor: AppColors.surface,
-                                side: const BorderSide(color: AppColors.border),
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(2),
-                                    child: const Text(
-                                      'G',
-                                      style: TextStyle(
-                                        color: AppColors.googleRed,
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Text(
-                                    'Google',
-                                    style: TextStyle(
-                                      color: AppColors.darkText,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: () => _quickFill('omar@investor.com', 'password123'),
-                              style: OutlinedButton.styleFrom(
-                                backgroundColor: AppColors.surface,
-                                side: const BorderSide(color: AppColors.border),
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.linkedInBlue,
-                                      borderRadius: BorderRadius.circular(3),
-                                    ),
-                                    child: const Text(
-                                      'in',
-                                      style: TextStyle(
-                                        color: AppColors.white,
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 11,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Text(
-                                    'LinkedIn',
-                                    style: TextStyle(
-                                      color: AppColors.darkText,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 22),
-
-                      // Divider "or continue with email"
-                      const Row(
-                        children: [
-                          Expanded(child: Divider(color: AppColors.divider, thickness: 1)),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            child: Text(
-                              'or continue with email',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppColors.tertiaryText,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          Expanded(child: Divider(color: AppColors.divider, thickness: 1)),
-                        ],
-                      ),
-                      const SizedBox(height: 22),
+                      const SizedBox(height: 28),
 
                       // Email Field
                       const Text(
