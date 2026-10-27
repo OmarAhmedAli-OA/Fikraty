@@ -15,7 +15,7 @@ import '../widgets/quick_create_box.dart';
 import '../widgets/recommended_investors_card.dart';
 import '../widgets/stories_tray.dart';
 import '../widgets/trending_tags_bar.dart';
-import 'explore_page.dart';
+import '../../../explore/presentation/pages/explore_page.dart';
 import 'messages_page.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -61,9 +61,7 @@ class _HomeScreenBodyState extends State<_HomeScreenBody> {
           index: _selectedBottomNavIndex,
           children: [
             _buildFeedBody(context),
-            ExploreScreen(
-              onSelectStartupsTab: () => _onTabSelected(3),
-            ),
+            const ExplorePage(),
             const MessagesPage(),
             const ProfilePage(),
           ],

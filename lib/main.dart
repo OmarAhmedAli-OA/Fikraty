@@ -15,6 +15,10 @@ import 'features/home/data/repositories/feed_repository_impl.dart';
 import 'features/home/presentation/bloc/feed_bloc.dart';
 import 'features/home/presentation/bloc/feed_event.dart';
 import 'features/home/presentation/pages/home_page.dart';
+import 'features/explore/presentation/pages/explore_page.dart';
+import 'features/explore/presentation/pages/compare_startups_page.dart';
+import 'features/explore/presentation/bloc/explore_bloc.dart';
+import 'features/explore/presentation/bloc/explore_event.dart';
 import 'features/home/presentation/pages/messages_page.dart';
 import 'features/home/presentation/pages/notifications_page.dart';
 import 'features/profile/presentation/pages/profile_page.dart';
@@ -35,6 +39,9 @@ void main() {
               localDataSource: FeedLocalDataSourceImpl(),
             ),
           )..add(const LoadFeedEvent()),
+        ),
+        BlocProvider<ExploreBloc>(
+          create: (_) => sl<ExploreBloc>()..add(const LoadExploreDataEvent()),
         ),
       ],
       child: const FikratyApp(),
@@ -69,6 +76,8 @@ class FikratyApp extends StatelessWidget {
         AppRoutes.startupWizard: (_) => const StartupWizardPage(),
         AppRoutes.notifications: (_) => const NotificationsPage(),
         AppRoutes.messages: (_) => const MessagesPage(),
+        AppRoutes.explore: (_) => const ExplorePage(),
+        AppRoutes.compareStartups: (_) => const CompareStartupsPage(),
         // Keep legacy route names working while other features are integrated.
         '/login': (_) => const SignInScreen(),
         '/register': (_) => const SignUpScreen(),

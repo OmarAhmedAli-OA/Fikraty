@@ -114,9 +114,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       const SizedBox(height: 28),
 
-                      // Email Field
+                      // Email or Username Field
                       const Text(
-                        'EMAIL',
+                        'EMAIL OR USERNAME',
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
@@ -129,10 +129,29 @@ class _SignInScreenState extends State<SignInScreen> {
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
-                        validator: Validators.email,
+                        validator: (value) {
+                          final trimmed = value?.trim() ?? '';
+                          if (trimmed.isEmpty) {
+                            return 'Enter your email, username, or phone number.';
+                          }
+                          if (trimmed.length > 254) {
+                            return 'Identifier cannot exceed 254 characters.';
+                          }
+                          if (trimmed.contains('@')) {
+                            final atIndex = trimmed.indexOf('@');
+                            if (atIndex <= 0 || atIndex != trimmed.lastIndexOf('@')) {
+                              return 'Enter a valid email address.';
+                            }
+                            final domain = trimmed.substring(atIndex + 1);
+                            if (!domain.contains('.') || domain.startsWith('.') || domain.endsWith('.')) {
+                              return 'Enter a valid email address.';
+                            }
+                          }
+                          return null;
+                        },
                         style: const TextStyle(fontSize: 14, color: AppColors.darkText),
                         decoration: InputDecoration(
-                          hintText: 'you@startup.com',
+                          hintText: 'you@startup.com or username',
                           hintStyle: const TextStyle(color: AppColors.inputHint, fontSize: 14),
                           fillColor: AppColors.surface,
                           filled: true,

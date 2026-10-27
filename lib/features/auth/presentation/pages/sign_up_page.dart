@@ -472,7 +472,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
 
     // Normalize phone number (strip whitespace / dashes / prefix to standard 11-digit local)
-    final cleanPhone = Validators.normalizeEgyptianPhone(_phoneController.text.trim());
+    final cleanPhone = Validators.normalizePhone(_phoneController.text.trim());
 
     final registration = RegistrationData(
       email: _emailController.text.trim().toLowerCase(),
@@ -822,13 +822,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           const SizedBox(height: 14),
 
-          _buildFieldLabel('PHONE NUMBER (EGYPTIAN MOBILE: 010, 011, 012, 015)'),
+          _buildFieldLabel('PHONE NUMBER (INTERNATIONAL OR LOCAL)'),
           _buildTextField(
             controller: _phoneController,
-            hint: '010 1234 5678',
+            hint: '+20 10 1234 5678 or +1 415 555 2671',
             colors: colors,
             keyboardType: TextInputType.phone,
-            validator: Validators.egyptianPhone,
+            validator: Validators.phone,
           ),
           const SizedBox(height: 14),
 

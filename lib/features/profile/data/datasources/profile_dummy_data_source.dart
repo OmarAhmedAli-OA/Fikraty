@@ -96,7 +96,10 @@ class ProfileDummyDataSource implements ProfileDataSource {
       bio: entBio,
       background: 'Stanford Medicine Research Fellow',
       location: entLocation,
-      country: AppCountries.findByCode('EG'),
+      country: AppCountries.resolve(
+        authUser?.profile.location ?? authUser?.profile.cityCode,
+        AppCountries.findByCode('EG'),
+      ),
       photoUrl:
           'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop&auto=format',
       coverUrl: '',
@@ -197,7 +200,14 @@ class ProfileDummyDataSource implements ProfileDataSource {
       bio: invBio,
       background: 'Former founder, exited fintech startup in 2018',
       location: invLocation,
-      country: AppCountries.findByCode('AE'),
+      country: AppCountries.resolve(
+        authUser?.profile.location ??
+            authUser?.profile.cityCode ??
+            (authUser?.investor?.preferredCountries.isNotEmpty == true
+                ? authUser!.investor!.preferredCountries.first.label
+                : null),
+        AppCountries.findByCode('AE'),
+      ),
       photoUrl:
           'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&auto=format',
       coverUrl: '',
@@ -494,6 +504,10 @@ class ProfileDummyDataSource implements ProfileDataSource {
             title: authUser!.profile.professionalTitle ?? _entrepreneurProfile.title,
             bio: authUser!.profile.bio ?? _entrepreneurProfile.bio,
             location: authUser!.profile.location ?? _entrepreneurProfile.location,
+            country: AppCountries.resolve(
+              authUser!.profile.location ?? authUser!.profile.cityCode,
+              _entrepreneurProfile.country,
+            ),
             industry: authUser!.startup?.industry.label ?? _entrepreneurProfile.industry,
             companyStage: authUser!.startup?.stage.label ?? _entrepreneurProfile.companyStage,
           ));
@@ -510,6 +524,14 @@ class ProfileDummyDataSource implements ProfileDataSource {
             title: authUser!.profile.professionalTitle ?? _investorProfile.title,
             bio: authUser!.profile.bio ?? _investorProfile.bio,
             location: authUser!.profile.location ?? _investorProfile.location,
+            country: AppCountries.resolve(
+              authUser!.profile.location ??
+                  authUser!.profile.cityCode ??
+                  (authUser!.investor?.preferredCountries.isNotEmpty == true
+                      ? authUser!.investor!.preferredCountries.first.label
+                      : null),
+              _investorProfile.country,
+            ),
             thesisQuote: authUser!.investor?.thesis ?? _investorProfile.thesisQuote,
           ));
         }

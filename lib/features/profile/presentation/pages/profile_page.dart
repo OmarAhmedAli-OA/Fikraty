@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/error_widget.dart';
 import '../../../../core/widgets/loading_widget.dart';
@@ -2820,7 +2819,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                   ),
                   const SizedBox(height: 16),
                   ..._milestones.map((m) {
-                    final bool isDone = m['done'] as bool;
+                    final bool isDone = (m['done'] as bool?) ?? false;
                     return Container(
                       margin: const EdgeInsets.only(bottom: 8),
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -3191,10 +3190,6 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
             onPressed: () {
               Navigator.of(ctx).pop();
               context.read<AuthBloc>().add(const AuthSignOutRequested());
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                AppRoutes.signIn,
-                (_) => false,
-              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,

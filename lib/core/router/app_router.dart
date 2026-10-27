@@ -13,4 +13,6 @@ abstract final class AppRoutes {
   static const startupWizard = '/startup-wizard';
   static const notifications = '/notifications';
   static const messages = '/messages';
+  static const explore = '/explore';
+  static const compareStartups = '/compare-startups';
 }

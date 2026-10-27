@@ -35,10 +35,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         password: event.password,
       );
       emit(AuthState(status: AuthStatus.authenticated, user: user));
-    } catch (_) {
-      emit(const AuthState(
+    } catch (e) {
+      final msg = e.toString().replaceFirst('Exception: ', '');
+      emit(AuthState(
         status: AuthStatus.failure,
-        message: 'Unable to sign in right now. Please try again.',
+        message: msg.isNotEmpty ? msg : 'Unable to sign in right now. Please try again.',
       ));
     }
   }

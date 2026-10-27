@@ -158,6 +158,85 @@ abstract final class AppCountries {
     );
   }
 
+  static Country resolve(String? query, [Country? fallback]) {
+    if (query == null || query.trim().isEmpty) {
+      return fallback ?? defaultCountry;
+    }
+    final q = query.trim().toLowerCase();
+
+    // 1. Direct code or exact name match
+    for (final c in list) {
+      if (c.code.toLowerCase() == q ||
+          c.name.toLowerCase() == q ||
+          (c.nameAr.isNotEmpty && c.nameAr.toLowerCase() == q)) {
+        return c;
+      }
+    }
+
+    // 2. Common regional & global aliases
+    if (q.contains('usa') ||
+        q.contains('united states') ||
+        q.contains('america') ||
+        q == 'us') {
+      return findByCode('US');
+    }
+    if (q.contains('uae') ||
+        q.contains('emirates') ||
+        q.contains('dubai') ||
+        q.contains('abu dhabi') ||
+        q == 'ae') {
+      return findByCode('AE');
+    }
+    if (q.contains('egypt') ||
+        q.contains('cairo') ||
+        q.contains('alexandria') ||
+        q.contains('مصر') ||
+        q == 'eg') {
+      return findByCode('EG');
+    }
+    if (q.contains('saudi') ||
+        q.contains('ksa') ||
+        q.contains('riyadh') ||
+        q.contains('jeddah') ||
+        q.contains('السعودية') ||
+        q == 'sa') {
+      return findByCode('SA');
+    }
+    if (q.contains('uk') ||
+        q.contains('united kingdom') ||
+        q.contains('britain') ||
+        q.contains('london') ||
+        q.contains('england') ||
+        q == 'gb') {
+      return findByCode('GB');
+    }
+    if (q.contains('kuwait') || q.contains('الكويت') || q == 'kw') {
+      return findByCode('KW');
+    }
+    if (q.contains('qatar') || q.contains('doha') || q.contains('قطر') || q == 'qa') {
+      return findByCode('QA');
+    }
+    if (q.contains('bahrain') || q.contains('البحرين') || q == 'bh') {
+      return findByCode('BH');
+    }
+    if (q.contains('oman') || q.contains('عمان') || q == 'om') {
+      return findByCode('OM');
+    }
+    if (q.contains('jordan') || q.contains('amman') || q.contains('الأردن') || q == 'jo') {
+      return findByCode('JO');
+    }
+
+    // 3. Substring match against country names
+    for (final c in list) {
+      if (q.contains(c.name.toLowerCase()) ||
+          (c.nameAr.isNotEmpty && q.contains(c.nameAr.toLowerCase()))) {
+        return c;
+      }
+    }
+
+    return fallback ?? defaultCountry;
+  }
+
   static Country findByName(String name) {
     return list.firstWhere(
       (c) => c.name.toLowerCase() == name.toLowerCase() ||

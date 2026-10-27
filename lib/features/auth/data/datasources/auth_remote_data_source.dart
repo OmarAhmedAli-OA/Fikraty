@@ -82,13 +82,39 @@ class FakeAuthRemoteDataSource implements AuthRemoteDataSource {
   @override
   Future<AuthUser> signIn(String email, String password) async {
     await Future<void>.delayed(const Duration(milliseconds: 150));
-    final normalizedEmail = email.trim().toLowerCase();
-    if (normalizedEmail.isEmpty || password.isEmpty) {
-      throw const AuthDataException('Enter your email and password.');
+    final normalized = email.trim().toLowerCase();
+    if (normalized.isEmpty || password.isEmpty) {
+      throw const AuthDataException('Enter your email or username and password.');
     }
-    final account = _accounts[normalizedEmail];
+    // 1. Direct email lookup
+    var account = _accounts[normalized];
+
+    // 2. Lookup by phone
+    if (account == null) {
+      final cleanPhone = normalized.replaceAll(RegExp(r'[\s\-()]'), '');
+      for (final acc in _accounts.values) {
+        if (acc.user.phone != null) {
+          final accCleanPhone = acc.user.phone!.replaceAll(RegExp(r'[\s\-()]'), '');
+          if (accCleanPhone == cleanPhone || acc.user.phone == normalized) {
+            account = acc;
+            break;
+          }
+        }
+      }
+    }
+
+    // 3. Lookup by full name / username
+    if (account == null) {
+      for (final acc in _accounts.values) {
+        if (acc.user.profile.fullName.trim().toLowerCase() == normalized) {
+          account = acc;
+          break;
+        }
+      }
+    }
+
     if (account == null || account.password != password) {
-      throw const AuthDataException('Email or password is incorrect.');
+      throw const AuthDataException('Email, username or password is incorrect.');
     }
     _currentUser = account.user;
     return account.user;

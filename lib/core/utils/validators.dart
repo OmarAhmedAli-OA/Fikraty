@@ -131,6 +131,84 @@ abstract final class Validators {
   // =========================================================================
   // 1. EGYPTIAN MOBILE NUMBER VALIDATION
   // =========================================================================
+  // =========================================================================
+  // 1. MOBILE NUMBER VALIDATION (INTERNATIONAL & LOCAL)
+  // =========================================================================
+  static const String phoneErrorMessage =
+      'Enter a valid mobile number with country code (e.g. +20 10..., +966 5..., +971 5..., +1...) or local Egyptian number.';
+
+  // Recognized ITU-T calling code prefixes (1 to 3 digits)
+  static final RegExp _internationalCallingCodePattern = RegExp(
+    r'^(?:1|7|20|27|30|31|32|33|34|36|39|40|41|43|44|45|46|47|48|49|51|52|53|54|55|56|57|58|60|61|62|63|64|65|66|81|82|84|86|90|91|92|93|94|95|98|21\d|22\d|23\d|24\d|25\d|26\d|29\d|35\d|37\d|38\d|42\d|50\d|59\d|67\d|68\d|69\d|85\d|88\d|96\d|97\d|99\d)',
+  );
+
+  /// Validates international and local mobile numbers.
+  /// Accepts:
+  /// - Egyptian local format: 010, 011, 012, 015 with 8 digits (11 digits total).
+  /// - International E.164 format: begins with + or 00 followed by valid ITU country code
+  ///   and subscriber number (7 to 15 digits total).
+  /// Rejects arbitrary, non-global, or random garbage numbers.
+  static String? phone(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return phoneErrorMessage;
+    }
+    final clean = value.replaceAll(RegExp(r'[\s\-()]'), '');
+    if (!RegExp(r'^\+?[0-9]+$').hasMatch(clean)) {
+      return phoneErrorMessage;
+    }
+
+    // 1. Check if it's an Egyptian local number (01[0125]xxxxxxxx)
+    if (_egyptianPhonePattern.hasMatch(clean)) {
+      return null;
+    }
+
+    // 2. Check international format (+ or 00 prefix)
+    String digitsOnly = clean;
+    if (digitsOnly.startsWith('+')) {
+      digitsOnly = digitsOnly.substring(1);
+    } else if (digitsOnly.startsWith('00')) {
+      digitsOnly = digitsOnly.substring(2);
+    } else {
+      // If entered without + or 00, check if it starts with a recognized international prefix or local Egyptian
+      if (!_internationalCallingCodePattern.hasMatch(digitsOnly)) {
+        return phoneErrorMessage;
+      }
+    }
+
+    // E.164 total digits constraint: 7 to 15 digits
+    if (digitsOnly.length < 7 || digitsOnly.length > 15) {
+      return phoneErrorMessage;
+    }
+
+    // Must match a recognized global country code prefix
+    if (!_internationalCallingCodePattern.hasMatch(digitsOnly)) {
+      return phoneErrorMessage;
+    }
+
+    // Reject dummy repeated numbers like 1111111111 or 0000000000
+    if (digitsOnly.split('').toSet().length == 1) {
+      return phoneErrorMessage;
+    }
+
+    return null;
+  }
+
+  /// Normalizes any valid international or local phone into standardized format (+... or 01...).
+  static String normalizePhone(String value) {
+    final clean = value.replaceAll(RegExp(r'[\s\-()]'), '');
+    // If Egyptian local or normalized
+    if (_egyptianPhonePattern.hasMatch(clean)) {
+      return normalizeEgyptianPhone(clean);
+    }
+    if (clean.startsWith('00')) {
+      return '+${clean.substring(2)}';
+    }
+    if (!clean.startsWith('+')) {
+      return '+$clean';
+    }
+    return clean;
+  }
+
   static const String egyptianPhoneErrorMessage =
       'Enter a valid Egyptian mobile number (010, 011, 012, or 015).';
 
