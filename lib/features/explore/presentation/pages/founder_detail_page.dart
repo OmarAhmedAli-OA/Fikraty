@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/explore_founder.dart';
-import '../../../home/presentation/pages/chat_detail_page.dart';
+import '../../../chat/presentation/pages/chat_detail_page.dart';
 import '../bloc/explore_bloc.dart';
 import '../bloc/explore_event.dart';
 import '../bloc/explore_state.dart';

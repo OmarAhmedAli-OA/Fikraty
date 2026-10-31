@@ -14,7 +14,7 @@ import 'package:video_player/video_player.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../data/services/chat_service.dart';
 import '../../data/services/sound_generator.dart';
-import 'camera_capture_page.dart';
+import '../../../home/presentation/pages/camera_capture_page.dart';
 
 class ChatDetailPage extends StatefulWidget {
   final String? conversationId;

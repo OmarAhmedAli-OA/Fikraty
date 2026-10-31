@@ -5,7 +5,7 @@ import '../../../../core/widgets/app_logo.dart';
 import '../../../auth/domain/entities/auth.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../auth/presentation/bloc/auth_event.dart';
-import '../pages/messages_page.dart';
+import '../../../chat/presentation/pages/messages_page.dart';
 import '../pages/notifications_page.dart';
 
 class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {

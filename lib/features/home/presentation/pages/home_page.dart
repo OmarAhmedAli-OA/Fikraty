@@ -16,7 +16,7 @@ import '../widgets/recommended_investors_card.dart';
 import '../widgets/stories_tray.dart';
 import '../widgets/trending_tags_bar.dart';
 import '../../../explore/presentation/pages/explore_page.dart';
-import 'messages_page.dart';
+import '../../../chat/presentation/pages/messages_page.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 

@@ -19,7 +19,7 @@ import 'features/explore/presentation/pages/explore_page.dart';
 import 'features/explore/presentation/pages/compare_startups_page.dart';
 import 'features/explore/presentation/bloc/explore_bloc.dart';
 import 'features/explore/presentation/bloc/explore_event.dart';
-import 'features/home/presentation/pages/messages_page.dart';
+import 'features/chat/presentation/pages/messages_page.dart';
 import 'features/home/presentation/pages/notifications_page.dart';
 import 'features/profile/presentation/pages/profile_page.dart';
 import 'features/splash/presentation/bloc/splash_bloc.dart';

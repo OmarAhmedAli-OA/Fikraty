@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../home/domain/entities/post.dart';
-import '../../../home/presentation/pages/chat_detail_page.dart';
+import '../../../chat/presentation/pages/chat_detail_page.dart';
 
 class InvestorDetailScreen extends StatefulWidget {
   final RecommendedInvestor? investor;

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../../domain/entities/post.dart';
+import '../../../home/domain/entities/post.dart';
 
 enum MessageType {
   text,
