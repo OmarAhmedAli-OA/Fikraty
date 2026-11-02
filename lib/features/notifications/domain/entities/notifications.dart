@@ -1,1 +1,1 @@
-// TODO: Domain entity for notifications.
+export 'notification_item.dart';

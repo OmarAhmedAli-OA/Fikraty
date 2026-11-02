@@ -17,6 +17,14 @@ import '../../features/explore/domain/usecases/toggle_bookmark_usecase.dart';
 import '../../features/explore/domain/usecases/toggle_event_registration_usecase.dart';
 import '../../features/explore/domain/usecases/toggle_follow_usecase.dart';
 import '../../features/explore/presentation/bloc/explore_bloc.dart';
+import '../../features/notifications/data/datasources/notifications_local_data_source.dart';
+import '../../features/notifications/data/repositories/notifications_repository_impl.dart';
+import '../../features/notifications/data/services/push_notification_service.dart';
+import '../../features/notifications/domain/repositories/notifications_repository.dart';
+import '../../features/notifications/domain/usecases/get_notifications_usecase.dart';
+import '../../features/notifications/domain/usecases/mark_all_notifications_as_read_usecase.dart';
+import '../../features/notifications/domain/usecases/mark_notification_as_read_usecase.dart';
+import '../../features/notifications/presentation/bloc/notifications_bloc.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -77,6 +85,37 @@ void configureDependencies() {
       expressInterestUseCase: sl<ExpressInterestUseCase>(),
       toggleEventRegistrationUseCase: sl<ToggleEventRegistrationUseCase>(),
       toggleFollowUseCase: sl<ToggleFollowUseCase>(),
+    ),
+  );
+
+  // Notifications Feature Dependencies (Prepared for Backend and FCM)
+  sl.registerLazySingleton<PushNotificationService>(
+    () => PushNotificationServiceImpl(),
+  );
+  sl.registerLazySingleton<NotificationsLocalDataSource>(
+    () => NotificationsLocalDataSourceImpl(),
+  );
+  sl.registerLazySingleton<NotificationsRepository>(
+    () => NotificationsRepositoryImpl(sl<NotificationsLocalDataSource>()),
+  );
+
+  sl.registerFactory<GetNotificationsUseCase>(
+    () => GetNotificationsUseCase(sl<NotificationsRepository>()),
+  );
+  sl.registerFactory<MarkNotificationAsReadUseCase>(
+    () => MarkNotificationAsReadUseCase(sl<NotificationsRepository>()),
+  );
+  sl.registerFactory<MarkAllNotificationsAsReadUseCase>(
+    () => MarkAllNotificationsAsReadUseCase(sl<NotificationsRepository>()),
+  );
+
+  sl.registerLazySingleton<NotificationsBloc>(
+    () => NotificationsBloc(
+      getNotificationsUseCase: sl<GetNotificationsUseCase>(),
+      markNotificationAsReadUseCase: sl<MarkNotificationAsReadUseCase>(),
+      markAllNotificationsAsReadUseCase:
+          sl<MarkAllNotificationsAsReadUseCase>(),
+      pushNotificationService: sl<PushNotificationService>(),
     ),
   );
 }

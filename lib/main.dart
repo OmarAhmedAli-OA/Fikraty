@@ -20,7 +20,9 @@ import 'features/explore/presentation/pages/compare_startups_page.dart';
 import 'features/explore/presentation/bloc/explore_bloc.dart';
 import 'features/explore/presentation/bloc/explore_event.dart';
 import 'features/chat/presentation/pages/messages_page.dart';
-import 'features/home/presentation/pages/notifications_page.dart';
+import 'features/notifications/presentation/bloc/notifications_bloc.dart';
+import 'features/notifications/presentation/bloc/notifications_event.dart';
+import 'features/notifications/presentation/pages/notifications_page.dart';
 import 'features/profile/presentation/pages/profile_page.dart';
 import 'features/splash/presentation/bloc/splash_bloc.dart';
 import 'features/splash/presentation/pages/splash_screen.dart';
@@ -42,6 +44,9 @@ void main() {
         ),
         BlocProvider<ExploreBloc>(
           create: (_) => sl<ExploreBloc>()..add(const LoadExploreDataEvent()),
+        ),
+        BlocProvider<NotificationsBloc>(
+          create: (_) => sl<NotificationsBloc>()..add(const LoadNotificationsEvent()),
         ),
       ],
       child: const FikratyApp(),

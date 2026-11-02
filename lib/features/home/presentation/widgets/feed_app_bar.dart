@@ -6,8 +6,9 @@ import '../../../auth/domain/entities/auth.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../auth/presentation/bloc/auth_event.dart';
 import '../../../chat/presentation/pages/messages_page.dart';
-import '../../data/services/notification_service.dart';
-import '../pages/notifications_page.dart';
+import '../../../notifications/presentation/bloc/notifications_bloc.dart';
+import '../../../notifications/presentation/bloc/notifications_state.dart';
+import '../../../notifications/presentation/pages/notifications_page.dart';
 
 class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
   const FeedAppBar({super.key});
@@ -90,11 +91,10 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             const Spacer(),
-            // Notification Bell with badge synced to NotificationService
-            ListenableBuilder(
-              listenable: NotificationService.instance,
-              builder: (context, _) {
-                final hasUnread = NotificationService.instance.hasUnread;
+            // Notification Bell with badge synced to NotificationsBloc
+            BlocBuilder<NotificationsBloc, NotificationsState>(
+              builder: (context, notifState) {
+                final hasUnread = (notifState is NotificationsLoaded) && notifState.hasUnread;
                 return Stack(
                   clipBehavior: Clip.none,
                   children: [
