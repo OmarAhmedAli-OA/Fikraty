@@ -310,7 +310,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                     padding: const EdgeInsets.symmetric(
                         horizontal: 14, vertical: 10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF7F7FB),
+                      color: AppColors.background,
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(color: AppColors.cardBorder),
                     ),
@@ -418,7 +418,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                       _buildShareChannel(
                         icon: Icons.chat,
                         label: 'WhatsApp',
-                        color: const Color(0xFF25D366),
+                        color: AppColors.whatsAppGreen,
                         onTap: () async {
                           final messenger = ScaffoldMessenger.of(context);
                           final nav = Navigator.of(ctx);
@@ -439,7 +439,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                       _buildShareChannel(
                         icon: Icons.work,
                         label: 'LinkedIn',
-                        color: const Color(0xFF0077B5),
+                        color: AppColors.linkedInAlt,
                         onTap: () async {
                           final messenger = ScaffoldMessenger.of(context);
                           final nav = Navigator.of(ctx);
@@ -460,7 +460,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                       _buildShareChannel(
                         icon: Icons.email_outlined,
                         label: 'Email',
-                        color: const Color(0xFFEA4335),
+                        color: AppColors.googleRed,
                         onTap: () async {
                           final messenger = ScaffoldMessenger.of(context);
                           final nav = Navigator.of(ctx);
@@ -1351,7 +1351,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                     Container(
                       decoration: const BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Color(0xFF4F46E5), Color(0xFF7C3AED)],
+                          colors: [AppColors.primaryPurple, AppColors.violetText],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
@@ -1426,7 +1426,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                                 ' ·  Venture',
                                 style: const TextStyle(
                                   fontSize: 11.5,
-                                  color: Color(0xFFE0E7FF),
+                                  color: AppColors.lightIndigoBg,
                                   fontWeight: FontWeight.w500,
                                 ),
                                 maxLines: 1,
@@ -1519,7 +1519,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF8FAFC),
+                    color: AppColors.grayBg,
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(color: AppColors.cardBorder),
                   ),
@@ -1680,7 +1680,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                         icon: const Icon(Icons.verified_user_outlined, size: 16),
                         label: const Text('Legal Badge', style: TextStyle(fontSize: 11.5)),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF059669),
+                          backgroundColor: AppColors.emeraldText,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -2054,7 +2054,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
+        color: AppColors.grayBg,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.cardBorder),
       ),
@@ -2254,7 +2254,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
             Container(
               height: 180,
               decoration: BoxDecoration(
-                color: const Color(0xFFF8FAFC),
+                color: AppColors.grayBg,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.cardBorder),
               ),
@@ -2824,10 +2824,10 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                       margin: const EdgeInsets.only(bottom: 8),
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                       decoration: BoxDecoration(
-                        color: isDone ? const Color(0xFFF0FDF4) : AppColors.cardSurface,
+                        color: isDone ? AppColors.mintBg : AppColors.cardSurface,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: isDone ? const Color(0xFF86EFAC) : AppColors.cardBorder,
+                          color: isDone ? AppColors.mintBorder : AppColors.cardBorder,
                         ),
                       ),
                       child: Row(
@@ -3026,7 +3026,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: const Color(0xFFF8FAFC),
+                color: AppColors.grayBg,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.cardBorder),
               ),
@@ -3259,7 +3259,7 @@ class _MetricBox extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         decoration: BoxDecoration(
-          color: const Color(0xFFF8FAFC),
+          color: AppColors.grayBg,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: AppColors.cardBorder),
         ),

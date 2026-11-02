@@ -216,7 +216,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                     height: 4,
                     margin: const EdgeInsets.only(bottom: 16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFCBD5E1),
+                      color: AppColors.borderSlate,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -253,11 +253,11 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   leading: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFEF4444).withValues(alpha: 0.12),
+                      color: AppColors.error.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(Icons.picture_as_pdf_rounded,
-                        color: Color(0xFFEF4444)),
+                        color: AppColors.error),
                   ),
                   title: const Text('PDF Document',
                       style: TextStyle(fontWeight: FontWeight.w600)),
@@ -272,11 +272,11 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   leading: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF10B981).withValues(alpha: 0.12),
+                      color: AppColors.success.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(Icons.attach_file_rounded,
-                        color: Color(0xFF10B981)),
+                        color: AppColors.success),
                   ),
                   title: const Text('Any Device File',
                       style: TextStyle(fontWeight: FontWeight.w600)),
@@ -470,7 +470,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
             ),
             // Poll Fields (if poll selected)
             if (_selectedType == PostType.poll) ...[
-              const Divider(color: Color(0xFFE2E8F0)),
+              const Divider(color: AppColors.borderLight),
               const SizedBox(height: 10),
               const Text(
                 'Poll Question & Options',
@@ -486,10 +486,10 @@ class _CreatePostPageState extends State<CreatePostPage> {
                 decoration: InputDecoration(
                   hintText: 'Ask a question...',
                   filled: true,
-                  fillColor: const Color(0xFFF8FAFC),
+                  fillColor: AppColors.grayBg,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+                    borderSide: const BorderSide(color: AppColors.borderLight),
                   ),
                 ),
               ),
@@ -502,10 +502,10 @@ class _CreatePostPageState extends State<CreatePostPage> {
                     decoration: InputDecoration(
                       hintText: 'Option ${entry.key + 1}',
                       filled: true,
-                      fillColor: const Color(0xFFF8FAFC),
+                      fillColor: AppColors.grayBg,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+                        borderSide: const BorderSide(color: AppColors.borderLight),
                       ),
                     ),
                   ),
@@ -549,7 +549,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
             ],
 
             const SizedBox(height: 16),
-            const Divider(color: Color(0xFFE2E8F0)),
+            const Divider(color: AppColors.borderLight),
             // Tags selector
             const Text(
               'Add Tags:',
@@ -594,9 +594,9 @@ class _CreatePostPageState extends State<CreatePostPage> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: const Color(0xFFF8FAFC),
+                color: AppColors.grayBg,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFFE2E8F0)),
+                border: Border.all(color: AppColors.borderLight),
               ),
               child: Row(
                 children: [
@@ -620,7 +620,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   IconButton(
                     onPressed: _pickPdf,
                     icon: const Icon(Icons.picture_as_pdf_outlined,
-                        color: Color(0xFFEF4444)),
+                        color: AppColors.error),
                     tooltip: 'Attach PDF Document',
                   ),
                   // Any File
@@ -657,7 +657,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
         margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: const Color(0xFFE2E8F0)),
+          border: Border.all(color: AppColors.borderLight),
         ),
         child: Stack(
           children: [
@@ -679,7 +679,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                         )
                       : Container(
                           height: 120,
-                          color: const Color(0xFFF1F5F9),
+                          color: AppColors.borderSubtle,
                           child: const Center(
                             child: Icon(Icons.image,
                                 size: 40, color: AppColors.textMuted),
@@ -715,9 +715,9 @@ class _CreatePostPageState extends State<CreatePostPage> {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
+        color: AppColors.grayBg,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: AppColors.borderLight),
       ),
       child: Row(
         children: [
@@ -725,7 +725,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: att.isPdf
-                  ? const Color(0xFFEF4444).withValues(alpha: 0.12)
+                  ? AppColors.error.withValues(alpha: 0.12)
                   : AppColors.primaryPurple.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
             ),
@@ -733,7 +733,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
               att.isPdf
                   ? Icons.picture_as_pdf_rounded
                   : Icons.insert_drive_file_rounded,
-              color: att.isPdf ? const Color(0xFFEF4444) : AppColors.primaryPurple,
+              color: att.isPdf ? AppColors.error : AppColors.primaryPurple,
               size: 26,
             ),
           ),

@@ -40,13 +40,13 @@ class _ShareStartupModalState extends State<ShareStartupModal> {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: const Color(0xFF1E293B),
+        backgroundColor: AppColors.slateNavy,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         content: Row(
           children: [
             const Icon(Icons.check_circle_rounded,
-                color: Color(0xFF10B981), size: 20),
+                color: AppColors.success, size: 20),
             const SizedBox(width: 10),
             Text(
               platform != null
@@ -100,7 +100,7 @@ class _ShareStartupModalState extends State<ShareStartupModal> {
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 14),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFCBD5E1),
+                  color: AppColors.borderSlate,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -134,9 +134,9 @@ class _ShareStartupModalState extends State<ShareStartupModal> {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: const Color(0xFFF8FAFC),
+                color: AppColors.grayBg,
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: const Color(0xFFE2E8F0)),
+                border: Border.all(color: AppColors.borderLight),
               ),
               child: Row(
                 children: [
@@ -145,7 +145,7 @@ class _ShareStartupModalState extends State<ShareStartupModal> {
                     height: 48,
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
-                        colors: [Color(0xFF6366F1), Color(0xFF4F46E5)],
+                        colors: [AppColors.purpleGlow, AppColors.primaryPurple],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -184,7 +184,7 @@ class _ShareStartupModalState extends State<ShareStartupModal> {
                             const SizedBox(width: 6),
                             const Icon(
                               Icons.verified_rounded,
-                              color: Color(0xFF10B981),
+                              color: AppColors.success,
                               size: 16,
                             ),
                           ],
@@ -205,7 +205,7 @@ class _ShareStartupModalState extends State<ShareStartupModal> {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFEEF2FF),
+                                color: AppColors.purpleLight,
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
@@ -213,7 +213,7 @@ class _ShareStartupModalState extends State<ShareStartupModal> {
                                 style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0xFF4F46E5),
+                                  color: AppColors.primaryPurple,
                                 ),
                               ),
                             ),
@@ -221,7 +221,7 @@ class _ShareStartupModalState extends State<ShareStartupModal> {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFECFDF5),
+                                color: AppColors.emeraldBg,
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
@@ -229,7 +229,7 @@ class _ShareStartupModalState extends State<ShareStartupModal> {
                                 style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0xFF059669),
+                                  color: AppColors.emeraldText,
                                 ),
                               ),
                             ),
@@ -269,31 +269,31 @@ class _ShareStartupModalState extends State<ShareStartupModal> {
                 _buildSocialItem(
                   icon: Icons.chat_rounded,
                   label: 'WhatsApp',
-                  color: const Color(0xFF25D366),
+                  color: AppColors.whatsAppGreen,
                   onTap: () => _copyLink('WhatsApp'),
                 ),
                 _buildSocialItem(
                   icon: Icons.business_center_rounded,
                   label: 'LinkedIn',
-                  color: const Color(0xFF0A66C2),
+                  color: AppColors.linkedInBlue,
                   onTap: () => _copyLink('LinkedIn'),
                 ),
                 _buildSocialItem(
                   icon: Icons.tag_rounded,
                   label: 'X (Twitter)',
-                  color: const Color(0xFF0F172A),
+                  color: AppColors.slateBlack,
                   onTap: () => _copyLink('X'),
                 ),
                 _buildSocialItem(
                   icon: Icons.send_rounded,
                   label: 'Telegram',
-                  color: const Color(0xFF0088CC),
+                  color: AppColors.telegramBlue,
                   onTap: () => _copyLink('Telegram'),
                 ),
                 _buildSocialItem(
                   icon: Icons.mail_outline_rounded,
                   label: 'Email',
-                  color: const Color(0xFF64748B),
+                  color: AppColors.textMuted,
                   onTap: () => _copyLink('Email'),
                 ),
               ],
@@ -304,10 +304,10 @@ class _ShareStartupModalState extends State<ShareStartupModal> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
-                color: const Color(0xFFF1F5F9),
+                color: AppColors.borderSubtle,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: _copied ? const Color(0xFF10B981) : const Color(0xFFE2E8F0),
+                  color: _copied ? AppColors.success : AppColors.borderLight,
                   width: _copied ? 1.5 : 1.0,
                 ),
               ),
@@ -333,7 +333,7 @@ class _ShareStartupModalState extends State<ShareStartupModal> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                       decoration: BoxDecoration(
-                        color: _copied ? const Color(0xFF10B981) : AppColors.primaryPurple,
+                        color: _copied ? AppColors.success : AppColors.primaryPurple,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(

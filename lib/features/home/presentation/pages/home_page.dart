@@ -17,6 +17,7 @@ import '../widgets/stories_tray.dart';
 import '../widgets/trending_tags_bar.dart';
 import '../../../explore/presentation/pages/explore_page.dart';
 import '../../../chat/presentation/pages/messages_page.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -55,7 +56,7 @@ class _HomeScreenBodyState extends State<_HomeScreenBody> {
         );
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFFF8FAFC),
+        backgroundColor: AppColors.grayBg,
         appBar: _selectedBottomNavIndex == 0 ? const FeedAppBar() : null,
         body: IndexedStack(
           index: _selectedBottomNavIndex,
@@ -130,14 +131,14 @@ class _HomeScreenBodyState extends State<_HomeScreenBody> {
             child: StoriesTray(stories: state.stories),
           ),
           const SliverToBoxAdapter(
-            child: Divider(color: Color(0xFFF1F5F9), height: 1),
+            child: Divider(color: AppColors.borderSubtle, height: 1),
           ),
           // "Share a startup update..." quick box
           const SliverToBoxAdapter(
             child: QuickCreateBox(),
           ),
           const SliverToBoxAdapter(
-            child: Divider(color: Color(0xFFF1F5F9), height: 1),
+            child: Divider(color: AppColors.borderSubtle, height: 1),
           ),
           // Trending tags row
           SliverToBoxAdapter(
@@ -275,7 +276,7 @@ class _HomeScreenBodyState extends State<_HomeScreenBody> {
             const Icon(
               Icons.error_outline_rounded,
               size: 50,
-              color: Color(0xFFEF4444),
+              color: AppColors.error,
             ),
             const SizedBox(height: 16),
             const Text(
@@ -318,7 +319,7 @@ class _HomeScreenBodyState extends State<_HomeScreenBody> {
       decoration: const BoxDecoration(
         color: AppColors.white,
         border: Border(
-          top: BorderSide(color: Color(0xFFE2E8F0), width: 1),
+          top: BorderSide(color: AppColors.borderLight, width: 1),
         ),
       ),
       child: SafeArea(
@@ -356,7 +357,7 @@ class _HomeScreenBodyState extends State<_HomeScreenBody> {
             Icon(
               icon,
               size: 24,
-              color: active ? AppColors.primaryPurple : const Color(0xFF94A3B8),
+              color: active ? AppColors.primaryPurple : AppColors.navInactive,
             ),
             const SizedBox(height: 3),
             Text(
@@ -364,8 +365,7 @@ class _HomeScreenBodyState extends State<_HomeScreenBody> {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: active ? FontWeight.w700 : FontWeight.w500,
-                color:
-                    active ? AppColors.primaryPurple : const Color(0xFF94A3B8),
+                color: active ? AppColors.primaryPurple : AppColors.navInactive,
               ),
             ),
             const SizedBox(height: 2),
@@ -374,7 +374,7 @@ class _HomeScreenBodyState extends State<_HomeScreenBody> {
               height: 4,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: active ? AppColors.primaryPurple : Colors.transparent,
+                color: active ? AppColors.primaryPurple : AppColors.transparent,
               ),
             ),
           ],

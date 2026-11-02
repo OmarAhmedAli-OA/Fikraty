@@ -1,3 +1,4 @@
+import 'package:fikraty/core/theme/app_colors.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
@@ -271,7 +272,7 @@ class _CameraCapturePageState extends State<CameraCapturePage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFEF4444).withValues(alpha: 0.85),
+                          color: AppColors.error.withValues(alpha: 0.85),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
@@ -406,7 +407,7 @@ class _CameraCapturePageState extends State<CameraCapturePage> {
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: _isVideoMode
-                              ? const Color(0xFFEF4444)
+                              ? AppColors.error
                               : Colors.white,
                           width: 4,
                         ),
@@ -415,7 +416,7 @@ class _CameraCapturePageState extends State<CameraCapturePage> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: _isVideoMode
-                              ? const Color(0xFFEF4444)
+                              ? AppColors.error
                               : (_isCameraInitialized
                                   ? Colors.white
                                   : Colors.white38),

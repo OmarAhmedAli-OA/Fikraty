@@ -62,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE2E6EE),
+                  color: AppColors.borderCool,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -102,8 +102,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
                     color: isChosen
-                        ? const Color(0xFFEEF0FF)
-                        : const Color(0xFFF9FAFC),
+                        ? AppColors.selectionTint
+                        : AppColors.grayBg,
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
                       color: isChosen ? AppColors.primary : AppColors.cardBorder,
@@ -213,7 +213,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         height: 4,
                         margin: const EdgeInsets.only(bottom: 16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE2E6EE),
+                          color: AppColors.borderCool,
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
@@ -236,7 +236,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFEEF0FF),
+                            color: AppColors.selectionTint,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
@@ -285,8 +285,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: selectedMethod == 'email'
-                                ? const Color(0xFFEEF0FF)
-                                : const Color(0xFFF9FAFC),
+                                ? AppColors.selectionTint
+                                : AppColors.grayBg,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: selectedMethod == 'email'
@@ -352,8 +352,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: selectedMethod == 'phone'
-                                ? const Color(0xFFEEF0FF)
-                                : const Color(0xFFF9FAFC),
+                                ? AppColors.selectionTint
+                                : AppColors.grayBg,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: selectedMethod == 'phone'
@@ -442,9 +442,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE8FDF5),
+                          color: AppColors.emeraldSoftBg,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: const Color(0xFFA7F3D0)),
+                          border: Border.all(color: AppColors.mintSoft),
                         ),
                         child: Row(
                           children: [
@@ -494,7 +494,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           counterText: '',
                           errorText: validationError,
                           filled: true,
-                          fillColor: const Color(0xFFF9FAFC),
+                          fillColor: AppColors.grayBg,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 14,
                             vertical: 12,
@@ -586,7 +586,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               fontSize: 12.5,
                             ),
                             filled: true,
-                            fillColor: const Color(0xFFF9FAFC),
+                            fillColor: AppColors.grayBg,
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 14,
                               vertical: 12,
@@ -632,7 +632,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               fontSize: 12.5,
                             ),
                             filled: true,
-                            fillColor: const Color(0xFFF9FAFC),
+                            fillColor: AppColors.grayBg,
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 14,
                               vertical: 12,
@@ -676,7 +676,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               fontSize: 12.5,
                             ),
                             filled: true,
-                            fillColor: const Color(0xFFF9FAFC),
+                            fillColor: AppColors.grayBg,
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 14,
                               vertical: 12,
@@ -709,7 +709,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               fontSize: 12.5,
                             ),
                             filled: true,
-                            fillColor: const Color(0xFFF9FAFC),
+                            fillColor: AppColors.grayBg,
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 14,
                               vertical: 12,
@@ -1148,7 +1148,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFF3E0),
+                      color: AppColors.orangeLightBg,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Text(
@@ -1156,7 +1156,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFFF57C00),
+                        color: AppColors.orangeAccent,
                       ),
                     ),
                   ),
@@ -1220,9 +1220,9 @@ class _SettingsPageState extends State<SettingsPage> {
                             _showNotice('Logged out successfully');
                           },
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFF0F0),
+                            backgroundColor: AppColors.redSoftBg,
                             side: const BorderSide(
-                              color: Color(0xFFF87171),
+                              color: AppColors.redLight,
                               width: 1,
                             ),
                             shape: RoundedRectangleBorder(
@@ -1234,7 +1234,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xFFDC2626),
+                              color: AppColors.roseText,
                             ),
                           ),
                         ),

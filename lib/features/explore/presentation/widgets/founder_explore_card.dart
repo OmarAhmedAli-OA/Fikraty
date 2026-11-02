@@ -124,7 +124,7 @@ class FounderExploreCard extends StatelessWidget {
             founder.bio,
             style: const TextStyle(
               fontSize: 12.5,
-              color: Color(0xFF5F5F72),
+              color: AppColors.subtleText,
               height: 1.45,
             ),
           ),
@@ -147,7 +147,7 @@ class FounderExploreCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF5F5F72),
+                    color: AppColors.subtleText,
                   ),
                 ),
               );

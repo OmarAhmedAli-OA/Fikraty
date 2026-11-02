@@ -72,7 +72,7 @@ class _InvestorDetailPageState extends State<InvestorDetailPage> {
     final followersCount = inv.followers;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: AppColors.grayBg,
       appBar: AppBar(
         title: Text(
           inv.name,
@@ -213,7 +213,7 @@ class _InvestorDetailPageState extends State<InvestorDetailPage> {
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF0F4FF),
+                  color: AppColors.softBlueBg,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
                 ),
@@ -242,7 +242,7 @@ class _InvestorDetailPageState extends State<InvestorDetailPage> {
                         fontSize: 14,
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFF1E293B),
+                        color: AppColors.slateNavy,
                         height: 1.45,
                       ),
                     ),
@@ -311,7 +311,7 @@ class _InvestorDetailPageState extends State<InvestorDetailPage> {
                         spacing: 6,
                         runSpacing: 6,
                         children: inv.stages
-                            .map((st) => _buildChip(st, const Color(0xFFF1F5F9), AppColors.darkText))
+                            .map((st) => _buildChip(st, AppColors.borderSubtle, AppColors.darkText))
                             .toList(),
                       ),
                     ],
@@ -354,7 +354,7 @@ class _InvestorDetailPageState extends State<InvestorDetailPage> {
                         return Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF8FAFC),
+                            color: AppColors.grayBg,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: AppColors.border),
                           ),
@@ -435,7 +435,7 @@ class _InvestorDetailPageState extends State<InvestorDetailPage> {
                     style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isFollowing ? const Color(0xFFE6FBF5) : AppColors.primary,
+                    backgroundColor: isFollowing ? AppColors.secondaryPillBg : AppColors.primary,
                     foregroundColor: isFollowing ? AppColors.secondary : AppColors.white,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -515,7 +515,7 @@ class _InvestorDetailPageState extends State<InvestorDetailPage> {
             content,
             style: const TextStyle(
               fontSize: 13.5,
-              color: Color(0xFF475569),
+              color: AppColors.textSecondary,
               height: 1.55,
             ),
           ),

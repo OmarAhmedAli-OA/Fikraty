@@ -49,9 +49,9 @@ class QuickCreateBox extends StatelessWidget {
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF1F5F9), // Light grayish slate
+                  color: AppColors.borderSubtle, // Light grayish slate
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                  border: Border.all(color: AppColors.borderLight),
                 ),
                 child: const Text(
                   'Share a startup update...',

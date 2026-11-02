@@ -6,6 +6,7 @@ import '../../../auth/domain/entities/auth.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../auth/presentation/bloc/auth_event.dart';
 import '../../../chat/presentation/pages/messages_page.dart';
+import '../../data/services/notification_service.dart';
 import '../pages/notifications_page.dart';
 
 class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -73,7 +74,7 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
                 decoration: BoxDecoration(
-                  color: isInvestor ? const Color(0xFFE0E7FF) : AppColors.purpleLight,
+                  color: isInvestor ? AppColors.lightIndigoBg : AppColors.purpleLight,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
@@ -83,47 +84,54 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: isInvestor ? const Color(0xFF4338CA) : AppColors.primaryPurple,
+                    color: isInvestor ? AppColors.indigoText : AppColors.primaryPurple,
                   ),
                 ),
               ),
             ),
             const Spacer(),
-            // Notification Bell with badge
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const NotificationsPage(),
+            // Notification Bell with badge synced to NotificationService
+            ListenableBuilder(
+              listenable: NotificationService.instance,
+              builder: (context, _) {
+                final hasUnread = NotificationService.instance.hasUnread;
+                return Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const NotificationsPage(),
+                          ),
+                        );
+                      },
+                      padding: const EdgeInsets.all(6),
+                      constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                      icon: const Icon(
+                        Icons.notifications_outlined,
+                        color: AppColors.ink,
+                        size: 22,
                       ),
-                    );
-                  },
-                  padding: const EdgeInsets.all(6),
-                  constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                  icon: const Icon(
-                    Icons.notifications_outlined,
-                    color: AppColors.ink,
-                    size: 22,
-                  ),
-                  tooltip: 'Notifications',
-                ),
-                Positioned(
-                  right: 6,
-                  top: 6,
-                  child: Container(
-                    width: 7,
-                    height: 7,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF43F5E), // Pink/Red badge
-                      shape: BoxShape.circle,
+                      tooltip: 'Notifications',
                     ),
-                  ),
-                ),
-              ],
+                    if (hasUnread)
+                      Positioned(
+                        right: 6,
+                        top: 6,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                            color: AppColors.error,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
             ),
             // Chat/Messages bubble
             IconButton(

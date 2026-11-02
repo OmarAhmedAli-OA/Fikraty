@@ -40,8 +40,8 @@ class ProfileHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: isEntrepreneur
-                      ? [const Color(0xFF5548E8), const Color(0xFF8B5CF6)]
-                      : [const Color(0xFFEEF0FF), const Color(0xFFDCD8FF)],
+                      ? [AppColors.primary, AppColors.accentPurple]
+                      : [AppColors.selectionTint, AppColors.lavenderBorder],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),

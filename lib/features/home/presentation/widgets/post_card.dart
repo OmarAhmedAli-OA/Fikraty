@@ -86,7 +86,7 @@ class PostCard extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(2),
                   decoration: const BoxDecoration(
-                    color: Color(0xFF4F46E5), // Verified Indigo
+                    color: AppColors.primaryPurple, // Verified Indigo
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -171,7 +171,7 @@ class PostCard extends StatelessWidget {
         text = AppColors.primaryPurple;
         break;
       default:
-        bg = const Color(0xFFF1F5F9);
+        bg = AppColors.borderSubtle;
         text = AppColors.textSecondary;
     }
 
@@ -236,9 +236,9 @@ class PostCard extends StatelessWidget {
         margin: const EdgeInsets.only(top: 10),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: const Color(0xFFF8FAFC),
+          color: AppColors.grayBg,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: const Color(0xFFE2E8F0)),
+          border: Border.all(color: AppColors.borderLight),
         ),
         child: Row(
           children: [
@@ -246,7 +246,7 @@ class PostCard extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: isPdf
-                    ? const Color(0xFFEF4444).withValues(alpha: 0.1)
+                    ? AppColors.error.withValues(alpha: 0.1)
                     : AppColors.primaryPurple.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -255,7 +255,7 @@ class PostCard extends StatelessWidget {
                     ? Icons.picture_as_pdf_rounded
                     : Icons.insert_drive_file_rounded,
                 color: isPdf
-                    ? const Color(0xFFEF4444)
+                    ? AppColors.error
                     : AppColors.primaryPurple,
                 size: 26,
               ),
@@ -328,8 +328,8 @@ class PostCard extends StatelessWidget {
         constraints: const BoxConstraints(maxHeight: 260),
         width: double.infinity,
         decoration: BoxDecoration(
-          color: const Color(0xFF0F172A),
-          border: Border.all(color: const Color(0xFFE2E8F0)),
+          color: AppColors.slateBlack,
+          border: Border.all(color: AppColors.borderLight),
         ),
         child: imageWidget,
       ),
@@ -339,7 +339,7 @@ class PostCard extends StatelessWidget {
   Widget _buildMediaFallback() {
     return Container(
       height: 180,
-      color: const Color(0xFF1E293B),
+      color: AppColors.slateNavy,
       child: const Center(
         child: Icon(Icons.bar_chart_rounded, color: Colors.white54, size: 48),
       ),
@@ -359,7 +359,7 @@ class PostCard extends StatelessWidget {
               children: [
                 Icon(
                   post.isLiked ? Icons.favorite : Icons.favorite_border_rounded,
-                  color: post.isLiked ? const Color(0xFFEF4444) : AppColors.textMuted,
+                  color: post.isLiked ? AppColors.error : AppColors.textMuted,
                   size: 20,
                 ),
                 const SizedBox(width: 6),
@@ -369,7 +369,7 @@ class PostCard extends StatelessWidget {
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: post.isLiked
-                        ? const Color(0xFFEF4444)
+                        ? AppColors.error
                         : AppColors.textSecondary,
                   ),
                 ),

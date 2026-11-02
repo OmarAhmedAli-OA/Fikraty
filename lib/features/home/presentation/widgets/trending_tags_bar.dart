@@ -69,12 +69,12 @@ class TrendingTagsBar extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: isSelected
                           ? AppColors.primaryPurple
-                          : const Color(0xFFF8FAFC),
+                          : AppColors.grayBg,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
                         color: isSelected
                             ? AppColors.primaryPurple
-                            : const Color(0xFFE2E8F0),
+                            : AppColors.borderLight,
                       ),
                     ),
                     child: Text(

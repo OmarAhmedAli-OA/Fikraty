@@ -194,7 +194,7 @@ class _LocationPickerBottomSheetState extends State<LocationPickerBottomSheet> {
                 prefixIcon: const Icon(Icons.search,
                     color: AppColors.textMuted, size: 20),
                 filled: true,
-                fillColor: const Color(0xFFF9FAFC),
+                fillColor: AppColors.grayBg,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 border: OutlineInputBorder(
@@ -299,7 +299,7 @@ class _LocationPickerBottomSheetState extends State<LocationPickerBottomSheet> {
             width: 32,
             height: 32,
             decoration: BoxDecoration(
-              color: isSelected ? const Color(0xFFEEF0FF) : const Color(0xFFF0F2F6),
+              color: isSelected ? AppColors.selectionTint : AppColors.surfaceMuted,
               shape: BoxShape.circle,
             ),
             child: Icon(

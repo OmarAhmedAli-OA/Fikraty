@@ -59,7 +59,7 @@ class StoryOverlayItem {
     this.isMention = false,
     this.isEmoji = false,
     this.textColor = Colors.white,
-    this.bgColor = const Color(0x99000000),
+    this.bgColor = AppColors.overlayDark,
     required this.position,
   });
 }
@@ -98,22 +98,22 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
   final TextEditingController _captionController = TextEditingController();
 
   final List<List<Color>> _backgroundGradients = [
-    [const Color(0xFF4F46E5), const Color(0xFF7C3AED)], // Indigo to Purple
-    [const Color(0xFF0F172A), const Color(0xFF1E293B)], // Midnight Slate
-    [const Color(0xFF059669), const Color(0xFF0D9488)], // Emerald Teal
-    [const Color(0xFFEA580C), const Color(0xFFE11D48)], // Sunset Red
-    [const Color(0xFF2563EB), const Color(0xFF06B6D4)], // Ocean Blue
-    [const Color(0xFF833AB4), const Color(0xFFFD1D1D)], // Instagram Classic
+    [AppColors.primaryPurple, AppColors.violetText], // Indigo to Purple
+    [AppColors.slateBlack, AppColors.slateNavy], // Midnight Slate
+    [AppColors.emeraldText, AppColors.tealDark], // Emerald Teal
+    [AppColors.orangeDark, AppColors.roseActive], // Sunset Red
+    [AppColors.bluePrimary, AppColors.cyanPrimary], // Ocean Blue
+    [AppColors.instagramPurple, AppColors.instagramRed], // Instagram Classic
   ];
 
   final List<Color> _brushColors = [
     Colors.white,
-    const Color(0xFFEF4444), // Red
-    const Color(0xFFF59E0B), // Amber
-    const Color(0xFF10B981), // Emerald
-    const Color(0xFF06B6D4), // Cyan
-    const Color(0xFF6366F1), // Indigo
-    const Color(0xFFA855F7), // Purple
+    AppColors.error, // Red
+    AppColors.warning, // Amber
+    AppColors.success, // Emerald
+    AppColors.cyanPrimary, // Cyan
+    AppColors.purpleGlow, // Indigo
+    AppColors.purpleAccent, // Purple
   ];
 
   @override
@@ -411,7 +411,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF0F172A),
+      backgroundColor: AppColors.slateBlack,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -489,7 +489,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF0F172A),
+      backgroundColor: AppColors.slateBlack,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -705,7 +705,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 4),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFEF4444).withValues(alpha: 0.8),
+                        color: AppColors.error.withValues(alpha: 0.8),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Text(
@@ -784,7 +784,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: _isRecordingVideo
-                              ? const Color(0xFFEF4444)
+                              ? AppColors.error
                               : Colors.white,
                           width: 4,
                         ),
@@ -793,7 +793,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           color: _isRecordingVideo
-                              ? const Color(0xFFEF4444)
+                              ? AppColors.error
                               : Colors.white,
                           shape: _isRecordingVideo
                               ? BoxShape.rectangle
@@ -818,7 +818,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                       height: 52,
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                          colors: [Color(0xFF833AB4), Color(0xFFFD1D1D)],
+                          colors: [AppColors.instagramPurple, AppColors.instagramRed],
                         ),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(color: Colors.white54, width: 2),
@@ -1129,14 +1129,14 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                               horizontal: 20, vertical: 12),
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [Color(0xFF833AB4), Color(0xFFFD1D1D)],
+                              colors: [AppColors.instagramPurple, AppColors.instagramRed],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
                             borderRadius: BorderRadius.circular(28),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFFFD1D1D)
+                                color: AppColors.instagramRed
                                     .withValues(alpha: 0.35),
                                 blurRadius: 16,
                                 offset: const Offset(0, 4),
@@ -1186,7 +1186,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
       return Image.network(
         pathOrUrl,
         fit: BoxFit.cover,
-        errorBuilder: (_, _, _) => Container(color: const Color(0xFF0F172A)),
+        errorBuilder: (_, _, _) => Container(color: AppColors.slateBlack),
       );
     } else {
       if (!kIsWeb) {
@@ -1195,11 +1195,11 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
           return Image.file(
             f,
             fit: BoxFit.cover,
-            errorBuilder: (_, _, _) => Container(color: const Color(0xFF0F172A)),
+            errorBuilder: (_, _, _) => Container(color: AppColors.slateBlack),
           );
         }
       }
-      return Container(color: const Color(0xFF0F172A));
+      return Container(color: AppColors.slateBlack);
     }
   }
 }

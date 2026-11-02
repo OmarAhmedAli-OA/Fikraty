@@ -116,15 +116,15 @@ class _CompareStartupsSectionState extends State<CompareStartupsSection> {
             padding: const EdgeInsets.all(12),
             margin: const EdgeInsets.only(bottom: 12),
             decoration: BoxDecoration(
-              color: const Color(0xFFFFF8E6),
+              color: AppColors.amberSoftBg,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFFFFE0A0)),
+              border: Border.all(color: AppColors.amberBorder),
             ),
             child: const Text(
               'Select at least 2 startups above to compare.',
               style: TextStyle(
                 fontSize: 12,
-                color: Color(0xFFB07000),
+                color: AppColors.amberDark,
                 fontWeight: FontWeight.w500,
               ),
             ),

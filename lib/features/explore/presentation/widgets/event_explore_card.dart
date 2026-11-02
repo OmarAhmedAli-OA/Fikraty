@@ -116,7 +116,7 @@ class EventExploreCard extends StatelessWidget {
                       constraints: const BoxConstraints(),
                       icon: Icon(
                         event.isSaved ? Icons.bookmark : Icons.bookmark_border_rounded,
-                        color: event.isSaved ? AppColors.primary : const Color(0xFFC0C0D0),
+                        color: event.isSaved ? AppColors.primary : AppColors.grayBorder,
                         size: 22,
                       ),
                     ),
@@ -175,7 +175,7 @@ class EventExploreCard extends StatelessWidget {
                       onPressed: onToggleRegister,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: event.isRegistered
-                            ? const Color(0xFFE6FBF5)
+                            ? AppColors.secondaryPillBg
                             : AppColors.primary,
                         foregroundColor: event.isRegistered
                             ? AppColors.secondary

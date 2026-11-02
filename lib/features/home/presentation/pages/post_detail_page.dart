@@ -80,7 +80,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                 borderRadius: BorderRadius.circular(20),
                 child: Container(
                   decoration: const BoxDecoration(
-                    color: Color(0xFFF1F5F9),
+                    color: AppColors.borderSubtle,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -150,7 +150,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                       width: 6,
                                       height: 6,
                                       decoration: const BoxDecoration(
-                                        color: Color(0xFF10B981), // Active green dot
+                                        color: AppColors.success, // Active green dot
                                         shape: BoxShape.circle,
                                       ),
                                     ),
@@ -208,7 +208,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                       ? Icons.favorite
                                       : Icons.favorite_border,
                                   color: currentPost.isLiked
-                                      ? const Color(0xFFEF4444)
+                                      ? AppColors.error
                                       : AppColors.textMuted,
                                   size: 20,
                                 ),
@@ -218,7 +218,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     color: currentPost.isLiked
-                                        ? const Color(0xFFEF4444)
+                                        ? AppColors.error
                                         : AppColors.textSecondary,
                                   ),
                                 ),
@@ -300,7 +300,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                           ),
                         ],
                       ),
-                      const Divider(color: Color(0xFFF1F5F9), height: 28),
+                      const Divider(color: AppColors.borderSubtle, height: 28),
                       // Comments Header
                       Text(
                         '${currentPost.comments.length} Comments',
@@ -375,9 +375,9 @@ class _PostDetailPageState extends State<PostDetailPage> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF8FAFC),
+                  color: AppColors.grayBg,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFFF1F5F9)),
+                  border: Border.all(color: AppColors.borderSubtle),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -446,7 +446,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                 : Icons.favorite_border,
                             size: 13,
                             color: comment.isLiked
-                                ? const Color(0xFFEF4444)
+                                ? AppColors.error
                                 : AppColors.textMuted,
                           ),
                           const SizedBox(width: 4),
@@ -456,7 +456,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
                               color: comment.isLiked
-                                  ? const Color(0xFFEF4444)
+                                  ? AppColors.error
                                   : AppColors.textMuted,
                             ),
                           ),
@@ -493,7 +493,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
       decoration: const BoxDecoration(
         color: AppColors.white,
         border: Border(
-          top: BorderSide(color: Color(0xFFE2E8F0), width: 1),
+          top: BorderSide(color: AppColors.borderLight, width: 1),
         ),
       ),
       child: SafeArea(
@@ -517,7 +517,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF1F5F9),
+                  color: AppColors.borderSubtle,
                   borderRadius: BorderRadius.circular(24),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -570,9 +570,9 @@ class _PostDetailPageState extends State<PostDetailPage> {
       return Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: const Color(0xFFF8FAFC),
+          color: AppColors.grayBg,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: const Color(0xFFE2E8F0)),
+          border: Border.all(color: AppColors.borderLight),
         ),
         child: Row(
           children: [
@@ -580,7 +580,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: isPdf
-                    ? const Color(0xFFEF4444).withValues(alpha: 0.1)
+                    ? AppColors.error.withValues(alpha: 0.1)
                     : AppColors.primaryPurple.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -589,7 +589,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                     ? Icons.picture_as_pdf_rounded
                     : Icons.insert_drive_file_rounded,
                 color: isPdf
-                    ? const Color(0xFFEF4444)
+                    ? AppColors.error
                     : AppColors.primaryPurple,
                 size: 28,
               ),
@@ -640,7 +640,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
         fit: BoxFit.cover,
         errorBuilder: (_, _, _) => Container(
           height: 180,
-          color: const Color(0xFF1E293B),
+          color: AppColors.slateNavy,
           child: const Center(
             child: Icon(Icons.image, color: Colors.white54, size: 48),
           ),
@@ -658,7 +658,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
         } else {
           imageWidget = Container(
             height: 180,
-            color: const Color(0xFF1E293B),
+            color: AppColors.slateNavy,
             child: const Center(
               child: Icon(Icons.image, color: Colors.white54, size: 48),
             ),
@@ -667,7 +667,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
       } else {
         imageWidget = Container(
           height: 180,
-          color: const Color(0xFF1E293B),
+          color: AppColors.slateNavy,
           child: const Center(
             child: Icon(Icons.image, color: Colors.white54, size: 48),
           ),

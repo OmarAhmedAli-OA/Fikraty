@@ -162,7 +162,7 @@ class ExploreDetailSheet extends StatelessWidget {
           style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF333340),
+            color: AppColors.darkCharcoal,
           ),
         ),
         const SizedBox(height: 16),
@@ -307,7 +307,7 @@ class ExploreDetailSheet extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: inv.isInterestSent
-                  ? const Color(0xFFE6FBF5)
+                  ? AppColors.secondaryPillBg
                   : AppColors.primary,
               foregroundColor: inv.isInterestSent
                   ? AppColors.secondary
@@ -385,7 +385,7 @@ class ExploreDetailSheet extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: f.isInterestSent
-                  ? const Color(0xFFE6FBF5)
+                  ? AppColors.secondaryPillBg
                   : AppColors.primary,
               foregroundColor: f.isInterestSent
                   ? AppColors.secondary
@@ -451,7 +451,7 @@ class ExploreDetailSheet extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: e.isRegistered
-                  ? const Color(0xFFE6FBF5)
+                  ? AppColors.secondaryPillBg
                   : AppColors.primary,
               foregroundColor: e.isRegistered
                   ? AppColors.secondary
@@ -520,7 +520,7 @@ class ExploreDetailSheet extends StatelessWidget {
             content,
             style: const TextStyle(
               fontSize: 13,
-              color: Color(0xFF404050),
+              color: AppColors.darkSlate,
               height: 1.45,
             ),
           ),

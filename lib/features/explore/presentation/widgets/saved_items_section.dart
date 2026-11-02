@@ -214,7 +214,7 @@ class SavedItemsSection extends StatelessWidget {
                   item.description,
                   style: const TextStyle(
                     fontSize: 11.5,
-                    color: Color(0xFF5F5F72),
+                    color: AppColors.subtleText,
                     height: 1.4,
                   ),
                 ),

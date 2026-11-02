@@ -191,16 +191,16 @@ class StoriesTray extends StatelessWidget {
                   gradient: hasSlides && userStory.hasUnviewed
                       ? const LinearGradient(
                           colors: [
-                            Color(0xFF06B6D4), // Cyan
-                            Color(0xFF6366F1), // Indigo
-                            Color(0xFFA855F7), // Purple
+                            AppColors.cyanPrimary, // Cyan
+                            AppColors.purpleGlow, // Indigo
+                            AppColors.purpleAccent, // Purple
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         )
                       : null,
                   border: hasSlides && !userStory.hasUnviewed
-                      ? Border.all(color: const Color(0xFF94A3B8), width: 2.2)
+                      ? Border.all(color: AppColors.navInactive, width: 2.2)
                       : (!hasSlides
                           ? Border.all(
                               color: AppColors.purpleGlow.withValues(alpha: 0.6),
@@ -298,19 +298,19 @@ class StoriesTray extends StatelessWidget {
               gradient: story.hasUnviewed
                   ? const LinearGradient(
                       colors: [
-                        Color(0xFF06B6D4), // Cyan
-                        Color(0xFF6366F1), // Indigo
-                        Color(0xFFA855F7), // Purple
+                        AppColors.cyanPrimary, // Cyan
+                        AppColors.purpleGlow, // Indigo
+                        AppColors.purpleAccent, // Purple
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     )
                   : null,
-              color: story.hasUnviewed ? null : const Color(0xFFE2E8F0),
+              color: story.hasUnviewed ? null : AppColors.borderLight,
               border: story.hasUnviewed
                   ? null
                   : Border.all(
-                      color: const Color(0xFF94A3B8),
+                      color: AppColors.navInactive,
                       width: 2.2,
                     ),
             ),

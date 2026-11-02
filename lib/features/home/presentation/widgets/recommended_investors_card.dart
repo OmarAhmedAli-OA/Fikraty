@@ -32,7 +32,7 @@ class RecommendedInvestorsCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.white,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFFE2E8F0)),
+              border: Border.all(color: AppColors.borderLight),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.03),
@@ -47,7 +47,7 @@ class RecommendedInvestorsCard extends StatelessWidget {
               itemCount: investors.length,
               separatorBuilder: (_, _) => const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
-                child: Divider(color: Color(0xFFF1F5F9), height: 1),
+                child: Divider(color: AppColors.borderSubtle, height: 1),
               ),
               itemBuilder: (context, index) {
                 final investor = investors[index];

@@ -166,7 +166,7 @@ class CampaignExploreCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE6FBF5),
+                        color: AppColors.secondaryPillBg,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -202,7 +202,7 @@ class CampaignExploreCard extends StatelessWidget {
                   campaign.description,
                   style: const TextStyle(
                     fontSize: 12,
-                    color: Color(0xFF5F5F72),
+                    color: AppColors.subtleText,
                     height: 1.45,
                   ),
                   maxLines: 2,
@@ -277,7 +277,7 @@ class CampaignExploreCard extends StatelessWidget {
                         onPressed: onExpressInterest,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: campaign.isInterested
-                              ? const Color(0xFFE6FBF5)
+                              ? AppColors.secondaryPillBg
                               : AppColors.selectionTint,
                           foregroundColor: campaign.isInterested
                               ? AppColors.secondary

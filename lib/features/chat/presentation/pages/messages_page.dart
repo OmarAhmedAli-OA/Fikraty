@@ -45,7 +45,7 @@ class MessagesPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             itemCount: conversations.length,
             separatorBuilder: (_, _) =>
-                const Divider(color: Color(0xFFF1F5F9), height: 1),
+                const Divider(color: AppColors.borderSubtle, height: 1),
             itemBuilder: (context, index) {
               final item = conversations[index];
               return InkWell(
@@ -94,7 +94,7 @@ class MessagesPage extends StatelessWidget {
                                 width: 12,
                                 height: 12,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF10B981), // Online green
+                                  color: AppColors.success, // Online green
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                       color: AppColors.white, width: 2),

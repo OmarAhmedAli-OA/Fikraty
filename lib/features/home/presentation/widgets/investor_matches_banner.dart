@@ -12,8 +12,8 @@ class InvestorMatchesBanner extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
-            Color(0xFF6366F1), // Indigo
-            Color(0xFF4F46E5), // Purple
+            AppColors.purpleGlow, // Indigo
+            AppColors.primaryPurple, // Purple
           ],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
@@ -37,7 +37,7 @@ class InvestorMatchesBanner extends StatelessWidget {
             ),
             child: const Icon(
               Icons.bolt_rounded,
-              color: Color(0xFFFBBF24), // Gold lightning
+              color: AppColors.instagramYellow, // Gold lightning
               size: 20,
             ),
           ),
@@ -61,7 +61,7 @@ class InvestorMatchesBanner extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFFE0E7FF),
+                    color: AppColors.lightIndigoBg,
                   ),
                 ),
               ],

@@ -23,7 +23,7 @@ class _MyAnalyticsPageState extends State<MyAnalyticsPage> {
         final isInvestor = profile?.role == UserRole.investor;
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF8F9FD),
+          backgroundColor: AppColors.softLavenderBg,
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0,
@@ -107,9 +107,9 @@ class _MyAnalyticsPageState extends State<MyAnalyticsPage> {
     return Container(
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: const Color(0xFFF1F3F7),
+        color: AppColors.subtleGrayBg,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE2E6EE)),
+        border: Border.all(color: AppColors.borderCool),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -122,7 +122,7 @@ class _MyAnalyticsPageState extends State<MyAnalyticsPage> {
               duration: const Duration(milliseconds: 180),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF5548E8) : Colors.transparent,
+                color: isSelected ? AppColors.primary : Colors.transparent,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
@@ -130,7 +130,7 @@ class _MyAnalyticsPageState extends State<MyAnalyticsPage> {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
-                  color: isSelected ? Colors.white : const Color(0xFF718096),
+                  color: isSelected ? Colors.white : AppColors.slateMuted,
                 ),
               ),
             ),
@@ -413,7 +413,7 @@ class _MyAnalyticsPageState extends State<MyAnalyticsPage> {
                 style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF5548E8),
+                  color: AppColors.primary,
                   height: 1.0,
                 ),
               ),
@@ -430,7 +430,7 @@ class _MyAnalyticsPageState extends State<MyAnalyticsPage> {
                     height: 8,
                     width: constraints.maxWidth,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF0F2F6),
+                      color: AppColors.surfaceMuted,
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
@@ -440,7 +440,7 @@ class _MyAnalyticsPageState extends State<MyAnalyticsPage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
                       gradient: const LinearGradient(
-                        colors: [Color(0xFF5548E8), Color(0xFF00C48C)],
+                        colors: [AppColors.primary, AppColors.secondary],
                       ),
                     ),
                   ),
@@ -624,7 +624,7 @@ class _MyAnalyticsPageState extends State<MyAnalyticsPage> {
                     const Icon(
                       Icons.favorite,
                       size: 14,
-                      color: Color(0xFFE02424),
+                      color: AppColors.redCrimson,
                     ),
                     const SizedBox(width: 4),
                     Text(
@@ -788,8 +788,8 @@ class _LineChartPainter extends CustomPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          const Color(0xFF5548E8).withValues(alpha: 0.25),
-          const Color(0xFF5548E8).withValues(alpha: 0.0),
+          AppColors.primary.withValues(alpha: 0.25),
+          AppColors.primary.withValues(alpha: 0.0),
         ],
       ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
       ..style = PaintingStyle.fill;
@@ -798,7 +798,7 @@ class _LineChartPainter extends CustomPainter {
 
     // Line paint
     final linePaint = Paint()
-      ..color = const Color(0xFF5548E8)
+      ..color = AppColors.primary
       ..strokeWidth = 2.5
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;

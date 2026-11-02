@@ -138,7 +138,7 @@ class StartupExploreCard extends StatelessWidget {
                 constraints: const BoxConstraints(),
                 icon: Icon(
                   startup.isSaved ? Icons.bookmark : Icons.bookmark_border_rounded,
-                  color: startup.isSaved ? AppColors.primary : const Color(0xFFC0C0D0),
+                  color: startup.isSaved ? AppColors.primary : AppColors.grayBorder,
                   size: 22,
                 ),
               ),
@@ -151,7 +151,7 @@ class StartupExploreCard extends StatelessWidget {
             startup.tagline,
             style: const TextStyle(
               fontSize: 13,
-              color: Color(0xFF5F5F72),
+              color: AppColors.subtleText,
               height: 1.45,
             ),
           ),
@@ -168,7 +168,7 @@ class StartupExploreCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE6FBF5),
+                    color: AppColors.secondaryPillBg,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Text(
@@ -262,7 +262,7 @@ class StartupExploreCard extends StatelessWidget {
         style: const TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w500,
-          color: Color(0xFF5F5F72),
+          color: AppColors.subtleText,
         ),
       ),
     );

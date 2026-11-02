@@ -534,12 +534,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           gradient: LinearGradient(
                             colors: isEntrepreneur
                                 ? [
-                                    const Color(0xFFEEF0FF),
-                                    const Color(0xFFDCD8FF)
+                                    AppColors.selectionTint,
+                                    AppColors.lavenderBorder
                                   ]
                                 : [
-                                    const Color(0xFFE0E7FF),
-                                    const Color(0xFFC7D2FE)
+                                    AppColors.lightIndigoBg,
+                                    AppColors.borderIndigo
                                   ],
                           ),
                         ),
@@ -1149,7 +1149,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       width: 42,
                                       height: 42,
                                       decoration: BoxDecoration(
-                                        color: const Color(0xFFEEF0FF),
+                                        color: AppColors.selectionTint,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: const Icon(
@@ -1311,7 +1311,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           label: 'LinkedIn',
                           hint: 'linkedin.com/in/username',
                           badgeLetter: 'in',
-                          badgeColor: const Color(0xFF0077B5),
+                          badgeColor: AppColors.linkedInAlt,
                           controller: _linkedInController,
                           errorText: _linkedInError,
                           onChanged: (_) {

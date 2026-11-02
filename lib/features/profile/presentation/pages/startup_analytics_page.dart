@@ -14,7 +14,7 @@ class _StartupAnalyticsPageState extends State<StartupAnalyticsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FD),
+      backgroundColor: AppColors.softLavenderBg,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -74,9 +74,9 @@ class _StartupAnalyticsPageState extends State<StartupAnalyticsPage> {
     return Container(
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: const Color(0xFFF1F3F7),
+        color: AppColors.subtleGrayBg,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE2E6EE)),
+        border: Border.all(color: AppColors.borderCool),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -89,7 +89,7 @@ class _StartupAnalyticsPageState extends State<StartupAnalyticsPage> {
               duration: const Duration(milliseconds: 180),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF5548E8) : Colors.transparent,
+                color: isSelected ? AppColors.primary : Colors.transparent,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
@@ -97,7 +97,7 @@ class _StartupAnalyticsPageState extends State<StartupAnalyticsPage> {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
-                  color: isSelected ? Colors.white : const Color(0xFF718096),
+                  color: isSelected ? Colors.white : AppColors.slateMuted,
                 ),
               ),
             ),
@@ -467,9 +467,9 @@ class _StartupAnalyticsPageState extends State<StartupAnalyticsPage> {
               return Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF9FAFC),
+                  color: AppColors.grayBg,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: const Color(0xFFE9ECEF)),
+                  border: Border.all(color: AppColors.lightGrayDivider),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -584,7 +584,7 @@ class _StartupAnalyticsPageState extends State<StartupAnalyticsPage> {
                             height: 6,
                             width: constraints.maxWidth,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFF0F2F6),
+                              color: AppColors.surfaceMuted,
                               borderRadius: BorderRadius.circular(3),
                             ),
                           ),
@@ -592,7 +592,7 @@ class _StartupAnalyticsPageState extends State<StartupAnalyticsPage> {
                             height: 6,
                             width: constraints.maxWidth * (percent / 100),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF5548E8),
+                              color: AppColors.primary,
                               borderRadius: BorderRadius.circular(3),
                             ),
                           ),
@@ -649,8 +649,8 @@ class _MrrChartPainter extends CustomPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          const Color(0xFF5548E8).withValues(alpha: 0.20),
-          const Color(0xFF5548E8).withValues(alpha: 0.0),
+          AppColors.primary.withValues(alpha: 0.20),
+          AppColors.primary.withValues(alpha: 0.0),
         ],
       ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
       ..style = PaintingStyle.fill;
@@ -659,7 +659,7 @@ class _MrrChartPainter extends CustomPainter {
 
     // Line
     final linePaint = Paint()
-      ..color = const Color(0xFF5548E8)
+      ..color = AppColors.primary
       ..strokeWidth = 2.5
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
@@ -672,7 +672,7 @@ class _MrrChartPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final dotBorderPaint = Paint()
-      ..color = const Color(0xFF5548E8)
+      ..color = AppColors.primary
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
 

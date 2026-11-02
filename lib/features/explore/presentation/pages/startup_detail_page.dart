@@ -60,7 +60,7 @@ class _StartupDetailPageState extends State<StartupDetailPage> {
         : 0.0;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: AppColors.grayBg,
       appBar: AppBar(
         title: Text(
           s.name,
@@ -220,8 +220,8 @@ class _StartupDetailPageState extends State<StartupDetailPage> {
                               runSpacing: 4,
                               children: [
                                 _buildBadge(s.industry, AppColors.primaryPurple.withValues(alpha: 0.1), AppColors.primaryPurple),
-                                _buildBadge(s.stage, const Color(0xFFF1F5F9), AppColors.darkText),
-                                _buildBadge(s.location, const Color(0xFFF1F5F9), AppColors.tertiaryText),
+                                _buildBadge(s.stage, AppColors.borderSubtle, AppColors.darkText),
+                                _buildBadge(s.location, AppColors.borderSubtle, AppColors.tertiaryText),
                               ],
                             ),
                           ],
@@ -235,7 +235,7 @@ class _StartupDetailPageState extends State<StartupDetailPage> {
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF333340),
+                      color: AppColors.darkCharcoal,
                       height: 1.4,
                     ),
                   ),
@@ -291,7 +291,7 @@ class _StartupDetailPageState extends State<StartupDetailPage> {
                   Container(
                     height: 8,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE2E8F0),
+                      color: AppColors.borderLight,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: FractionallySizedBox(
@@ -380,7 +380,7 @@ class _StartupDetailPageState extends State<StartupDetailPage> {
                     style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isInterestSent ? const Color(0xFFE6FBF5) : AppColors.primary,
+                    backgroundColor: isInterestSent ? AppColors.secondaryPillBg : AppColors.primary,
                     foregroundColor: isInterestSent ? AppColors.secondary : AppColors.white,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -478,7 +478,7 @@ class _StartupDetailPageState extends State<StartupDetailPage> {
             content,
             style: const TextStyle(
               fontSize: 13.5,
-              color: Color(0xFF475569),
+              color: AppColors.textSecondary,
               height: 1.55,
             ),
           ),
@@ -520,9 +520,9 @@ class _StartupDetailPageState extends State<StartupDetailPage> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFFEF2F2),
+              color: AppColors.roseBg,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFFFCA5A5).withValues(alpha: 0.5)),
+              border: Border.all(color: AppColors.redSoft.withValues(alpha: 0.5)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -532,7 +532,7 @@ class _StartupDetailPageState extends State<StartupDetailPage> {
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFFDC2626),
+                    color: AppColors.roseText,
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -541,7 +541,7 @@ class _StartupDetailPageState extends State<StartupDetailPage> {
                   problem,
                   style: const TextStyle(
                     fontSize: 13,
-                    color: Color(0xFF7F1D1D),
+                    color: AppColors.darkRed,
                     height: 1.45,
                   ),
                 ),
@@ -552,9 +552,9 @@ class _StartupDetailPageState extends State<StartupDetailPage> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF0FDF4),
+              color: AppColors.mintBg,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFF86EFAC).withValues(alpha: 0.5)),
+              border: Border.all(color: AppColors.mintBorder.withValues(alpha: 0.5)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -564,7 +564,7 @@ class _StartupDetailPageState extends State<StartupDetailPage> {
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w800,
-                    color: Color(0xFF16A34A),
+                    color: AppColors.activeGreenText,
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -573,7 +573,7 @@ class _StartupDetailPageState extends State<StartupDetailPage> {
                   solution,
                   style: const TextStyle(
                     fontSize: 13,
-                    color: Color(0xFF14532D),
+                    color: AppColors.emeraldText,
                     height: 1.45,
                   ),
                 ),

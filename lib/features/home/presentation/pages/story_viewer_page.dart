@@ -274,13 +274,13 @@ class _StoryViewerPageState extends State<StoryViewerPage>
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: const Color(0xFF1E293B),
+        backgroundColor: AppColors.slateNavy,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         content: Row(
           children: [
             const Icon(Icons.check_circle_rounded,
-                color: Color(0xFF10B981), size: 20),
+                color: AppColors.success, size: 20),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
@@ -330,7 +330,7 @@ class _StoryViewerPageState extends State<StoryViewerPage>
       builder: (ctx) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: const BoxDecoration(
-          color: Color(0xFF0F172A),
+          color: AppColors.slateBlack,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
@@ -507,7 +507,7 @@ class _StoryViewerPageState extends State<StoryViewerPage>
                           scale: scale,
                           child: const Icon(
                             Icons.favorite,
-                            color: Color(0xFFEF4444),
+                            color: AppColors.error,
                             size: 100,
                             shadows: [
                               Shadow(
@@ -773,7 +773,7 @@ class _StoryViewerPageState extends State<StoryViewerPage>
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF1E293B)
+                                color: AppColors.slateNavy
                                     .withValues(alpha: 0.9),
                                 borderRadius: BorderRadius.circular(24),
                                 border: Border.all(color: Colors.white12),
@@ -886,13 +886,13 @@ class _StoryViewerPageState extends State<StoryViewerPage>
                                     height: 48,
                                     decoration: BoxDecoration(
                                       color: isLiked
-                                          ? const Color(0xFFEF4444)
+                                          ? AppColors.error
                                           : Colors.white
                                               .withValues(alpha: 0.15),
                                       shape: BoxShape.circle,
                                       border: Border.all(
                                         color: isLiked
-                                            ? const Color(0xFFEF4444)
+                                            ? AppColors.error
                                             : Colors.white24,
                                         width: 1.5,
                                       ),
@@ -943,11 +943,11 @@ class _StoryViewerPageState extends State<StoryViewerPage>
       final idxStr = pathOrUrl.replaceFirst('gradient:', '');
       final idx = int.tryParse(idxStr) ?? 0;
       final gradients = [
-        [const Color(0xFF8B5CF6), const Color(0xFF6366F1), const Color(0xFF3B82F6)],
-        [const Color(0xFFEC4899), const Color(0xFF8B5CF6), const Color(0xFF3B82F6)],
-        [const Color(0xFF10B981), const Color(0xFF06B6D4), const Color(0xFF3B82F6)],
-        [const Color(0xFFF59E0B), const Color(0xFFEF4444), const Color(0xFF8B5CF6)],
-        [const Color(0xFF0F172A), const Color(0xFF1E293B), const Color(0xFF334155)],
+        [AppColors.accentPurple, AppColors.purpleGlow, AppColors.blueBright],
+        [AppColors.pinkAccent, AppColors.accentPurple, AppColors.blueBright],
+        [AppColors.success, AppColors.cyanPrimary, AppColors.blueBright],
+        [AppColors.warning, AppColors.error, AppColors.accentPurple],
+        [AppColors.slateBlack, AppColors.slateNavy, AppColors.slateDark],
       ];
       final grad = gradients[idx % gradients.length];
       return Container(
@@ -984,7 +984,7 @@ class _StoryViewerPageState extends State<StoryViewerPage>
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
           return Container(
-            color: const Color(0xFF0F172A),
+            color: AppColors.slateBlack,
             child: const Center(
               child: CircularProgressIndicator(
                 color: Colors.white54,
@@ -1015,7 +1015,7 @@ class _StoryViewerPageState extends State<StoryViewerPage>
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF312E81), Color(0xFF1E1B4B)],
+          colors: [AppColors.indigoNavy, AppColors.indigoDarkest],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),

@@ -35,13 +35,13 @@ class _SharePostModalState extends State<SharePostModal> {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: const Color(0xFF1E293B),
+        backgroundColor: AppColors.slateNavy,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         content: Row(
           children: [
             const Icon(Icons.check_circle_rounded,
-                color: Color(0xFF10B981), size: 20),
+                color: AppColors.success, size: 20),
             const SizedBox(width: 10),
             Text(
               platform != null
@@ -90,7 +90,7 @@ class _SharePostModalState extends State<SharePostModal> {
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 14),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFCBD5E1),
+                  color: AppColors.borderSlate,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -112,7 +112,7 @@ class _SharePostModalState extends State<SharePostModal> {
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(
                     Icons.close_rounded,
-                    color: Color(0xFF64748B),
+                    color: AppColors.textMuted,
                     size: 22,
                   ),
                   padding: EdgeInsets.zero,
@@ -129,7 +129,7 @@ class _SharePostModalState extends State<SharePostModal> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFFE2E8F0)),
+                border: Border.all(color: AppColors.borderLight),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,13 +183,13 @@ class _SharePostModalState extends State<SharePostModal> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 6, vertical: 2),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFEDE9FE),
+                                    color: AppColors.primaryTint,
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Text(
                                     post.postType.displayName,
                                     style: const TextStyle(
-                                      color: Color(0xFF7C3AED),
+                                      color: AppColors.violetText,
                                       fontSize: 10.5,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -202,7 +202,7 @@ class _SharePostModalState extends State<SharePostModal> {
                               '${post.authorRole} · ${_formatTimeAgo(post.createdAt)}',
                               style: const TextStyle(
                                 fontSize: 11.5,
-                                color: Color(0xFF64748B),
+                                color: AppColors.textMuted,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -220,7 +220,7 @@ class _SharePostModalState extends State<SharePostModal> {
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 12.5,
-                        color: Color(0xFF334155),
+                        color: AppColors.slateDark,
                         height: 1.35,
                       ),
                     ),
@@ -234,15 +234,15 @@ class _SharePostModalState extends State<SharePostModal> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
-                color: const Color(0xFFF8FAFC),
+                color: AppColors.grayBg,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFFEDE9FE)),
+                border: Border.all(color: AppColors.primaryTint),
               ),
               child: Row(
                 children: [
                   const Icon(
                     Icons.link_rounded,
-                    color: Color(0xFF6366F1),
+                    color: AppColors.purpleGlow,
                     size: 20,
                   ),
                   const SizedBox(width: 8),
@@ -252,7 +252,7 @@ class _SharePostModalState extends State<SharePostModal> {
                       style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFF4F46E5),
+                        color: AppColors.primaryPurple,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -269,12 +269,12 @@ class _SharePostModalState extends State<SharePostModal> {
                       ),
                       decoration: BoxDecoration(
                         color: _copied
-                            ? const Color(0xFFDCFCE7)
+                            ? AppColors.activeGreenBg
                             : AppColors.primaryPurple.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(18),
                         border: Border.all(
                           color: _copied
-                              ? const Color(0xFF86EFAC)
+                              ? AppColors.mintBorder
                               : Colors.transparent,
                         ),
                       ),
@@ -284,7 +284,7 @@ class _SharePostModalState extends State<SharePostModal> {
                           if (_copied) ...[
                             const Icon(
                               Icons.check,
-                              color: Color(0xFF16A34A),
+                              color: AppColors.activeGreenText,
                               size: 14,
                             ),
                             const SizedBox(width: 4),
@@ -293,7 +293,7 @@ class _SharePostModalState extends State<SharePostModal> {
                             _copied ? 'Copied' : 'Copy',
                             style: TextStyle(
                               color: _copied
-                                  ? const Color(0xFF16A34A)
+                                  ? AppColors.activeGreenText
                                   : AppColors.primaryPurple,
                               fontWeight: FontWeight.bold,
                               fontSize: 12.5,
@@ -314,7 +314,7 @@ class _SharePostModalState extends State<SharePostModal> {
               style: TextStyle(
                 fontSize: 12.5,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF64748B),
+                color: AppColors.textMuted,
               ),
             ),
             const SizedBox(height: 14),
@@ -326,20 +326,20 @@ class _SharePostModalState extends State<SharePostModal> {
                 _buildShareOption(
                   iconWidget: const Icon(
                     Icons.copy_rounded,
-                    color: Color(0xFF6366F1),
+                    color: AppColors.purpleGlow,
                     size: 22,
                   ),
-                  bgColor: const Color(0xFFEEF2FF),
+                  bgColor: AppColors.purpleLight,
                   label: 'Copy',
                   onTap: () => _copyLink('Link Copy'),
                 ),
                 _buildShareOption(
                   iconWidget: const Icon(
                     Icons.chat_bubble_rounded,
-                    color: Color(0xFF22C55E),
+                    color: AppColors.greenSuccess,
                     size: 22,
                   ),
-                  bgColor: const Color(0xFFDCFCE7),
+                  bgColor: AppColors.activeGreenBg,
                   label: 'WhatsApp',
                   onTap: () => _copyLink('WhatsApp'),
                 ),
@@ -350,31 +350,31 @@ class _SharePostModalState extends State<SharePostModal> {
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF0F172A),
+                        color: AppColors.slateBlack,
                       ),
                     ),
                   ),
-                  bgColor: const Color(0xFFF1F5F9),
+                  bgColor: AppColors.borderSubtle,
                   label: 'X (Twitter)',
                   onTap: () => _copyLink('X (Twitter)'),
                 ),
                 _buildShareOption(
                   iconWidget: const Icon(
                     Icons.business_center_rounded,
-                    color: Color(0xFF0284C7),
+                    color: AppColors.skyDark,
                     size: 22,
                   ),
-                  bgColor: const Color(0xFFE0F2FE),
+                  bgColor: AppColors.skyLight,
                   label: 'LinkedIn',
                   onTap: () => _copyLink('LinkedIn'),
                 ),
                 _buildShareOption(
                   iconWidget: const Icon(
                     Icons.mail_outline_rounded,
-                    color: Color(0xFFEF4444),
+                    color: AppColors.error,
                     size: 22,
                   ),
-                  bgColor: const Color(0xFFFEE2E2),
+                  bgColor: AppColors.redLightTint,
                   label: 'Email',
                   onTap: () => _copyLink('Email'),
                 ),
@@ -413,7 +413,7 @@ class _SharePostModalState extends State<SharePostModal> {
             style: const TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w500,
-              color: Color(0xFF334155),
+              color: AppColors.slateDark,
             ),
           ),
         ],

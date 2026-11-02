@@ -183,7 +183,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Cannot edit message: 15-minute time window expired.'),
-            backgroundColor: Color(0xFFDC2626),
+            backgroundColor: AppColors.roseText,
           ),
         );
         _cancelEditing();
@@ -225,7 +225,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Cannot edit message: 15 minutes time limit exceeded.'),
-          backgroundColor: Color(0xFFDC2626),
+          backgroundColor: AppColors.roseText,
         ),
       );
       return;
@@ -652,7 +652,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.image_rounded, color: Color(0xFF6366F1)),
+              leading: const Icon(Icons.image_rounded, color: AppColors.purpleGlow),
               title: const Text('Photos from Gallery',
                   style: TextStyle(fontWeight: FontWeight.w600)),
               onTap: () {
@@ -662,7 +662,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
             ),
             ListTile(
               leading: const Icon(Icons.video_library_rounded,
-                  color: Color(0xFF10B981)),
+                  color: AppColors.success),
               title: const Text('Videos from Gallery',
                   style: TextStyle(fontWeight: FontWeight.w600)),
               onTap: () {
@@ -704,7 +704,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFCBD5E1),
+                  color: AppColors.borderSlate,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -714,7 +714,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                   _buildAttachmentOption(
                     icon: Icons.insert_drive_file_rounded,
                     label: 'Document',
-                    color: const Color(0xFF7C3AED),
+                    color: AppColors.violetText,
                     onTap: () {
                       Navigator.pop(ctx);
                       _pickDocument();
@@ -723,7 +723,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                   _buildAttachmentOption(
                     icon: Icons.photo_library_rounded,
                     label: 'Gallery',
-                    color: const Color(0xFF6366F1),
+                    color: AppColors.purpleGlow,
                     onTap: () {
                       Navigator.pop(ctx);
                       _showGalleryTypePicker();
@@ -732,7 +732,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                   _buildAttachmentOption(
                     icon: Icons.videocam_rounded,
                     label: 'Video Note',
-                    color: const Color(0xFF06B6D4),
+                    color: AppColors.cyanPrimary,
                     onTap: () {
                       Navigator.pop(ctx);
                       _handleVideoNoteTrigger();
@@ -855,7 +855,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFBFD),
+      backgroundColor: AppColors.softCardBg,
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
@@ -890,7 +890,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                       width: 9,
                       height: 9,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF10B981),
+                        color: AppColors.success,
                         shape: BoxShape.circle,
                         border: Border.all(color: AppColors.white, width: 1.5),
                       ),
@@ -917,7 +917,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF10B981),
+                      color: AppColors.success,
                     ),
                   ),
               ],
@@ -933,7 +933,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
               'Direct conversation with ${widget.userName}',
               style: const TextStyle(
                 fontSize: 12,
-                color: Color(0xFF94A3B8),
+                color: AppColors.navInactive,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -964,7 +964,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
       decoration: const BoxDecoration(
         color: AppColors.white,
         border: Border(
-          top: BorderSide(color: Color(0xFFE2E8F0), width: 1),
+          top: BorderSide(color: AppColors.borderLight, width: 1),
         ),
       ),
       child: SafeArea(
@@ -994,7 +994,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
       decoration: BoxDecoration(
         color: AppColors.primaryPurple.withValues(alpha: 0.08),
         border: const Border(
-          bottom: BorderSide(color: Color(0xFFE2E8F0), width: 0.8),
+          bottom: BorderSide(color: AppColors.borderLight, width: 0.8),
         ),
       ),
       child: Row(
@@ -1043,7 +1043,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 12,
-                    color: Color(0xFF475569),
+                    color: AppColors.textSecondary,
                   ),
                 ),
               ],
@@ -1052,7 +1052,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
           IconButton(
             onPressed: _cancelEditing,
             icon: const Icon(Icons.close_rounded, size: 18),
-            color: const Color(0xFF64748B),
+            color: AppColors.textMuted,
             visualDensity: VisualDensity.compact,
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
@@ -1069,7 +1069,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
           width: 10,
           height: 10,
           decoration: const BoxDecoration(
-            color: Color(0xFFEF4444),
+            color: AppColors.error,
             shape: BoxShape.circle,
           ),
         ),
@@ -1077,7 +1077,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
         Text(
           _formatDuration(_voiceSeconds),
           style: const TextStyle(
-            color: Color(0xFFEF4444),
+            color: AppColors.error,
             fontWeight: FontWeight.bold,
             fontSize: 14,
           ),
@@ -1107,7 +1107,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
         IconButton(
           onPressed: _cancelVoiceRecording,
           icon: const Icon(Icons.delete_outline_rounded,
-              color: Color(0xFF94A3B8), size: 24),
+              color: AppColors.navInactive, size: 24),
           tooltip: 'Cancel',
         ),
         GestureDetector(
@@ -1137,7 +1137,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
           onPressed: _showWhatsAppAttachmentSheet,
           icon: const Icon(
             Icons.attach_file_rounded,
-            color: Color(0xFF64748B),
+            color: AppColors.textMuted,
             size: 24,
           ),
           tooltip: 'Attach files',
@@ -1145,9 +1145,9 @@ class _ChatDetailPageState extends State<ChatDetailPage>
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              color: const Color(0xFFF8FAFC),
+              color: AppColors.grayBg,
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: const Color(0xFFE2E8F0)),
+              border: Border.all(color: AppColors.borderLight),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 14),
             child: Row(
@@ -1186,7 +1186,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                       padding: EdgeInsets.symmetric(horizontal: 4),
                       child: Icon(
                         Icons.camera_alt_outlined,
-                        color: Color(0xFF64748B),
+                        color: AppColors.textMuted,
                         size: 21,
                       ),
                     ),
@@ -1225,7 +1225,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                   width: 42,
                   height: 42,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFC7D2FE),
+                    color: AppColors.borderIndigo,
                     shape: BoxShape.circle,
                   ),
                   child: const Center(
@@ -1431,8 +1431,8 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                                           padding: const EdgeInsets.all(5),
                                           decoration: BoxDecoration(
                                             color: showMore
-                                                ? const Color(0xFFE2E8F0)
-                                                : const Color(0xFFF1F5F9),
+                                                ? AppColors.borderLight
+                                                : AppColors.borderSubtle,
                                             shape: BoxShape.circle,
                                           ),
                                           child: Icon(
@@ -1440,7 +1440,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                                                 ? Icons.close_rounded
                                                 : Icons.add_rounded,
                                             size: 20,
-                                            color: const Color(0xFF64748B),
+                                            color: AppColors.textMuted,
                                           ),
                                         ),
                                       ),
@@ -1454,7 +1454,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                                     decoration: const BoxDecoration(
                                       border: Border(
                                         top: BorderSide(
-                                            color: Color(0xFFF1F5F9)),
+                                            color: AppColors.borderSubtle),
                                       ),
                                     ),
                                     child: Wrap(
@@ -1493,7 +1493,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                                   ),
                                 ],
                                 const SizedBox(height: 10),
-                                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                                const Divider(height: 1, color: AppColors.borderSubtle),
                                 const SizedBox(height: 6),
                                 if (msg.canEdit)
                                   _buildMenuActionTile(
@@ -1509,7 +1509,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                                 if (msg.text.isNotEmpty && !msg.isDeletedForEveryone)
                                   _buildMenuActionTile(
                                     icon: Icons.copy_rounded,
-                                    iconColor: const Color(0xFF64748B),
+                                    iconColor: AppColors.textMuted,
                                     title: 'Copy',
                                     onTap: () {
                                       Navigator.pop(dialogCtx);
@@ -1525,9 +1525,9 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                                   ),
                                 _buildMenuActionTile(
                                   icon: Icons.delete_outline_rounded,
-                                  iconColor: const Color(0xFFEF4444),
+                                  iconColor: AppColors.error,
                                   title: 'Delete',
-                                  titleColor: const Color(0xFFEF4444),
+                                  titleColor: AppColors.error,
                                   onTap: () {
                                     Navigator.pop(dialogCtx);
                                     _showDeleteOptions(msg);
@@ -1649,23 +1649,23 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    tileColor: const Color(0xFFFEF2F2),
+                    tileColor: AppColors.roseBg,
                     leading: const Icon(
                       Icons.delete_forever_rounded,
-                      color: Color(0xFFDC2626),
+                      color: AppColors.roseText,
                       size: 24,
                     ),
                     title: const Text(
                       'Delete for everyone',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFFDC2626),
+                        color: AppColors.roseText,
                         fontSize: 15,
                       ),
                     ),
                     subtitle: const Text(
                       'Everyone in this chat will see that this message was deleted',
-                      style: TextStyle(fontSize: 12, color: Color(0xFF991B1B)),
+                      style: TextStyle(fontSize: 12, color: AppColors.redDark),
                     ),
                     onTap: () {
                       Navigator.pop(ctx);
@@ -1685,10 +1685,10 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  tileColor: const Color(0xFFF8FAFC),
+                  tileColor: AppColors.grayBg,
                   leading: const Icon(
                     Icons.delete_outline_rounded,
-                    color: Color(0xFF475569),
+                    color: AppColors.textSecondary,
                     size: 24,
                   ),
                   title: const Text(
@@ -1769,7 +1769,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: const Color(0xFFE2E8F0),
+                    color: AppColors.borderLight,
                     width: 1.2,
                   ),
                   boxShadow: [
@@ -1891,7 +1891,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                         const Icon(
                           Icons.done_all_rounded,
                           size: 14,
-                          color: Color(0xFF818CF8),
+                          color: AppColors.indigoAccent,
                         ),
                       ],
                     ],
@@ -1931,9 +1931,9 @@ class _ChatDetailPageState extends State<ChatDetailPage>
       constraints: const BoxConstraints(maxWidth: 290),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: isMe ? const Color(0xFFF1F5F9) : const Color(0xFFF8FAFC),
+        color: isMe ? AppColors.borderSubtle : AppColors.grayBg,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: AppColors.borderLight),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -1969,7 +1969,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
       decoration: BoxDecoration(
         color: isMe ? AppColors.primaryPurple : AppColors.white,
         borderRadius: BorderRadius.circular(16),
-        border: isMe ? null : Border.all(color: const Color(0xFFE2E8F0)),
+        border: isMe ? null : Border.all(color: AppColors.borderLight),
         boxShadow: isMe
             ? null
             : [
@@ -2013,7 +2013,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
         decoration: BoxDecoration(
           color: isMe ? AppColors.primaryPurple : AppColors.white,
           borderRadius: BorderRadius.circular(16),
-          border: isMe ? null : Border.all(color: const Color(0xFFE2E8F0)),
+          border: isMe ? null : Border.all(color: AppColors.borderLight),
         ),
         padding: const EdgeInsets.all(4),
         child: Column(
@@ -2054,7 +2054,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
       decoration: BoxDecoration(
         color: isMe ? AppColors.primaryPurple : AppColors.white,
         borderRadius: BorderRadius.circular(18),
-        border: isMe ? null : Border.all(color: const Color(0xFFE2E8F0)),
+        border: isMe ? null : Border.all(color: AppColors.borderLight),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -2098,11 +2098,11 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                       decoration: BoxDecoration(
                         color: isMe
                             ? (isHighlighted
-                                ? const Color(0xFF67E8F9)
+                                ? AppColors.cyanAccent
                                 : Colors.white60)
                             : (isHighlighted
                                 ? AppColors.primaryPurple
-                                : const Color(0xFFCBD5E1)),
+                                : AppColors.borderSlate),
                         borderRadius: BorderRadius.circular(1.5),
                       ),
                     );
@@ -2165,7 +2165,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
         decoration: BoxDecoration(
           color: isMe ? AppColors.primaryPurple : AppColors.white,
           borderRadius: BorderRadius.circular(16),
-          border: isMe ? null : Border.all(color: const Color(0xFFE2E8F0)),
+          border: isMe ? null : Border.all(color: AppColors.borderLight),
         ),
         padding: const EdgeInsets.all(4),
         child: Column(
@@ -2263,17 +2263,17 @@ class _ChatDetailPageState extends State<ChatDetailPage>
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: const LinearGradient(
-            colors: [Color(0xFF4F46E5), Color(0xFF7C3AED)],
+            colors: [AppColors.primaryPurple, AppColors.violetText],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           border: Border.all(
-            color: isMe ? const Color(0xFF818CF8) : const Color(0xFF6366F1),
+            color: isMe ? AppColors.indigoAccent : AppColors.purpleGlow,
             width: 3.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF4F46E5).withValues(alpha: 0.35),
+              color: AppColors.primaryPurple.withValues(alpha: 0.35),
               blurRadius: 14,
               offset: const Offset(0, 4),
             ),
@@ -2291,7 +2291,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                 fallback: Container(
                   decoration: const BoxDecoration(
                     gradient: RadialGradient(
-                      colors: [Color(0xFF6366F1), Color(0xFF1E1B4B)],
+                      colors: [AppColors.purpleGlow, AppColors.indigoDarkest],
                       radius: 0.85,
                     ),
                   ),
@@ -2323,7 +2323,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                   ),
                   child: const Icon(
                     Icons.play_arrow_rounded,
-                    color: Color(0xFF4F46E5),
+                    color: AppColors.primaryPurple,
                     size: 32,
                   ),
                 ),
@@ -2343,7 +2343,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.circle, size: 8, color: Color(0xFFEF4444)),
+                        const Icon(Icons.circle, size: 8, color: AppColors.error),
                         const SizedBox(width: 4),
                         Text(
                           msg.duration ?? '0:05',
@@ -2376,7 +2376,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
       decoration: BoxDecoration(
         color: isMe ? AppColors.primaryPurple : AppColors.white,
         borderRadius: BorderRadius.circular(16),
-        border: isMe ? null : Border.all(color: const Color(0xFFE2E8F0)),
+        border: isMe ? null : Border.all(color: AppColors.borderLight),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -2386,14 +2386,14 @@ class _ChatDetailPageState extends State<ChatDetailPage>
             decoration: BoxDecoration(
               color: isMe
                   ? Colors.white.withValues(alpha: 0.2)
-                  : (isPdf ? const Color(0xFFFEE2E2) : AppColors.purpleLight),
+                  : (isPdf ? AppColors.redLightTint : AppColors.purpleLight),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(
               isPdf ? Icons.picture_as_pdf_rounded : Icons.insert_drive_file_rounded,
               color: isMe
                   ? Colors.white
-                  : (isPdf ? const Color(0xFFDC2626) : AppColors.primaryPurple),
+                  : (isPdf ? AppColors.roseText : AppColors.primaryPurple),
               size: 24,
             ),
           ),
@@ -2441,10 +2441,10 @@ class _ChatDetailPageState extends State<ChatDetailPage>
       decoration: BoxDecoration(
         color: isMe
             ? Colors.black.withValues(alpha: 0.22)
-            : const Color(0xFFF1F5F9),
+            : AppColors.borderSubtle,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isMe ? Colors.white24 : const Color(0xFFCBD5E1),
+          color: isMe ? Colors.white24 : AppColors.borderSlate,
           width: 0.8,
         ),
       ),
@@ -2525,7 +2525,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 12,
-                    color: isMe ? Colors.white70 : const Color(0xFF64748B),
+                    color: isMe ? Colors.white70 : AppColors.textMuted,
                     height: 1.25,
                   ),
                 ),
@@ -2567,7 +2567,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF312E81), Color(0xFF1E1B4B), Color(0xFF0F172A)],
+          colors: [AppColors.indigoNavy, AppColors.indigoDarkest, AppColors.slateBlack],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -2804,7 +2804,7 @@ class _VideoNoteRecorderModalState extends State<VideoNoteRecorderModal> {
       height: 420,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
       decoration: const BoxDecoration(
-        color: Color(0xFF0F172A),
+        color: AppColors.slateBlack,
         borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
       child: Column(
@@ -2817,9 +2817,9 @@ class _VideoNoteRecorderModalState extends State<VideoNoteRecorderModal> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEF4444).withValues(alpha: 0.2),
+                    color: AppColors.error.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color(0xFFEF4444)),
+                    border: Border.all(color: AppColors.error),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -2828,7 +2828,7 @@ class _VideoNoteRecorderModalState extends State<VideoNoteRecorderModal> {
                         width: 8,
                         height: 8,
                         decoration: const BoxDecoration(
-                          color: Color(0xFFEF4444),
+                          color: AppColors.error,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -2836,7 +2836,7 @@ class _VideoNoteRecorderModalState extends State<VideoNoteRecorderModal> {
                       Text(
                         'REC ${_formatDuration(_seconds)} / 1:00',
                         style: const TextStyle(
-                          color: Color(0xFFEF4444),
+                          color: AppColors.error,
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
                         ),
@@ -2872,12 +2872,12 @@ class _VideoNoteRecorderModalState extends State<VideoNoteRecorderModal> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: _isRecording ? const Color(0xFFEF4444) : AppColors.primaryPurple,
+                color: _isRecording ? AppColors.error : AppColors.primaryPurple,
                 width: 4,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: (_isRecording ? const Color(0xFFEF4444) : AppColors.primaryPurple)
+                  color: (_isRecording ? AppColors.error : AppColors.primaryPurple)
                       .withValues(alpha: 0.4),
                   blurRadius: 20,
                   spreadRadius: 2,
@@ -2902,7 +2902,7 @@ class _VideoNoteRecorderModalState extends State<VideoNoteRecorderModal> {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFEF4444),
+                backgroundColor: AppColors.error,
                 disabledBackgroundColor: Colors.grey.shade700,
                 padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
                 shape: RoundedRectangleBorder(
@@ -2948,7 +2948,7 @@ class _VideoNoteRecorderModalState extends State<VideoNoteRecorderModal> {
   Widget _buildCameraFeed() {
     if (_errorMessage != null) {
       return Container(
-        color: const Color(0xFF1E293B),
+        color: AppColors.slateNavy,
         padding: const EdgeInsets.all(16),
         child: Center(
           child: Text(
@@ -2961,7 +2961,7 @@ class _VideoNoteRecorderModalState extends State<VideoNoteRecorderModal> {
     }
     if (!_isInitialized || _controller == null) {
       return Container(
-        color: const Color(0xFF1E293B),
+        color: AppColors.slateNavy,
         child: const Center(
           child: CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryPurple),
@@ -3276,8 +3276,8 @@ class _InteractiveVideoPlayerDialogState
                 value: progress,
                 strokeWidth: 4,
                 valueColor:
-                    const AlwaysStoppedAnimation<Color>(Color(0xFF818CF8)),
-                backgroundColor: const Color(0xFF312E81),
+                    const AlwaysStoppedAnimation<Color>(AppColors.indigoAccent),
+                backgroundColor: AppColors.indigoNavy,
               ),
             ),
             // The circular video
@@ -3288,11 +3288,11 @@ class _InteractiveVideoPlayerDialogState
                 height: 250,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFF0F172A),
-                  border: Border.all(color: const Color(0xFF6366F1), width: 3),
+                  color: AppColors.slateBlack,
+                  border: Border.all(color: AppColors.purpleGlow, width: 3),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF4F46E5).withValues(alpha: 0.45),
+                      color: AppColors.primaryPurple.withValues(alpha: 0.45),
                       blurRadius: 24,
                     ),
                   ],
@@ -3327,7 +3327,7 @@ class _InteractiveVideoPlayerDialogState
                         const Center(
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
-                                Color(0xFF818CF8)),
+                                AppColors.indigoAccent),
                           ),
                         ),
                       if (!_isPlaying && _isInitialized)
@@ -3360,7 +3360,7 @@ class _InteractiveVideoPlayerDialogState
           decoration: BoxDecoration(
             color: Colors.black.withValues(alpha: 0.75),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFF334155)),
+            border: Border.all(color: AppColors.slateDark),
           ),
           child: Text(
             '${_formatDuration(_position)} / ${_formatDuration(_duration)}',
@@ -3379,7 +3379,7 @@ class _InteractiveVideoPlayerDialogState
             IconButton.filled(
               onPressed: _replay,
               style: IconButton.styleFrom(
-                backgroundColor: const Color(0xFF1E293B),
+                backgroundColor: AppColors.slateNavy,
                 foregroundColor: Colors.white,
               ),
               icon: const Icon(Icons.replay_rounded),
@@ -3389,7 +3389,7 @@ class _InteractiveVideoPlayerDialogState
             IconButton.filled(
               onPressed: _togglePlayPause,
               style: IconButton.styleFrom(
-                backgroundColor: const Color(0xFF4F46E5),
+                backgroundColor: AppColors.primaryPurple,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.all(14),
               ),
@@ -3403,7 +3403,7 @@ class _InteractiveVideoPlayerDialogState
             IconButton.filled(
               onPressed: _toggleMute,
               style: IconButton.styleFrom(
-                backgroundColor: const Color(0xFF1E293B),
+                backgroundColor: AppColors.slateNavy,
                 foregroundColor: Colors.white,
               ),
               icon: Icon(
@@ -3415,7 +3415,7 @@ class _InteractiveVideoPlayerDialogState
             IconButton.filled(
               onPressed: () => Navigator.pop(context),
               style: IconButton.styleFrom(
-                backgroundColor: const Color(0xFF334155),
+                backgroundColor: AppColors.slateDark,
                 foregroundColor: Colors.white,
               ),
               icon: const Icon(Icons.close_rounded),
@@ -3430,9 +3430,9 @@ class _InteractiveVideoPlayerDialogState
   Widget _buildStandardVideoView() {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF0F172A),
+        color: AppColors.slateBlack,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF334155)),
+        border: Border.all(color: AppColors.slateDark),
       ),
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -3444,7 +3444,7 @@ class _InteractiveVideoPlayerDialogState
               Row(
                 children: [
                   const Icon(Icons.videocam_rounded,
-                      color: Color(0xFF818CF8), size: 22),
+                      color: AppColors.indigoAccent, size: 22),
                   const SizedBox(width: 8),
                   Text(
                     widget.message.text.isNotEmpty
@@ -3472,7 +3472,7 @@ class _InteractiveVideoPlayerDialogState
             decoration: BoxDecoration(
               color: Colors.black,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: const Color(0xFF1E293B)),
+              border: Border.all(color: AppColors.slateNavy),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(14),
@@ -3505,7 +3505,7 @@ class _InteractiveVideoPlayerDialogState
                     const Center(
                       child: CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(
-                            Color(0xFF818CF8)),
+                            AppColors.indigoAccent),
                       ),
                     ),
                   if (!_isPlaying && _isInitialized)
@@ -3540,9 +3540,9 @@ class _InteractiveVideoPlayerDialogState
                 thumbShape:
                     const RoundSliderThumbShape(enabledThumbRadius: 6),
                 trackHeight: 3,
-                activeTrackColor: const Color(0xFF818CF8),
-                inactiveTrackColor: const Color(0xFF334155),
-                thumbColor: const Color(0xFF818CF8),
+                activeTrackColor: AppColors.indigoAccent,
+                inactiveTrackColor: AppColors.slateDark,
+                thumbColor: AppColors.indigoAccent,
               ),
               child: Slider(
                 value: _position.inMilliseconds
@@ -3576,7 +3576,7 @@ class _InteractiveVideoPlayerDialogState
                       _isPlaying
                           ? Icons.pause_circle_filled_rounded
                           : Icons.play_circle_filled_rounded,
-                      color: const Color(0xFF818CF8),
+                      color: AppColors.indigoAccent,
                       size: 32,
                     ),
                     onPressed: _togglePlayPause,

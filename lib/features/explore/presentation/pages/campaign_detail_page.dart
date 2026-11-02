@@ -59,7 +59,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
     final remaining = c.remainingAmount;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: AppColors.grayBg,
       appBar: AppBar(
         title: Text(
           c.startupName,
@@ -229,7 +229,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFE6FBF5),
+                          color: AppColors.secondaryPillBg,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
@@ -247,7 +247,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
                   Container(
                     height: 10,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE2E8F0),
+                      color: AppColors.borderLight,
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: FractionallySizedBox(
@@ -324,23 +324,23 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
               margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: const Color(0xFFF0FDF4),
+                color: AppColors.mintBg,
                 borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: const Color(0xFF86EFAC).withValues(alpha: 0.5)),
+                border: Border.all(color: AppColors.mintBorder.withValues(alpha: 0.5)),
               ),
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.verified_user_outlined, color: Color(0xFF16A34A), size: 18),
+                      Icon(Icons.verified_user_outlined, color: AppColors.activeGreenText, size: 18),
                       SizedBox(width: 8),
                       Text(
                         'INVESTOR RIGHTS & PERKS',
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w800,
-                          color: Color(0xFF16A34A),
+                          color: AppColors.activeGreenText,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -351,7 +351,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
                     '• Standard information rights & quarterly performance updates\n• Pro-rata rights for subsequent institutional funding rounds\n• Direct access to quarterly founder AMA calls',
                     style: TextStyle(
                       fontSize: 13,
-                      color: Color(0xFF14532D),
+                      color: AppColors.emeraldText,
                       height: 1.55,
                     ),
                   ),
@@ -388,7 +388,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
                     style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isInterested ? const Color(0xFFE6FBF5) : AppColors.primary,
+                    backgroundColor: isInterested ? AppColors.secondaryPillBg : AppColors.primary,
                     foregroundColor: isInterested ? AppColors.secondary : AppColors.white,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -494,7 +494,7 @@ class _CampaignDetailPageState extends State<CampaignDetailPage> {
             content,
             style: const TextStyle(
               fontSize: 13.5,
-              color: Color(0xFF475569),
+              color: AppColors.textSecondary,
               height: 1.55,
             ),
           ),

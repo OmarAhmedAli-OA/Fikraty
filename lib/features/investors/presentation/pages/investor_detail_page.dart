@@ -157,7 +157,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Intro request sent to ${_investor.name}!'),
-                          backgroundColor: const Color(0xFF059669),
+                          backgroundColor: AppColors.emeraldText,
                           behavior: SnackBarBehavior.floating,
                         ),
                       );
@@ -187,7 +187,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: AppColors.grayBg,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.5,
@@ -256,7 +256,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                     width: double.infinity,
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Color(0xFF4F46E5), Color(0xFF7C3AED)],
+                        colors: [AppColors.primaryPurple, AppColors.violetText],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -298,7 +298,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                               Container(
                                 padding: const EdgeInsets.all(4),
                                 decoration: const BoxDecoration(
-                                  color: Color(0xFF10B981),
+                                  color: AppColors.success,
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(Icons.check,
@@ -323,7 +323,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                               const SizedBox(width: 6),
                               const Icon(
                                 Icons.verified_rounded,
-                                color: Color(0xFF3B82F6),
+                                color: AppColors.blueBright,
                                 size: 18,
                               ),
                             ],
@@ -364,16 +364,16 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 12),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFECFDF5),
+                              color: AppColors.emeraldBg,
                               borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: const Color(0xFFA7F3D0)),
+                              border: Border.all(color: AppColors.mintSoft),
                             ),
                             child: Row(
                               children: [
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF10B981),
+                                    color: AppColors.success,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Text(
@@ -395,7 +395,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                                         style: TextStyle(
                                           fontSize: 13,
                                           fontWeight: FontWeight.bold,
-                                          color: Color(0xFF065F46),
+                                          color: AppColors.emeraldDarkest,
                                         ),
                                       ),
                                       SizedBox(height: 2),
@@ -403,7 +403,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                                         'Matches your startup stage, industry sector, and funding target.',
                                         style: TextStyle(
                                           fontSize: 11,
-                                          color: Color(0xFF047857),
+                                          color: AppColors.emeraldDeep,
                                         ),
                                       ),
                                     ],
@@ -483,8 +483,8 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                                 },
                                 style: IconButton.styleFrom(
                                   backgroundColor: _isConnected
-                                      ? const Color(0xFFE0E7FF)
-                                      : const Color(0xFFF1F5F9),
+                                      ? AppColors.lightIndigoBg
+                                      : AppColors.borderSubtle,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -494,7 +494,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                                       ? Icons.person_remove_outlined
                                       : Icons.person_add_alt_1_rounded,
                                   color: _isConnected
-                                      ? const Color(0xFF4338CA)
+                                      ? AppColors.indigoText
                                       : AppColors.ink,
                                   size: 20,
                                 ),
@@ -520,7 +520,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                  border: Border.all(color: AppColors.borderLight),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -528,7 +528,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                     Row(
                       children: const [
                         Icon(Icons.lightbulb_outline_rounded,
-                            color: Color(0xFFF59E0B), size: 18),
+                            color: AppColors.warning, size: 18),
                         SizedBox(width: 8),
                         Text(
                           'Investment Thesis',
@@ -544,7 +544,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF8FAFC),
+                        color: AppColors.grayBg,
                         borderRadius: BorderRadius.circular(12),
                         border: const Border(
                           left: BorderSide(color: AppColors.primaryPurple, width: 3),
@@ -575,7 +575,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                  border: Border.all(color: AppColors.borderLight),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -644,7 +644,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                  border: Border.all(color: AppColors.borderLight),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -673,9 +673,9 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF1F5F9),
+                            color: AppColors.borderSubtle,
                             borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: const Color(0xFFE2E8F0)),
+                            border: Border.all(color: AppColors.borderLight),
                           ),
                           child: Text(
                             sector,
@@ -703,7 +703,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                  border: Border.all(color: AppColors.borderLight),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -722,23 +722,23 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                       sector: 'FinTech · Seed',
                       description: 'Instant B2B payment rails for SMEs in Egypt.',
                       icon: Icons.account_balance_wallet_rounded,
-                      color: const Color(0xFF6366F1),
+                      color: AppColors.purpleGlow,
                     ),
-                    const Divider(color: Color(0xFFF1F5F9), height: 16),
+                    const Divider(color: AppColors.borderSubtle, height: 16),
                     _buildPortfolioStartupTile(
                       name: 'SehaCloud',
                       sector: 'HealthTech · Pre-Seed',
                       description: 'EMR and AI diagnostic interpretation engine.',
                       icon: Icons.health_and_safety_rounded,
-                      color: const Color(0xFF10B981),
+                      color: AppColors.success,
                     ),
-                    const Divider(color: Color(0xFFF1F5F9), height: 16),
+                    const Divider(color: AppColors.borderSubtle, height: 16),
                     _buildPortfolioStartupTile(
                       name: 'AgriSense',
                       sector: 'CleanTech · Seed',
                       description: 'Precision irrigation sensors for commercial farms.',
                       icon: Icons.eco_rounded,
-                      color: const Color(0xFF059669),
+                      color: AppColors.emeraldText,
                     ),
                   ],
                 ),
@@ -760,9 +760,9 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
+        color: AppColors.grayBg,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: AppColors.borderLight),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -825,7 +825,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF1F5F9),
+                      color: AppColors.borderSubtle,
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(

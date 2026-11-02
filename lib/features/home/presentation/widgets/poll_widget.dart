@@ -20,9 +20,9 @@ class PollWidget extends StatelessWidget {
       margin: const EdgeInsets.only(top: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
+        color: AppColors.grayBg,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: AppColors.borderLight),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +72,7 @@ class PollWidget extends StatelessWidget {
                     border: Border.all(
                       color: isSelected
                           ? AppColors.primaryPurple
-                          : const Color(0xFFCBD5E1),
+                          : AppColors.borderSlate,
                       width: isSelected ? 1.5 : 1.0,
                     ),
                     color: AppColors.white,
@@ -87,7 +87,7 @@ class PollWidget extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? AppColors.primaryPurple.withValues(alpha: 0.15)
-                                  : const Color(0xFFF1F5F9),
+                                  : AppColors.borderSubtle,
                             ),
                           ),
                         ),
