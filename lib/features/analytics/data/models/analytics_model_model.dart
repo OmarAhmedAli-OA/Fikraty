@@ -1,1 +1,1 @@
-// TODO: Implement analytics_model model.
+export 'analytics_model.dart';

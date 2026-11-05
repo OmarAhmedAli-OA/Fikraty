@@ -403,7 +403,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               children: [
                 _buildPipelinePill('Interest'),
                 Icon(Icons.arrow_forward_rounded, size: 14, color: AppColors.white70),
-                _buildPipelinePill('Meeting'),
+                _buildPipelinePill('Evaluation'),
                 Icon(Icons.arrow_forward_rounded, size: 14, color: AppColors.white70),
                 _buildPipelinePill('DD'),
                 Icon(Icons.arrow_forward_rounded, size: 14, color: AppColors.white70),

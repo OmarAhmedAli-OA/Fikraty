@@ -23,6 +23,11 @@ class FeedRepositoryImpl implements FeedRepository {
   }
 
   @override
+  Future<List<RecommendedFounder>> getRecommendedFounders() async {
+    return await localDataSource.getRecommendedFounders();
+  }
+
+  @override
   Future<Post> toggleLike(int postId) async {
     return await localDataSource.toggleLike(postId);
   }

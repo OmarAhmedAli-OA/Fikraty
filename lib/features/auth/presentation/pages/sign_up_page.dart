@@ -472,7 +472,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
 
     // Normalize phone number (strip whitespace / dashes / prefix to standard 11-digit local)
-    final cleanPhone = Validators.normalizePhone(_phoneController.text.trim());
+    final rawPhone = _phoneController.text.trim();
+    final normalized = rawPhone.isEmpty ? null : Validators.normalizePhone(rawPhone);
+    final cleanPhone = (normalized != null && normalized.isNotEmpty) ? normalized : null;
 
     final registration = RegistrationData(
       email: _emailController.text.trim().toLowerCase(),

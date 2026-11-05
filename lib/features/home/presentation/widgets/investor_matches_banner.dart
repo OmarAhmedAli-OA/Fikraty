@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class InvestorMatchesBanner extends StatelessWidget {
-  const InvestorMatchesBanner({super.key});
+  final bool isInvestor;
+
+  const InvestorMatchesBanner({
+    super.key,
+    this.isInvestor = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,23 +47,25 @@ class InvestorMatchesBanner extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '5 new investor matches',
-                  style: TextStyle(
+                  isInvestor ? '5 new founder matches' : '5 new investor matches',
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: AppColors.white,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
-                  'Tap to see your compatibility scores',
-                  style: TextStyle(
+                  isInvestor
+                      ? 'Tap to see matching startups & founders'
+                      : 'Tap to see your compatibility scores',
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: AppColors.lightIndigoBg,
@@ -70,9 +77,13 @@ class InvestorMatchesBanner extends StatelessWidget {
           IconButton(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Opening Investor Matching features...'),
-                  duration: Duration(seconds: 2),
+                SnackBar(
+                  content: Text(
+                    isInvestor
+                        ? 'Opening Founder Matching features...'
+                        : 'Opening Investor Matching features...',
+                  ),
+                  duration: const Duration(seconds: 2),
                 ),
               );
             },

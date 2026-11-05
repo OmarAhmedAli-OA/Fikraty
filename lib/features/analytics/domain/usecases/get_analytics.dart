@@ -1,1 +1,1 @@
-// TODO: Implement get_analytics use case.
+export 'get_founder_analytics_usecase.dart';

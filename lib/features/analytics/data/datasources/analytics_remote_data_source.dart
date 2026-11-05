@@ -1,1 +1,7 @@
-// TODO: Implement analytics_remote_data_source data source.
+import '../models/analytics_model.dart';
+
+abstract class AnalyticsRemoteDataSource {
+  Future<FounderAnalyticsModel> fetchFounderAnalytics(String period);
+  Future<StartupAnalyticsModel> fetchStartupAnalytics(String period);
+  Future<InvestorAnalyticsModel> fetchInvestorAnalytics(String period);
+}

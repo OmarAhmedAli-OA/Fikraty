@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../home/domain/entities/post.dart';
 import '../../../chat/presentation/pages/chat_detail_page.dart';
+import '../../../explore/presentation/bloc/explore_bloc.dart';
+import '../../../explore/presentation/bloc/explore_event.dart';
 
 class InvestorDetailScreen extends StatefulWidget {
   final RecommendedInvestor? investor;
@@ -16,10 +20,14 @@ class InvestorDetailScreen extends StatefulWidget {
 }
 
 class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
-  bool _isConnected = false;
+  bool _isFollowing = false;
   bool _isBookmarked = false;
 
   late final RecommendedInvestor _investor;
+
+  String get _safeName => _investor.name.toLowerCase().replaceAll(' ', '_');
+  String get _followPrefKey => 'investor_following_$_safeName';
+  String get _bookmarkPrefKey => 'investor_bookmarked_$_safeName';
 
   @override
   void initState() {
@@ -33,155 +41,84 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
               'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
           matchPercentage: 92,
         );
+    _loadState();
   }
 
-  void _showMeetingRequestModal(BuildContext context) {
-    String selectedDate = 'Tomorrow, 3:00 PM';
-    final noteController = TextEditingController(
-      text: 'Hi ${_investor.name}, I would love to introduce our startup and share our pitch deck with you.',
-    );
+  Future<void> _loadState() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (mounted) {
+        setState(() {
+          _isFollowing = prefs.getBool(_followPrefKey) ?? false;
+          _isBookmarked = prefs.getBool(_bookmarkPrefKey) ?? false;
+        });
+      }
+    } catch (_) {}
+  }
 
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setModalState) {
-          return Padding(
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: 20,
-              bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: AppColors.cardBorder,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Request Intro Meeting',
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.ink,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close_rounded, size: 20),
-                      onPressed: () => Navigator.pop(ctx),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Book a 20-minute introductory meeting with ${_investor.name}.',
-                  style: const TextStyle(fontSize: 13, color: AppColors.textMuted),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Available Slot',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.ink,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  children: [
-                    'Tomorrow, 3:00 PM',
-                    'Thursday, 11:30 AM',
-                    'Next Monday, 2:00 PM',
-                  ].map((slot) {
-                    final isSel = selectedDate == slot;
-                    return ChoiceChip(
-                      label: Text(slot),
-                      selected: isSel,
-                      selectedColor: AppColors.primaryPurple.withValues(alpha: 0.15),
-                      labelStyle: TextStyle(
-                        color: isSel ? AppColors.primaryPurple : AppColors.ink,
-                        fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
-                        fontSize: 12,
-                      ),
-                      onSelected: (_) {
-                        setModalState(() => selectedDate = slot);
-                      },
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Introduction Note',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.ink,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: noteController,
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: AppColors.cardBorder),
-                    ),
-                    hintText: 'Share a brief summary of your startup...',
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(ctx);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Intro request sent to ${_investor.name}!'),
-                          backgroundColor: AppColors.emeraldText,
-                          behavior: SnackBarBehavior.floating,
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryPurple,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text(
-                      'Send Meeting Request',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
+  Future<void> _toggleFollow() async {
+    final nextFollowing = !_isFollowing;
+    setState(() {
+      _isFollowing = nextFollowing;
+    });
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_followPrefKey, nextFollowing);
+    } catch (_) {}
+
+    if (mounted) {
+      try {
+        context.read<ExploreBloc>().add(
+              ToggleFollowEvent(type: 'investor', id: _investor.id),
+            );
+      } catch (_) {}
+
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            nextFollowing
+                ? 'You are now following ${_investor.name}'
+                : 'Unfollowed ${_investor.name}',
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  Future<void> _toggleBookmark() async {
+    final nextBookmarked = !_isBookmarked;
+    setState(() {
+      _isBookmarked = nextBookmarked;
+    });
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_bookmarkPrefKey, nextBookmarked);
+    } catch (_) {}
+
+    if (mounted) {
+      try {
+        context.read<ExploreBloc>().add(
+              ToggleBookmarkEvent(type: 'investor', id: _investor.id),
+            );
+      } catch (_) {}
+
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            nextBookmarked ? 'Saved to Bookmarks' : 'Removed from Bookmarks',
+          ),
+          duration: const Duration(seconds: 1),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
   }
 
   @override
@@ -213,18 +150,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
               _isBookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
               color: _isBookmarked ? AppColors.primaryPurple : AppColors.ink,
             ),
-            onPressed: () {
-              setState(() {
-                _isBookmarked = !_isBookmarked;
-              });
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(_isBookmarked ? 'Saved to Bookmarks' : 'Removed from Bookmarks'),
-                  duration: const Duration(seconds: 1),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
+            onPressed: _toggleBookmark,
           ),
           IconButton(
             icon: const Icon(Icons.share_outlined, color: AppColors.ink, size: 21),
@@ -414,7 +340,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                           ),
                           const SizedBox(height: 18),
 
-                          // Action Buttons
+                          // Action Buttons: Message & Follow
                           Row(
                             children: [
                               Expanded(
@@ -449,14 +375,21 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                               const SizedBox(width: 10),
                               Expanded(
                                 child: OutlinedButton.icon(
-                                  onPressed: () => _showMeetingRequestModal(context),
-                                  icon: const Icon(Icons.calendar_today_rounded,
-                                      size: 16),
-                                  label: const Text('Request Intro'),
+                                  onPressed: _toggleFollow,
+                                  icon: Icon(
+                                    _isFollowing
+                                        ? Icons.check_rounded
+                                        : Icons.person_add_outlined,
+                                    size: 16,
+                                  ),
+                                  label: Text(_isFollowing ? 'Following' : 'Follow'),
                                   style: OutlinedButton.styleFrom(
+                                    backgroundColor: _isFollowing
+                                        ? AppColors.primaryPurple.withValues(alpha: 0.08)
+                                        : Colors.transparent,
                                     foregroundColor: AppColors.primaryPurple,
                                     side: const BorderSide(
-                                        color: AppColors.primaryPurple),
+                                        color: AppColors.primaryPurple, width: 1.5),
                                     padding:
                                         const EdgeInsets.symmetric(vertical: 12),
                                     shape: RoundedRectangleBorder(
@@ -464,41 +397,6 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                                     ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 10),
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isConnected = !_isConnected;
-                                  });
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(_isConnected
-                                          ? 'Connected with ${_investor.name}!'
-                                          : 'Disconnected'),
-                                      duration: const Duration(seconds: 1),
-                                      behavior: SnackBarBehavior.floating,
-                                    ),
-                                  );
-                                },
-                                style: IconButton.styleFrom(
-                                  backgroundColor: _isConnected
-                                      ? AppColors.lightIndigoBg
-                                      : AppColors.borderSubtle,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                icon: Icon(
-                                  _isConnected
-                                      ? Icons.person_remove_outlined
-                                      : Icons.person_add_alt_1_rounded,
-                                  color: _isConnected
-                                      ? AppColors.indigoText
-                                      : AppColors.ink,
-                                  size: 20,
-                                ),
-                                tooltip: _isConnected ? 'Disconnect' : 'Connect',
                               ),
                             ],
                           ),

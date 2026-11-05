@@ -31,6 +31,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     try {
       final stories = await feedRepository.getStories();
       final recommended = await feedRepository.getRecommendedInvestors();
+      final recommendedFounders = await feedRepository.getRecommendedFounders();
       final tag = event.selectedTag == 'All' ? null : event.selectedTag;
       final posts = await feedRepository.getFeed(tag: tag);
 
@@ -42,6 +43,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
             posts: posts,
             stories: stories,
             recommendedInvestors: recommended,
+            recommendedFounders: recommendedFounders,
             selectedTag: event.selectedTag ?? 'All',
           ),
         );
@@ -64,6 +66,9 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     final currentInvestors = state is FeedLoadedState
         ? (state as FeedLoadedState).recommendedInvestors
         : await feedRepository.getRecommendedInvestors();
+    final currentFounders = state is FeedLoadedState
+        ? (state as FeedLoadedState).recommendedFounders
+        : await feedRepository.getRecommendedFounders();
 
     try {
       final tag = event.tag == 'All' ? null : event.tag;
@@ -77,6 +82,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
             posts: posts,
             stories: currentStories,
             recommendedInvestors: currentInvestors,
+            recommendedFounders: currentFounders,
             selectedTag: event.tag,
           ),
         );

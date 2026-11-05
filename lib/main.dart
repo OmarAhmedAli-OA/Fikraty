@@ -1,3 +1,6 @@
+import 'features/analytics/presentation/pages/my_analytics_page.dart';
+import 'features/analytics/presentation/pages/startup_analytics_page.dart';
+import 'features/analytics/presentation/bloc/analytics_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -48,6 +51,9 @@ void main() {
         BlocProvider<NotificationsBloc>(
           create: (_) => sl<NotificationsBloc>()..add(const LoadNotificationsEvent()),
         ),
+        BlocProvider<AnalyticsBloc>(
+          create: (_) => sl<AnalyticsBloc>(),
+        ),
       ],
       child: const FikratyApp(),
     ),
@@ -83,6 +89,8 @@ class FikratyApp extends StatelessWidget {
         AppRoutes.messages: (_) => const MessagesPage(),
         AppRoutes.explore: (_) => const ExplorePage(),
         AppRoutes.compareStartups: (_) => const CompareStartupsPage(),
+        AppRoutes.myAnalytics: (_) => const MyAnalyticsPage(),
+        AppRoutes.startupAnalytics: (_) => const StartupAnalyticsPage(),
         // Keep legacy route names working while other features are integrated.
         '/login': (_) => const SignInScreen(),
         '/register': (_) => const SignUpScreen(),

@@ -47,7 +47,7 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final user = context.select<AuthBloc, AuthUser?>((b) => b.state.user);
     final isInvestor = user?.role == UserRole.investor;
-    final roleLabel = isInvestor ? 'Investor' : 'Entrepreneur';
+    final roleLabel = isInvestor ? 'Investor' : 'Founder';
 
     return Container(
       color: AppColors.white,

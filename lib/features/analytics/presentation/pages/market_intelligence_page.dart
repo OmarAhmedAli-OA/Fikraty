@@ -1,1 +1,1 @@
-// TODO: Implement market_intelligence page.
+export 'founder_analytics_page.dart';

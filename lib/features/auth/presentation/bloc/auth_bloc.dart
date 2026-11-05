@@ -52,10 +52,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final user = await signUp(data: event.data);
       emit(AuthState(status: AuthStatus.authenticated, user: user));
-    } catch (_) {
-      emit(const AuthState(
+    } catch (e) {
+      final msg = e.toString()
+          .replaceFirst('Exception: ', '')
+          .replaceFirst('AuthDataException: ', '');
+      emit(AuthState(
         status: AuthStatus.failure,
-        message: 'Unable to create your account right now. Please try again.',
+        message: msg.isNotEmpty ? msg : 'Unable to create your account right now. Please try again.',
       ));
     }
   }

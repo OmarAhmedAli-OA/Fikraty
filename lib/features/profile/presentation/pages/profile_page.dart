@@ -1,3 +1,4 @@
+import '../../../../core/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -886,7 +887,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                               const Divider(
                                   height: 1, color: AppColors.cardBorder),
                               _AccountRow(
-                                title: '⚙️ Account & Privacy Settings',
+                                title: 'Account & Privacy Settings',
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -900,7 +901,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                                 },
                               ),
                               _AccountRow(
-                                title: '🚪 Sign Out',
+                                title: 'Sign Out',
                                 textColor: AppColors.error,
                                 isLast: true,
                                 onTap: () => _confirmSignOut(context),
@@ -927,14 +928,14 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
   // Founder Workspace
   Widget _buildFounderWorkspaceGrid(BuildContext context, UserProfile profile, auth.AuthUser? authUser) {
     final items = [
-      {'label': '📊 Startup Analytics', 'icon': Icons.bar_chart_rounded},
-      {'label': '👤 My Analytics', 'icon': Icons.person_outline_rounded},
-      {'label': '🚀 Pitch Deck', 'icon': Icons.picture_as_pdf_outlined},
-      {'label': '👥 Team Members', 'icon': Icons.groups_outlined},
-      {'label': '🏆 Milestones', 'icon': Icons.flag_outlined},
-      {'label': '🪄 Startup Wizard', 'icon': Icons.auto_awesome_outlined},
-      {'label': '🛡️ Verification', 'icon': Icons.verified_user_outlined},
-      {'label': '⚙️ Settings', 'icon': Icons.settings_outlined},
+      {'label': 'Startup Analytics', 'icon': Icons.bar_chart_rounded},
+      {'label': 'My Analytics', 'icon': Icons.person_outline_rounded},
+      {'label': 'Pitch Deck', 'icon': Icons.picture_as_pdf_outlined},
+      {'label': 'Team Members', 'icon': Icons.groups_outlined},
+      {'label': 'Milestones', 'icon': Icons.flag_outlined},
+      {'label': 'Startup Wizard', 'icon': Icons.auto_awesome_outlined},
+      {'label': 'Verification', 'icon': Icons.verified_user_outlined},
+      {'label': 'Settings', 'icon': Icons.settings_outlined},
     ];
 
     return GridView.builder(
@@ -954,7 +955,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
 
         return InkWell(
           onTap: () {
-            if (label == '⚙️ Settings') {
+            if (label == 'Settings') {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -964,7 +965,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                   ),
                 ),
               );
-            } else if (label == '👤 My Analytics') {
+            } else if (label == 'My Analytics') {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -974,22 +975,22 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                   ),
                 ),
               );
-            } else if (label == '📊 Startup Analytics') {
+            } else if (label == 'Startup Analytics') {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) => const StartupAnalyticsPage(),
                 ),
               );
-            } else if (label == '🚀 Pitch Deck') {
+            } else if (label == 'Pitch Deck') {
               _showPitchDeckModal(context, profile);
-            } else if (label == '👥 Team Members') {
+            } else if (label == 'Team Members') {
               _showManageTeamSheet(context, profile);
-            } else if (label == '🏆 Milestones') {
+            } else if (label == 'Milestones') {
               _showMilestonesModal(context);
-            } else if (label == '🪄 Startup Wizard') {
+            } else if (label == 'Startup Wizard') {
               _openStartupWizard(profile, authUser);
-            } else if (label == '🛡️ Verification') {
+            } else if (label == 'Verification') {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -1014,7 +1015,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                 Icon(icon, size: 22, color: AppColors.primary),
                 const SizedBox(height: 5),
                 Text(
-                  label.replaceAll(RegExp(r'[\u{1F300}-\u{1F6FF}]', unicode: true), '').trim(),
+                  label,
                   textAlign: TextAlign.center,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -1038,7 +1039,6 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
       {'label': 'Preferences', 'icon': Icons.tune_rounded},
       {'label': 'My Analytics', 'icon': Icons.person_outline_rounded},
       {'label': 'Portfolio', 'icon': Icons.pie_chart_outline_rounded},
-      {'label': 'Meetings', 'icon': Icons.calendar_month_outlined},
       {'label': 'Verification', 'icon': Icons.verified_user_outlined},
       {'label': 'Settings', 'icon': Icons.settings_outlined},
     ];
@@ -1082,8 +1082,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
               );
             } else if (label == 'Portfolio') {
               _tabController.animateTo(1);
-            } else if (label == 'Meetings') {
-              _showMeetingsModal(context);
+
             } else if (label == 'Verification') {
               _showInvestorVerificationModal(context);
             } else if (label == 'Settings') {
@@ -1564,7 +1563,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                         onPressed: () => _showPitchDeckModal(context, profile),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white,
+                          foregroundColor: AppColors.white,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 8),
                           minimumSize: Size.zero,
@@ -1681,7 +1680,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                         label: const Text('Legal Badge', style: TextStyle(fontSize: 11.5)),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.emeraldText,
-                          foregroundColor: Colors.white,
+                          foregroundColor: AppColors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -1707,28 +1706,28 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
           'val': '2,840',
           'sub': '+18% this month',
           'icon': Icons.visibility_outlined,
-          'color': 0xFF5548E8,
+          'color': AppColors.primaryPurple,
         },
         {
           'label': 'Investor Interest',
           'val': '${profile.investorInterestCount}',
           'sub': '+6 this week',
           'icon': Icons.swap_horiz,
-          'color': 0xFF00C48C,
+          'color': AppColors.secondary,
         },
         {
           'label': 'Pitch Deck Views',
           'val': '142',
           'sub': '+22 this month',
           'icon': Icons.picture_as_pdf_outlined,
-          'color': 0xFFE8A020,
+          'color': AppColors.orangeAccent,
         },
         {
           'label': 'Post Engagement',
           'val': '${profile.totalLikes}',
           'sub': 'Likes across posts',
           'icon': Icons.favorite_border,
-          'color': 0xFFE02424,
+          'color': AppColors.redCrimson,
         },
       ];
 
@@ -1772,7 +1771,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                         Icon(
                           item['icon'] as IconData,
                           size: 16,
-                          color: Color(item['color'] as int),
+                          color: item['color'] as Color,
                         ),
                       ],
                     ),
@@ -1791,7 +1790,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
-                        color: Color(item['color'] as int),
+                        color: item['color'] as Color,
                       ),
                     ),
                   ],
@@ -1805,16 +1804,11 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const StartupAnalyticsPage(),
-                      ),
-                    );
+                    Navigator.pushNamed(context, AppRoutes.startupAnalytics);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppColors.white,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -1829,15 +1823,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => BlocProvider.value(
-                          value: context.read<ProfileBloc>(),
-                          child: const MyAnalyticsPage(),
-                        ),
-                      ),
-                    );
+                    Navigator.pushNamed(context, AppRoutes.myAnalytics);
                   },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primary,
@@ -1864,28 +1850,28 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
           'val': '284',
           'sub': '+24 this month',
           'icon': Icons.search_rounded,
-          'color': 0xFF5548E8,
+          'color': AppColors.primaryPurple,
         },
         {
           'label': 'Saved Startups',
           'val': '31',
           'sub': '+5 this month',
           'icon': Icons.bookmark_outline_rounded,
-          'color': 0xFF00C48C,
+          'color': AppColors.secondary,
         },
         {
           'label': 'Active Pipeline',
           'val': '4',
           'sub': 'In due diligence',
           'icon': Icons.trending_up_rounded,
-          'color': 0xFFE8A020,
+          'color': AppColors.orangeAccent,
         },
         {
-          'label': 'Meetings Held',
-          'val': '12',
-          'sub': '12 scheduled & completed',
-          'icon': Icons.calendar_month_outlined,
-          'color': 0xFF8B5CF6,
+          'label': 'Active Deals',
+          'val': '6',
+          'sub': 'In term sheet / DD',
+          'icon': Icons.pie_chart_outline_rounded,
+          'color': AppColors.accentPurple,
         },
       ];
 
@@ -1929,7 +1915,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                         Icon(
                           item['icon'] as IconData,
                           size: 16,
-                          color: Color(item['color'] as int),
+                          color: item['color'] as Color,
                         ),
                       ],
                     ),
@@ -1948,7 +1934,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
-                        color: Color(item['color'] as int),
+                        color: item['color'] as Color,
                       ),
                     ),
                   ],
@@ -1973,7 +1959,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
+                foregroundColor: AppColors.white,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -2319,7 +2305,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                     label: const Text('Share Deck'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppColors.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -2507,7 +2493,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppColors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
@@ -2879,7 +2865,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                       onPressed: () => Navigator.pop(ctx),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
+                        foregroundColor: AppColors.white,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
@@ -2892,88 +2878,6 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
           },
         );
       },
-    );
-  }
-
-  void _showMeetingsModal(BuildContext context) {
-    final meetings = [
-      {'startup': 'NovaMed AI', 'time': 'Tomorrow, 2:00 PM', 'topic': 'Pitch & Q&A (Series Seed)'},
-      {'startup': 'Payra', 'time': 'Thursday, 4:30 PM', 'topic': 'Follow-up Term Sheet Discussion'},
-      {'startup': 'CargoLinx', 'time': 'Next Monday, 11:00 AM', 'topic': 'Introductory Founder Call'},
-    ];
-
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (ctx) => Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Scheduled Founder Meetings',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close, size: 20, color: AppColors.textMuted),
-                  onPressed: () => Navigator.pop(ctx),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            ...meetings.map(
-              (m) => Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.cardSurface,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.cardBorder),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryLight,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(Icons.videocam_rounded, color: AppColors.primary, size: 20),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(m['startup']!,
-                              style: const TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.textPrimary)),
-                          Text(m['topic']!,
-                              style: const TextStyle(
-                                  fontSize: 11.5, color: AppColors.textSecondary)),
-                          Text(m['time']!,
-                              style: const TextStyle(
-                                  fontSize: 11,
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.w600)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -3050,7 +2954,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody>
                 onPressed: () => Navigator.pop(ctx),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppColors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                 ),

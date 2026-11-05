@@ -16,6 +16,7 @@ class FeedLoadedState extends FeedState {
   final List<Post> posts;
   final List<Story> stories;
   final List<RecommendedInvestor> recommendedInvestors;
+  final List<RecommendedFounder> recommendedFounders;
   final String selectedTag;
   final bool isCreatingPost;
   final String? actionFeedbackMessage;
@@ -24,6 +25,7 @@ class FeedLoadedState extends FeedState {
     required this.posts,
     required this.stories,
     required this.recommendedInvestors,
+    this.recommendedFounders = const [],
     this.selectedTag = 'All',
     this.isCreatingPost = false,
     this.actionFeedbackMessage,
@@ -33,6 +35,7 @@ class FeedLoadedState extends FeedState {
     List<Post>? posts,
     List<Story>? stories,
     List<RecommendedInvestor>? recommendedInvestors,
+    List<RecommendedFounder>? recommendedFounders,
     String? selectedTag,
     bool? isCreatingPost,
     String? actionFeedbackMessage,
@@ -42,6 +45,8 @@ class FeedLoadedState extends FeedState {
       stories: stories ?? this.stories,
       recommendedInvestors:
           recommendedInvestors ?? this.recommendedInvestors,
+      recommendedFounders:
+          recommendedFounders ?? this.recommendedFounders,
       selectedTag: selectedTag ?? this.selectedTag,
       isCreatingPost: isCreatingPost ?? this.isCreatingPost,
       actionFeedbackMessage: actionFeedbackMessage,
@@ -53,6 +58,7 @@ class FeedLoadedState extends FeedState {
         posts,
         stories,
         recommendedInvestors,
+        recommendedFounders,
         selectedTag,
         isCreatingPost,
         actionFeedbackMessage,

@@ -88,6 +88,20 @@ class _ExploreViewStatefulState extends State<_ExploreViewStateful> {
 
   @override
   Widget build(BuildContext context) {
+    final authUser = context.watch<AuthBloc>().state.user;
+    final targetRole = authUser?.role == auth.UserRole.investor
+        ? 'investor'
+        : 'entrepreneur';
+    final currentExploreState = context.watch<ExploreBloc>().state;
+    if (currentExploreState is ExploreLoadedState &&
+        currentExploreState.userRole != targetRole) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.read<ExploreBloc>().add(SwitchRoleEvent(targetRole));
+        }
+      });
+    }
+
     return MultiBlocListener(
       listeners: [
         BlocListener<AuthBloc, AuthState>(

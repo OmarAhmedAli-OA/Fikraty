@@ -196,6 +196,9 @@ abstract final class Validators {
   /// Normalizes any valid international or local phone into standardized format (+... or 01...).
   static String normalizePhone(String value) {
     final clean = value.replaceAll(RegExp(r'[\s\-()]'), '');
+    if (clean.isEmpty) {
+      return '';
+    }
     // If Egyptian local or normalized
     if (_egyptianPhonePattern.hasMatch(clean)) {
       return normalizeEgyptianPhone(clean);

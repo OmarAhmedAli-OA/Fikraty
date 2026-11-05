@@ -1,1 +1,1 @@
-// TODO: Implement update_analytics use case.
+export 'get_investor_analytics_usecase.dart';

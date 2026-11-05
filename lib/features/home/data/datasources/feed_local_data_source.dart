@@ -6,6 +6,7 @@ abstract class FeedLocalDataSource {
   Future<List<PostModel>> getFeed({String? tag, PostType? type});
   Future<List<Story>> getStories();
   Future<List<RecommendedInvestor>> getRecommendedInvestors();
+  Future<List<RecommendedFounder>> getRecommendedFounders();
   Future<PostModel> toggleLike(int postId);
   Future<PostModel> toggleBookmark(int postId);
   Future<PostModel> votePoll(int postId, int pollOptionId);
@@ -36,6 +37,7 @@ class FeedLocalDataSourceImpl implements FeedLocalDataSource {
   final List<PostModel> _posts = [];
   final List<Story> _stories = [];
   final List<RecommendedInvestor> _recommendedInvestors = [];
+  final List<RecommendedFounder> _recommendedFounders = [];
 
   FeedLocalDataSourceImpl() {
     _initMockData();
@@ -132,6 +134,62 @@ class FeedLocalDataSourceImpl implements FeedLocalDataSource {
         slides: const [
           'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
         ],
+      ),
+    ]);
+
+    // Recommended Founders
+    _recommendedFounders.addAll([
+      const RecommendedFounder(
+        id: 1,
+        name: 'Sarah Al-Mansouri',
+        role: 'Founder & CEO',
+        startupName: 'NovaMed AI',
+        avatarUrl:
+            'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150',
+        matchPercentage: 95,
+        location: 'Dubai, UAE',
+        bio: 'Building AI diagnostics for MENA clinics. Stanford Medicine Research Fellow. USD 2.4M Seed raised.',
+        skills: ['AI/ML', 'HealthTech', 'Fundraising', 'GTM'],
+        lookingFor: 'Co-investors for Series A expansion',
+      ),
+      const RecommendedFounder(
+        id: 2,
+        name: 'Lena Bergström',
+        role: 'Co-founder & CEO',
+        startupName: 'GreenStack',
+        avatarUrl:
+            'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150',
+        matchPercentage: 88,
+        location: 'Cairo, Egypt',
+        bio: 'Former McKinsey consultant. Building the ESG compliance layer for enterprises.',
+        skills: ['ESG', 'SaaS', 'Enterprise Sales', 'EU Regulation'],
+        lookingFor: 'Series A investors with enterprise network',
+      ),
+      const RecommendedFounder(
+        id: 3,
+        name: 'Khalid Al-Otaibi',
+        role: 'CEO & Founder',
+        startupName: 'FlowSync',
+        avatarUrl:
+            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150',
+        matchPercentage: 82,
+        location: 'Riyadh, KSA',
+        bio: 'Prev ops lead at Saudi Telecom. Building workflow automation for MENA SMEs.',
+        skills: ['Product', 'B2B Sales', 'Arabic Market', 'Operations'],
+        lookingFor: 'Pre-Seed investors with KSA enterprise network',
+      ),
+      const RecommendedFounder(
+        id: 4,
+        name: 'Yasmin Farouk',
+        role: 'Founder & CEO',
+        startupName: 'EduPath',
+        avatarUrl:
+            'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150',
+        matchPercentage: 79,
+        location: 'Cairo, Egypt',
+        bio: 'Former Ministry of Education advisor. 50K students using EduPath. Seed round open.',
+        skills: ['EdTech', 'Product', 'Arabic UX', 'Government Relations'],
+        lookingFor: 'Impact investors with EdTech background',
       ),
     ]);
 
@@ -398,6 +456,12 @@ class FeedLocalDataSourceImpl implements FeedLocalDataSource {
   Future<List<RecommendedInvestor>> getRecommendedInvestors() async {
     await Future.delayed(const Duration(milliseconds: 150));
     return List<RecommendedInvestor>.from(_recommendedInvestors);
+  }
+
+  @override
+  Future<List<RecommendedFounder>> getRecommendedFounders() async {
+    await Future.delayed(const Duration(milliseconds: 150));
+    return List<RecommendedFounder>.from(_recommendedFounders);
   }
 
   @override

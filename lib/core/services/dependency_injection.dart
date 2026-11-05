@@ -1,3 +1,10 @@
+import '../../features/analytics/data/datasources/analytics_local_data_source.dart';
+import '../../features/analytics/data/repositories/analytics_repository_impl.dart';
+import '../../features/analytics/domain/repositories/analytics_repository.dart';
+import '../../features/analytics/domain/usecases/get_founder_analytics_usecase.dart';
+import '../../features/analytics/domain/usecases/get_investor_analytics_usecase.dart';
+import '../../features/analytics/domain/usecases/get_startup_analytics_usecase.dart';
+import '../../features/analytics/presentation/bloc/analytics_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/auth/data/datasources/auth_remote_data_source.dart';
@@ -116,6 +123,31 @@ void configureDependencies() {
       markAllNotificationsAsReadUseCase:
           sl<MarkAllNotificationsAsReadUseCase>(),
       pushNotificationService: sl<PushNotificationService>(),
+    ),
+  );
+  // Analytics Feature Dependencies
+  sl.registerLazySingleton<AnalyticsLocalDataSource>(
+    () => AnalyticsLocalDataSourceImpl(),
+  );
+  sl.registerLazySingleton<AnalyticsRepository>(
+    () => AnalyticsRepositoryImpl(sl<AnalyticsLocalDataSource>()),
+  );
+
+  sl.registerFactory<GetFounderAnalyticsUseCase>(
+    () => GetFounderAnalyticsUseCase(sl<AnalyticsRepository>()),
+  );
+  sl.registerFactory<GetStartupAnalyticsUseCase>(
+    () => GetStartupAnalyticsUseCase(sl<AnalyticsRepository>()),
+  );
+  sl.registerFactory<GetInvestorAnalyticsUseCase>(
+    () => GetInvestorAnalyticsUseCase(sl<AnalyticsRepository>()),
+  );
+
+  sl.registerFactory<AnalyticsBloc>(
+    () => AnalyticsBloc(
+      getFounderAnalyticsUseCase: sl<GetFounderAnalyticsUseCase>(),
+      getStartupAnalyticsUseCase: sl<GetStartupAnalyticsUseCase>(),
+      getInvestorAnalyticsUseCase: sl<GetInvestorAnalyticsUseCase>(),
     ),
   );
 }

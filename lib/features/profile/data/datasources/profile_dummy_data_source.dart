@@ -39,10 +39,18 @@ class ProfileDummyDataSource implements ProfileDataSource {
   late InvestorPreferencesModel _investorPreferences;
   late List<InterestItemModel> _interests;
 
-  static const String _keyEntrepreneur = 'fikraty_profile_entrepreneur';
-  static const String _keyInvestor = 'fikraty_profile_investor';
-  static const String _keyPreferences = 'fikraty_investor_preferences';
-  static const String _keyInterests = 'fikraty_interests';
+  String get _userKeyPrefix {
+    if (authUser != null && authUser!.email.isNotEmpty) {
+      final safeEmail = authUser!.email.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '_');
+      return 'fikraty_${safeEmail}_';
+    }
+    return 'fikraty_default_';
+  }
+
+  String get _keyEntrepreneur => '${_userKeyPrefix}profile_entrepreneur';
+  String get _keyInvestor => '${_userKeyPrefix}profile_investor';
+  String get _keyPreferences => '${_userKeyPrefix}investor_preferences';
+  String get _keyInterests => '${_userKeyPrefix}interests';
 
   ProfileDummyDataSource({this.authUser}) {
     if (authUser?.role == auth.UserRole.investor) {

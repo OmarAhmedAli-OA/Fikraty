@@ -10,6 +10,9 @@ abstract class FeedRepository {
   /// Fetches recommended investors matching user profile
   Future<List<RecommendedInvestor>> getRecommendedInvestors();
 
+  /// Fetches recommended founders matching user profile
+  Future<List<RecommendedFounder>> getRecommendedFounders();
+
   /// Toggle like on a post (post_likes)
   Future<Post> toggleLike(int postId);
 

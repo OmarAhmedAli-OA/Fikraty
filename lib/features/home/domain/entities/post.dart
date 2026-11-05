@@ -394,3 +394,44 @@ class RecommendedInvestor extends Equatable {
   @override
   List<Object?> get props => [id, name, role, avatarUrl, matchPercentage];
 }
+
+class RecommendedFounder extends Equatable {
+  final int id;
+  final String name;
+  final String role;
+  final String startupName;
+  final String avatarUrl;
+  final int matchPercentage;
+  final String location;
+  final String bio;
+  final List<String> skills;
+  final String lookingFor;
+
+  const RecommendedFounder({
+    required this.id,
+    required this.name,
+    required this.role,
+    required this.startupName,
+    required this.avatarUrl,
+    required this.matchPercentage,
+    this.location = 'Dubai, UAE',
+    this.bio = '',
+    this.skills = const [],
+    this.lookingFor = '',
+  });
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        role,
+        startupName,
+        avatarUrl,
+        matchPercentage,
+        location,
+        bio,
+        skills,
+        lookingFor,
+      ];
+}
+

@@ -15,4 +15,6 @@ abstract final class AppRoutes {
   static const messages = '/messages';
   static const explore = '/explore';
   static const compareStartups = '/compare-startups';
+  static const myAnalytics = '/my-analytics';
+  static const startupAnalytics = '/startup-analytics';
 }

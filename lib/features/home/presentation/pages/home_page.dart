@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../auth/domain/entities/auth.dart';
 import '../../../auth/presentation/bloc/auth_state.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
 import '../bloc/feed_bloc.dart';
@@ -13,6 +14,7 @@ import '../widgets/investor_matches_banner.dart';
 import '../widgets/post_card.dart';
 import '../widgets/quick_create_box.dart';
 import '../widgets/recommended_investors_card.dart';
+import '../widgets/recommended_founders_card.dart';
 import '../widgets/stories_tray.dart';
 import '../widgets/trending_tags_bar.dart';
 import '../../../explore/presentation/pages/explore_page.dart';
@@ -114,6 +116,9 @@ class _HomeScreenBodyState extends State<_HomeScreenBody> {
   }
 
   Widget _buildFeedContent(BuildContext context, FeedLoadedState state) {
+    final authUser = context.watch<AuthBloc>().state.user;
+    final isInvestor = (authUser?.role == UserRole.investor);
+
     return RefreshIndicator(
       color: AppColors.primaryPurple,
       onRefresh: () async {
@@ -145,28 +150,36 @@ class _HomeScreenBodyState extends State<_HomeScreenBody> {
             child: TrendingTagsBar(selectedTag: state.selectedTag),
           ),
           // Matches banner
-          const SliverToBoxAdapter(
-            child: InvestorMatchesBanner(),
+          SliverToBoxAdapter(
+            child: InvestorMatchesBanner(isInvestor: isInvestor),
           ),
           const SliverToBoxAdapter(
             child: SizedBox(height: 4),
           ),
-          // Posts list with Recommended Investors injected dynamically
+          // Posts list with Recommended profiles injected dynamically
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                // Insert Recommended Investors card after post index 1
-                if (index == 2 && state.recommendedInvestors.isNotEmpty) {
-                  return RecommendedInvestorsCard(
-                    investors: state.recommendedInvestors,
-                  );
+                final hasRecommended = isInvestor
+                    ? state.recommendedFounders.isNotEmpty
+                    : state.recommendedInvestors.isNotEmpty;
+
+                // Insert Recommended card after post index 1
+                if (index == 2 && hasRecommended) {
+                  if (isInvestor) {
+                    return RecommendedFoundersCard(
+                      founders: state.recommendedFounders,
+                    );
+                  } else {
+                    return RecommendedInvestorsCard(
+                      investors: state.recommendedInvestors,
+                    );
+                  }
                 }
 
-                // Adjust index if we passed the recommended investors card
+                // Adjust index if we passed the recommended card
                 final postIndex =
-                    (index > 2 && state.recommendedInvestors.isNotEmpty)
-                        ? index - 1
-                        : index;
+                    (index > 2 && hasRecommended) ? index - 1 : index;
 
                 if (postIndex >= state.posts.length) return null;
 
@@ -190,8 +203,10 @@ class _HomeScreenBodyState extends State<_HomeScreenBody> {
                 );
               },
               childCount: state.posts.length +
-                  (state.recommendedInvestors.isNotEmpty &&
-                          state.posts.length >= 2
+                  (((isInvestor
+                              ? state.recommendedFounders.isNotEmpty
+                              : state.recommendedInvestors.isNotEmpty) &&
+                          state.posts.length >= 2)
                       ? 1
                       : 0),
             ),
