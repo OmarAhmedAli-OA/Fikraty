@@ -387,20 +387,6 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   ),
                   const SizedBox(height: 28),
 
-                  // Skip for now button
-                  Center(
-                    child: TextButton(
-                      onPressed: _onSkip,
-                      child: const Text(
-                        'Skip for now (Continue to Home)',
-                        style: TextStyle(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.mutedText,
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

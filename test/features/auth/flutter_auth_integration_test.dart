@@ -372,6 +372,10 @@ void main() {
     });
 
     testWidgets('VerifyEmailPage renders email and code input properly', (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
       final fakeDataSource = FakeAuthRemoteDataSource();
       final repository = AuthRepositoryImpl(fakeDataSource);
 

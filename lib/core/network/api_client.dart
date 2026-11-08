@@ -118,9 +118,18 @@ class ApiClient {
 
   ApiException _handleDioError(DioException e) {
     final response = e.response;
-    if (response != null && response.data != null) {
+    if (response != null) {
+      if (response.statusCode == 429) {
+        String message = 'Too many requests. Please wait a minute and try again.';
+        if (response.data is Map<String, dynamic>) {
+          final data = response.data as Map<String, dynamic>;
+          message = data['detail'] as String? ?? data['title'] as String? ?? message;
+        }
+        return ApiException(message, statusCode: 429);
+      }
+
       final data = response.data;
-      if (data is Map<String, dynamic>) {
+      if (data != null && data is Map<String, dynamic>) {
         // Extract validation errors if present (RFC 7807 ValidationProblemDetails)
         Map<String, List<String>>? fieldErrors;
         String? combinedErrors;
@@ -156,9 +165,7 @@ class ApiClient {
             data['detail'] as String? ??
             data['message'] as String? ??
             data['title'] as String? ??
-            (response.statusCode == 429
-                ? 'Too many requests. Please wait a minute and try again.'
-                : 'An error occurred (${response.statusCode}).');
+            'An error occurred (${response.statusCode}).';
 
         final code = data['code'] as String?;
 
@@ -168,6 +175,11 @@ class ApiClient {
           code: code,
           fieldErrors: fieldErrors,
           lockedUntil: lockedUntil,
+        );
+      } else if (response.statusCode != null) {
+        return ApiException(
+          'Request failed with status ${response.statusCode}. Please try again.',
+          statusCode: response.statusCode,
         );
       }
     }
@@ -182,6 +194,6 @@ class ApiClient {
       return const ApiException('Unable to connect to the server. Please check your connection.');
     }
 
-    return ApiException(e.message ?? 'An unexpected network error occurred.');
+    return const ApiException('An unexpected network error occurred. Please try again.');
   }
 }

@@ -22,6 +22,14 @@ class _SignInScreenState extends State<SignInScreen> {
   bool _showPassword = false;
   String? _localError;
   DateTime? _lockedUntil;
+  String? _lockedEmail;
+
+  bool get _isCurrentEmailLocked {
+    if (_lockedUntil == null || _lockedEmail == null) return false;
+    if (!_lockedUntil!.isAfter(DateTime.now())) return false;
+    final currentEmail = _emailController.text.trim().toLowerCase();
+    return currentEmail.isNotEmpty && currentEmail == _lockedEmail;
+  }
 
   @override
   void dispose() {
@@ -57,6 +65,9 @@ class _SignInScreenState extends State<SignInScreen> {
               setState(() {
                 _localError = state.message;
                 _lockedUntil = state.lockedUntil;
+                _lockedEmail = state.lockedUntil != null
+                    ? _emailController.text.trim().toLowerCase()
+                    : null;
               });
             }
           },
@@ -133,6 +144,13 @@ class _SignInScreenState extends State<SignInScreen> {
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
+                        onChanged: (_) {
+                          setState(() {
+                            if (_localError != null) {
+                              _localError = null;
+                            }
+                          });
+                        },
                         validator: (value) {
                           final trimmed = value?.trim() ?? '';
                           if (trimmed.isEmpty) {
@@ -191,6 +209,13 @@ class _SignInScreenState extends State<SignInScreen> {
                         controller: _passwordController,
                         obscureText: !_showPassword,
                         textInputAction: TextInputAction.done,
+                        onChanged: (_) {
+                          if (_localError != null && !_isCurrentEmailLocked) {
+                            setState(() {
+                              _localError = null;
+                            });
+                          }
+                        },
                         validator: Validators.password,
                         style: const TextStyle(fontSize: 14, color: AppColors.darkText),
                         decoration: InputDecoration(
@@ -246,18 +271,18 @@ class _SignInScreenState extends State<SignInScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                           decoration: BoxDecoration(
-                            color: (_lockedUntil != null ? AppColors.warning : AppColors.error).withValues(alpha: 0.1),
+                            color: (_isCurrentEmailLocked ? AppColors.warning : AppColors.error).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: (_lockedUntil != null ? AppColors.warning : AppColors.error).withValues(alpha: 0.3),
+                              color: (_isCurrentEmailLocked ? AppColors.warning : AppColors.error).withValues(alpha: 0.3),
                             ),
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Icon(
-                                _lockedUntil != null ? Icons.lock_clock_rounded : Icons.error_outline_rounded,
-                                color: _lockedUntil != null ? AppColors.warning : AppColors.error,
+                                _isCurrentEmailLocked ? Icons.lock_clock_rounded : Icons.error_outline_rounded,
+                                color: _isCurrentEmailLocked ? AppColors.warning : AppColors.error,
                                 size: 20,
                               ),
                               const SizedBox(width: 10),
@@ -265,10 +290,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                 child: Text(
                                   _localError!,
                                   style: TextStyle(
-                                    color: _lockedUntil != null ? AppColors.darkText : AppColors.error,
+                                    color: _isCurrentEmailLocked ? AppColors.darkText : AppColors.error,
                                     fontSize: 12.5,
                                     height: 1.4,
-                                    fontWeight: _lockedUntil != null ? FontWeight.w600 : FontWeight.normal,
+                                    fontWeight: _isCurrentEmailLocked ? FontWeight.w600 : FontWeight.normal,
                                   ),
                                 ),
                               ),
@@ -282,7 +307,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       BlocBuilder<AuthBloc, AuthState>(
                         builder: (context, state) {
                           final isLoading = state.status == AuthStatus.loading;
-                          final isLocked = _lockedUntil != null && _lockedUntil!.isAfter(DateTime.now());
+                          final isLocked = _isCurrentEmailLocked;
                           return SizedBox(
                             width: double.infinity,
                             height: 54,
