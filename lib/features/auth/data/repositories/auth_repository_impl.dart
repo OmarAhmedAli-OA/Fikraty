@@ -19,5 +19,30 @@ class AuthRepositoryImpl implements AuthRepository {
       _dataSource.requestPasswordReset(email);
 
   @override
+  Future<void> resetPassword({
+    required String email,
+    required String code,
+    required String newPassword,
+    required String confirmNewPassword,
+  }) =>
+      _dataSource.resetPassword(
+        email: email,
+        code: code,
+        newPassword: newPassword,
+        confirmNewPassword: confirmNewPassword,
+      );
+
+  @override
+  Future<void> verifyEmail({required String email, required String code}) =>
+      _dataSource.verifyEmail(email: email, code: code);
+
+  @override
+  Future<void> resendVerificationCode({required String email}) =>
+      _dataSource.resendVerificationCode(email);
+
+  @override
   Future<void> signOut() => _dataSource.signOut();
+
+  @override
+  Future<AuthUser?> getCurrentUser() => _dataSource.getCurrentUser();
 }

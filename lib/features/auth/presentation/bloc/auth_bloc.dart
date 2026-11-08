@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/session/session_manager.dart';
+import '../../data/datasources/auth_remote_data_source.dart';
 import '../../domain/usecases/request_password_reset.dart';
 import '../../domain/usecases/sign_in.dart';
 import '../../domain/usecases/sign_out.dart';
@@ -12,17 +14,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.signUp,
     required this.requestPasswordReset,
     required this.signOut,
+    this.sessionManager,
   }) : super(const AuthState()) {
     on<AuthSignInRequested>(_onSignIn);
     on<AuthSignUpRequested>(_onSignUp);
     on<AuthPasswordResetRequested>(_onPasswordReset);
     on<AuthSignOutRequested>(_onSignOut);
+    on<AuthCheckSessionRequested>(_onCheckSession);
   }
 
   final SignIn signIn;
   final SignUp signUp;
   final RequestPasswordReset requestPasswordReset;
   final SignOut signOut;
+  final SessionManager? sessionManager;
+
+  Future<void> _onCheckSession(
+    AuthCheckSessionRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    final cached = sessionManager?.cachedUser;
+    if (sessionManager?.isAuthenticated == true && cached != null) {
+      emit(AuthState(status: AuthStatus.authenticated, user: cached));
+    } else {
+      emit(const AuthState(status: AuthStatus.unauthenticated));
+    }
+  }
 
   Future<void> _onSignIn(
     AuthSignInRequested event,
@@ -35,8 +52,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         password: event.password,
       );
       emit(AuthState(status: AuthStatus.authenticated, user: user));
+    } on AuthDataException catch (e) {
+      emit(AuthState(
+        status: AuthStatus.failure,
+        message: e.message.isNotEmpty ? e.message : 'Unable to sign in right now. Please try again.',
+        lockedUntil: e.lockedUntil,
+        fieldErrors: e.fieldErrors,
+      ));
     } catch (e) {
-      final msg = e.toString().replaceFirst('Exception: ', '');
+      final msg = e.toString()
+          .replaceFirst('Exception: ', '')
+          .replaceFirst('AuthDataException: ', '');
       emit(AuthState(
         status: AuthStatus.failure,
         message: msg.isNotEmpty ? msg : 'Unable to sign in right now. Please try again.',
@@ -89,8 +115,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await signOut();
     } catch (_) {
-      // Always clear local UI state after a sign-out request. A production
-      // repository must revoke the server session and report revocation errors.
+      // Always clear local UI state after a sign-out request.
     }
     emit(const AuthState(status: AuthStatus.unauthenticated));
   }

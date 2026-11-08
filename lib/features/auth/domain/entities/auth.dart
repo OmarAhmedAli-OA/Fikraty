@@ -2,9 +2,52 @@
 /// in public registration; it must only be assigned by trusted backend logic.
 enum UserRole { entrepreneur, investor }
 
+extension UserRoleX on UserRole {
+  /// Numeric value in SQL Server / C# UserRole enum: Entrepreneur = 1, Investor = 2
+  int get id => this == UserRole.entrepreneur ? 1 : 2;
+
+  static UserRole fromId(int id) =>
+      id == 2 ? UserRole.investor : UserRole.entrepreneur;
+
+  static UserRole fromString(String? role) {
+    if (role == null) return UserRole.entrepreneur;
+    return role.trim().toLowerCase() == 'investor'
+        ? UserRole.investor
+        : UserRole.entrepreneur;
+  }
+}
+
 enum InvestorRiskPreference { low, medium, high }
 
 enum AccountStatus { active, suspended, deactivated }
+
+extension AccountStatusX on AccountStatus {
+  /// Numeric value in SQL Server / C# AccountStatus enum: Active = 1, Suspended = 2, Deactivated = 3
+  int get id => index + 1;
+
+  static AccountStatus fromId(int id) {
+    switch (id) {
+      case 2:
+        return AccountStatus.suspended;
+      case 3:
+        return AccountStatus.deactivated;
+      default:
+        return AccountStatus.active;
+    }
+  }
+
+  static AccountStatus fromString(String? status) {
+    if (status == null) return AccountStatus.active;
+    switch (status.trim().toLowerCase()) {
+      case 'suspended':
+        return AccountStatus.suspended;
+      case 'deactivated':
+        return AccountStatus.deactivated;
+      default:
+        return AccountStatus.active;
+    }
+  }
+}
 
 /// Lookup values are represented by stable codes in the Flutter prototype.
 /// The API must resolve these codes to the numeric lookup IDs in the ERD

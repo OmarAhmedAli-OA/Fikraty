@@ -1,3 +1,8 @@
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../network/api_client.dart';
+import '../session/session_manager.dart';
 import '../../features/analytics/data/datasources/analytics_local_data_source.dart';
 import '../../features/analytics/data/repositories/analytics_repository_impl.dart';
 import '../../features/analytics/domain/repositories/analytics_repository.dart';
@@ -5,9 +10,8 @@ import '../../features/analytics/domain/usecases/get_founder_analytics_usecase.d
 import '../../features/analytics/domain/usecases/get_investor_analytics_usecase.dart';
 import '../../features/analytics/domain/usecases/get_startup_analytics_usecase.dart';
 import '../../features/analytics/presentation/bloc/analytics_bloc.dart';
-import 'package:get_it/get_it.dart';
-
 import '../../features/auth/data/datasources/auth_remote_data_source.dart';
+import '../../features/auth/data/datasources/auth_remote_data_source_impl.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/domain/usecases/request_password_reset.dart';
@@ -35,11 +39,40 @@ import '../../features/notifications/presentation/bloc/notifications_bloc.dart';
 
 final GetIt sl = GetIt.instance;
 
-void configureDependencies() {
+Future<void> resetDependencies() async {
+  await sl.reset();
+}
+
+Future<void> configureDependencies({
+  SharedPreferences? preferences,
+  bool useMockAuth = false,
+}) async {
   if (sl.isRegistered<AuthBloc>()) return;
 
+  final prefs = preferences ?? await SharedPreferences.getInstance();
+  if (!sl.isRegistered<SharedPreferences>()) {
+    sl.registerSingleton<SharedPreferences>(prefs);
+  }
+
+  if (!sl.isRegistered<SessionManager>()) {
+    sl.registerLazySingleton<SessionManager>(
+      () => SessionManager(sl<SharedPreferences>()),
+    );
+  }
+
+  if (!sl.isRegistered<ApiClient>()) {
+    sl.registerLazySingleton<ApiClient>(
+      () => ApiClient(sessionManager: sl<SessionManager>()),
+    );
+  }
+
   sl.registerLazySingleton<AuthRemoteDataSource>(
-    () => FakeAuthRemoteDataSource(),
+    () => useMockAuth
+        ? FakeAuthRemoteDataSource()
+        : AuthRemoteDataSourceImpl(
+            apiClient: sl<ApiClient>(),
+            sessionManager: sl<SessionManager>(),
+          ),
   );
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(sl<AuthRemoteDataSource>()),
@@ -58,6 +91,7 @@ void configureDependencies() {
       signUp: sl<SignUp>(),
       requestPasswordReset: sl<RequestPasswordReset>(),
       signOut: sl<SignOut>(),
+      sessionManager: sl<SessionManager>(),
     ),
   );
 

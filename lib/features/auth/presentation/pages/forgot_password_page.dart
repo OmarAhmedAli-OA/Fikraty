@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_logo.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
+import '../bloc/auth_state.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -23,18 +27,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     super.dispose();
   }
 
-  Future<void> _handleSend() async {
+  void _handleSend() {
     FocusScope.of(context).unfocus();
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
-    await Future<void>.delayed(const Duration(milliseconds: 1000));
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-        _sent = true;
-      });
-    }
+    context.read<AuthBloc>().add(
+      AuthPasswordResetRequested(email: _emailController.text.trim()),
+    );
   }
 
   @override
@@ -45,14 +45,29 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 440),
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
+        child: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state.status == AuthStatus.passwordResetRequested) {
+              setState(() {
+                _isLoading = false;
+                _sent = true;
+              });
+            } else if (state.status == AuthStatus.failure) {
+              setState(() => _isLoading = false);
+              final error = state.message ?? 'Failed to send password reset request.';
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(error), backgroundColor: AppColors.error),
+              );
+            }
+          },
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 440),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
                   // Back button
                   Align(
                     alignment: Alignment.centerLeft,
@@ -87,6 +102,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           ),
         ),
       ),
+      )
     );
   }
 
@@ -285,15 +301,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         ),
         const SizedBox(height: 22),
 
-        // Demo Shortcut directly to Reset Password page
+        // Shortcut directly to Reset Password page
         SizedBox(
           width: double.infinity,
           height: 52,
           child: ElevatedButton.icon(
-            onPressed: () => Navigator.of(context).pushNamed(AppRoutes.resetPassword),
+            onPressed: () => Navigator.of(context).pushNamed(
+              AppRoutes.resetPassword,
+              arguments: email,
+            ),
             icon: const Icon(Icons.lock_reset_rounded, size: 20),
             label: const Text(
-              'Set new password (Demo flow)',
+              'Enter reset code',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
             ),
             style: ElevatedButton.styleFrom(

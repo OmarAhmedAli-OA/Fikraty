@@ -21,6 +21,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final _passwordController = TextEditingController();
   bool _showPassword = false;
   String? _localError;
+  DateTime? _lockedUntil;
 
   @override
   void dispose() {
@@ -53,7 +54,10 @@ class _SignInScreenState extends State<SignInScreen> {
             if (state.status == AuthStatus.authenticated) {
               Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (_) => false);
             } else if (state.status == AuthStatus.failure && state.message != null) {
-              setState(() => _localError = state.message);
+              setState(() {
+                _localError = state.message;
+                _lockedUntil = state.lockedUntil;
+              });
             }
           },
           child: Center(
@@ -240,15 +244,35 @@ class _SignInScreenState extends State<SignInScreen> {
                       // Error message banner
                       if (_localError != null) ...[
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                           decoration: BoxDecoration(
-                            color: AppColors.error.withValues(alpha: 0.1),
+                            color: (_lockedUntil != null ? AppColors.warning : AppColors.error).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
+                            border: Border.all(
+                              color: (_lockedUntil != null ? AppColors.warning : AppColors.error).withValues(alpha: 0.3),
+                            ),
                           ),
-                          child: Text(
-                            _localError!,
-                            style: const TextStyle(color: AppColors.error, fontSize: 12.5),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                _lockedUntil != null ? Icons.lock_clock_rounded : Icons.error_outline_rounded,
+                                color: _lockedUntil != null ? AppColors.warning : AppColors.error,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  _localError!,
+                                  style: TextStyle(
+                                    color: _lockedUntil != null ? AppColors.darkText : AppColors.error,
+                                    fontSize: 12.5,
+                                    height: 1.4,
+                                    fontWeight: _lockedUntil != null ? FontWeight.w600 : FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 14),
@@ -258,11 +282,12 @@ class _SignInScreenState extends State<SignInScreen> {
                       BlocBuilder<AuthBloc, AuthState>(
                         builder: (context, state) {
                           final isLoading = state.status == AuthStatus.loading;
+                          final isLocked = _lockedUntil != null && _lockedUntil!.isAfter(DateTime.now());
                           return SizedBox(
                             width: double.infinity,
                             height: 54,
                             child: ElevatedButton(
-                              onPressed: isLoading ? null : _submit,
+                              onPressed: (isLoading || isLocked) ? null : _submit,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: colors.primary,
                                 foregroundColor: colors.onPrimary,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/services/dependency_injection.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_logo.dart';
+import '../../domain/repositories/auth_repository.dart';
 
 class ResetPasswordPage extends StatefulWidget {
   const ResetPasswordPage({super.key});
@@ -12,15 +14,32 @@ class ResetPasswordPage extends StatefulWidget {
 }
 
 class _ResetPasswordPageState extends State<ResetPasswordPage> {
+  final _emailController = TextEditingController();
+  final _codeController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmController = TextEditingController();
+  bool _initializedArgs = false;
   bool _showPassword = false;
   bool _isLoading = false;
   bool _isDone = false;
   String? _errorMessage;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initializedArgs) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is String && args.isNotEmpty) {
+        _emailController.text = args;
+      }
+      _initializedArgs = true;
+    }
+  }
+
+  @override
   void dispose() {
+    _emailController.dispose();
+    _codeController.dispose();
     _passwordController.dispose();
     _confirmController.dispose();
     super.dispose();
@@ -42,8 +61,20 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
   Future<void> _handleReset() async {
     FocusScope.of(context).unfocus();
+    final email = _emailController.text.trim();
+    final code = _codeController.text.trim();
     final password = _passwordController.text;
     final confirm = _confirmController.text;
+
+    if (email.isEmpty || !email.contains('@')) {
+      setState(() => _errorMessage = 'Please enter a valid email address.');
+      return;
+    }
+
+    if (code.isEmpty) {
+      setState(() => _errorMessage = 'Please enter the reset code sent to your email.');
+      return;
+    }
 
     final strongError = Validators.strongPassword(password);
     if (strongError != null) {
@@ -61,13 +92,31 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       _errorMessage = null;
     });
 
-    await Future<void>.delayed(const Duration(milliseconds: 1000));
+    try {
+      final authRepo = sl<AuthRepository>();
+      await authRepo.resetPassword(
+        email: email,
+        code: code,
+        newPassword: password,
+        confirmNewPassword: confirm,
+      );
 
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-        _isDone = true;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _isDone = true;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        final rawMsg = e.toString()
+            .replaceFirst('Exception: ', '')
+            .replaceFirst('AuthDataException: ', '');
+        setState(() {
+          _isLoading = false;
+          _errorMessage = rawMsg.isNotEmpty ? rawMsg : 'Failed to reset password. Please try again.';
+        });
+      }
     }
   }
 
@@ -186,6 +235,89 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
           ),
         ),
         const SizedBox(height: 28),
+
+        // Email Field
+        const Text(
+          'EMAIL ADDRESS',
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: AppColors.mutedText,
+            letterSpacing: 0.6,
+          ),
+        ),
+        const SizedBox(height: 6),
+        TextFormField(
+          controller: _emailController,
+          keyboardType: TextInputType.emailAddress,
+          onChanged: (_) => _onPasswordChanged(),
+          style: const TextStyle(fontSize: 14, color: AppColors.darkText),
+          decoration: InputDecoration(
+            hintText: 'name@example.com',
+            hintStyle: const TextStyle(color: AppColors.inputHint, fontSize: 14),
+            fillColor: AppColors.surface,
+            filled: true,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: const BorderSide(color: AppColors.border),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: const BorderSide(color: AppColors.border),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: BorderSide(color: colors.primary, width: 1.5),
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Verification Code Field
+        const Text(
+          '6-DIGIT RESET CODE',
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: AppColors.mutedText,
+            letterSpacing: 0.6,
+          ),
+        ),
+        const SizedBox(height: 6),
+        TextFormField(
+          controller: _codeController,
+          keyboardType: TextInputType.number,
+          maxLength: 6,
+          onChanged: (_) => _onPasswordChanged(),
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 3.0,
+            color: AppColors.darkText,
+          ),
+          decoration: InputDecoration(
+            counterText: '',
+            hintText: '123456',
+            hintStyle: const TextStyle(color: AppColors.inputHint, fontSize: 15, letterSpacing: 2.0),
+            fillColor: AppColors.surface,
+            filled: true,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: const BorderSide(color: AppColors.border),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: const BorderSide(color: AppColors.border),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: BorderSide(color: colors.primary, width: 1.5),
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
 
         // New Password Field
         const Text(

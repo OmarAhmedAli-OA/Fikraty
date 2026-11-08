@@ -8,9 +8,11 @@ import 'core/router/app_router.dart';
 import 'core/services/dependency_injection.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/auth/presentation/bloc/auth_event.dart';
 import 'features/auth/presentation/pages/forgot_password_page.dart';
 import 'features/auth/presentation/pages/onboarding_page.dart';
 import 'features/auth/presentation/pages/reset_password_page.dart';
+import 'features/auth/presentation/pages/verify_email_page.dart';
 import 'features/auth/presentation/pages/sign_in_page.dart';
 import 'features/auth/presentation/pages/sign_up_page.dart';
 import 'features/home/data/datasources/feed_local_data_source.dart';
@@ -32,12 +34,15 @@ import 'features/splash/presentation/pages/splash_screen.dart';
 import 'features/startups/presentation/pages/my_startups_page.dart';
 import 'features/startups/presentation/pages/startup_wizard_page.dart';
 
-void main() {
-  configureDependencies();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>()),
+        BlocProvider<AuthBloc>(
+          create: (_) => sl<AuthBloc>()..add(const AuthCheckSessionRequested()),
+        ),
         BlocProvider<FeedBloc>(
           create: (_) => FeedBloc(
             feedRepository: FeedRepositoryImpl(
@@ -81,6 +86,7 @@ class FikratyApp extends StatelessWidget {
         AppRoutes.signUp: (_) => const SignUpScreen(),
         AppRoutes.forgotPassword: (_) => const ForgotPasswordPage(),
         AppRoutes.resetPassword: (_) => const ResetPasswordPage(),
+        AppRoutes.verifyEmail: (_) => const VerifyEmailPage(),
         AppRoutes.home: (_) => const HomeScreen(),
         AppRoutes.profile: (_) => const ProfilePage(),
         AppRoutes.myStartups: (_) => const MyStartupsPage(),

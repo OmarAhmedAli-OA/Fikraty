@@ -7,7 +7,16 @@ abstract interface class AuthRemoteDataSource {
   Future<AuthUser> signIn(String email, String password);
   Future<AuthUser> signUp(RegistrationData data);
   Future<void> requestPasswordReset(String email);
+  Future<void> resetPassword({
+    required String email,
+    required String code,
+    required String newPassword,
+    required String confirmNewPassword,
+  });
+  Future<void> verifyEmail({required String email, required String code});
+  Future<void> resendVerificationCode(String email);
   Future<void> signOut();
+  Future<AuthUser?> getCurrentUser();
 }
 
 class FakeAuthRemoteDataSource implements AuthRemoteDataSource {
@@ -215,14 +224,51 @@ class FakeAuthRemoteDataSource implements AuthRemoteDataSource {
   }
 
   @override
+  Future<void> resetPassword({
+    required String email,
+    required String code,
+    required String newPassword,
+    required String confirmNewPassword,
+  }) async {
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+    final entry = _accounts[email];
+    if (entry != null) {
+      _accounts[email] = (password: newPassword, user: entry.user);
+    }
+  }
+
+  @override
+  Future<void> verifyEmail({required String email, required String code}) async {
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+  }
+
+  @override
+  Future<void> resendVerificationCode(String email) async {
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+  }
+
+  @override
   Future<void> signOut() async {
     _currentUser = null;
   }
+
+  @override
+  Future<AuthUser?> getCurrentUser() async => _currentUser;
 }
 
 class AuthDataException implements Exception {
-  const AuthDataException(this.message);
+  const AuthDataException(
+    this.message, {
+    this.statusCode,
+    this.fieldErrors,
+    this.lockedUntil,
+  });
+
   final String message;
+  final int? statusCode;
+  final Map<String, List<String>>? fieldErrors;
+  final DateTime? lockedUntil;
+
   @override
   String toString() => message;
 }

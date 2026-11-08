@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/router/app_router.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../auth/presentation/bloc/auth_event.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/user_profile.dart';
 import '../bloc/profile_bloc.dart';
@@ -22,6 +25,34 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _investorInterest = true;
   bool _weeklyReport = true;
   bool _showOnlineStatus = true;
+
+  void _confirmSignOut() {
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Sign out'),
+        content: const Text('Are you sure you want to sign out of Fikraty?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              context.read<AuthBloc>().add(const AuthSignOutRequested());
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                AppRoutes.signIn,
+                (_) => false,
+              );
+            },
+            style: FilledButton.styleFrom(backgroundColor: AppColors.error),
+            child: const Text('Sign out'),
+          ),
+        ],
+      ),
+    );
+  }
 
   void _showNotice(String message, {bool isSuccess = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -1216,9 +1247,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         width: 140,
                         height: 42,
                         child: OutlinedButton(
-                          onPressed: () {
-                            _showNotice('Logged out successfully');
-                          },
+                          onPressed: _confirmSignOut,
                           style: OutlinedButton.styleFrom(
                             backgroundColor: AppColors.redSoftBg,
                             side: const BorderSide(

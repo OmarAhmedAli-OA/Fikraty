@@ -499,7 +499,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state.status == AuthStatus.authenticated) {
-              Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (_) => false);
+              if (state.user?.emailConfirmed == true) {
+                Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (_) => false);
+              } else {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  AppRoutes.verifyEmail,
+                  (_) => false,
+                  arguments: state.user?.email ?? _emailController.text.trim(),
+                );
+              }
             } else if (state.status == AuthStatus.failure && state.message != null) {
               setState(() => _localError = state.message);
             }
